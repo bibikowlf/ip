@@ -5,6 +5,10 @@ public class Laby {
                 "#      #####  ####     #\n" +
                 "#      #   #  #   #    #\n" +
                 "#####  #   #  ####     #\n";
-        System.out.println(banner);
+        String divider = "____________________________________________________________\n\n";
+
+        System.out.println(divider + banner + divider +
+                "Hello Chief. Laby is your personal assistant.\nWhat orders do you have today?\n" +
+                divider + "Goodbye. Switching to rest mode.\n");
     }
 }
