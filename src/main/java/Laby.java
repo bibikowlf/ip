@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Laby {
@@ -12,6 +14,8 @@ public class Laby {
         String askMsg =  "What orders do you have today?\n";
         String exitMsg = "Goodbye. Switching to rest mode.\n";
 
+        List<String> tasks = new ArrayList<>();
+
         System.out.println(divider + banner + divider + openMsg + askMsg + divider);
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -20,7 +24,8 @@ public class Laby {
                 System.out.println(divider + exitMsg + divider);
                 break;
             }
-            System.out.println(divider + input + "\n" + divider);
+            tasks.add(input);
+            System.out.println(divider + "added: " + input + "\n" + divider);
         }
     }
 }
