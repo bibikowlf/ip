@@ -36,6 +36,10 @@ public class Laby {
                 int taskId = Integer.parseInt(input.split(" ")[1]) - 1;
                 tasks.get(taskId).markAsDone();
                 System.out.print(divider + "  " + tasks.get(taskId).toString() + "\n" + divider);
+            } else if (input.startsWith("unmark")) {
+                int taskId = Integer.parseInt(input.split(" ")[1]) - 1;
+                tasks.get(taskId).markAsUndone();
+                System.out.print(divider + "  " + tasks.get(taskId).toString() + "\n" + divider);
             } else {
                 tasks.add(new Task(input));
                 System.out.print(divider + "added: " + input + "\n" + divider);
