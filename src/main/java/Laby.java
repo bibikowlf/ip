@@ -32,10 +32,14 @@ public class Laby {
                 System.out.print(divider);
                 printTasks();
                 System.out.print(divider);
-                continue;
+            } else if (input.startsWith("mark")) {
+                int taskId = Integer.parseInt(input.split(" ")[1]) - 1;
+                tasks.get(taskId).markAsDone();
+                System.out.print(divider + "  " + tasks.get(taskId).toString() + "\n" + divider);
+            } else {
+                tasks.add(new Task(input));
+                System.out.print(divider + "added: " + input + "\n" + divider);
             }
-            tasks.add(new Task(input));
-            System.out.print(divider + "added: " + input + "\n" + divider);
         }
     }
 }

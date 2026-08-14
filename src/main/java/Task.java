@@ -11,4 +11,8 @@ public class Task {
     public String toString() {
         return "[" + (this.done ? "X" : " ") + "] " + this.description;
     }
+
+    public void markAsDone() {
+        this.done = true;
+    }
 }
