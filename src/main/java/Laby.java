@@ -12,8 +12,13 @@ public class Laby {
     private static final String openMsg = "Hello Chief. Laby is your personal assistant.\n";
     private static final String askMsg =  "What orders do you have today?\n";
     private static final String exitMsg = "Goodbye. Switching to rest mode.\n";
-
     private static final List<String> tasks = new ArrayList<>();
+
+    private static void printTasks() {
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + ". " + tasks.get(i));
+        }
+    }
 
     static void main(String[] args) {
         System.out.print(divider + banner + divider + openMsg + askMsg + divider);
@@ -25,9 +30,7 @@ public class Laby {
                 break;
             } else if (input.equals("list")) {
                 System.out.print(divider);
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println((i + 1) + ". " + tasks.get(i));
-                }
+                printTasks();
                 System.out.print(divider);
                 continue;
             }
