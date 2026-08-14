@@ -16,16 +16,23 @@ public class Laby {
 
         List<String> tasks = new ArrayList<>();
 
-        System.out.println(divider + banner + divider + openMsg + askMsg + divider);
+        System.out.print(divider + banner + divider + openMsg + askMsg + divider);
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
             if (input.equals("bye")) {
-                System.out.println(divider + exitMsg + divider);
+                System.out.print(divider + exitMsg + divider);
                 break;
+            } else if (input.equals("list")) {
+                System.out.println(divider);
+                for (int i = 0; i < tasks.size(); i++) {
+                    System.out.println((i + 1) + ". " + tasks.get(i));
+                }
+                System.out.print(divider);
+                continue;
             }
             tasks.add(input);
-            System.out.println(divider + "added: " + input + "\n" + divider);
+            System.out.print(divider + "added: " + input + "\n" + divider);
         }
     }
 }
