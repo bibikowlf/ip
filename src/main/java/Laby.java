@@ -12,11 +12,11 @@ public class Laby {
     private static final String openMsg = "Hello Chief. Laby is your personal assistant.\n";
     private static final String askMsg =  "What orders do you have today?\n";
     private static final String exitMsg = "Goodbye. Switching to rest mode.\n";
-    private static final List<String> tasks = new ArrayList<>();
+    private static final List<Task> tasks = new ArrayList<>();
 
     private static void printTasks() {
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
+            System.out.println((i + 1) + "." + tasks.get(i).toString());
         }
     }
 
@@ -34,7 +34,7 @@ public class Laby {
                 System.out.print(divider);
                 continue;
             }
-            tasks.add(input);
+            tasks.add(new Task(input));
             System.out.print(divider + "added: " + input + "\n" + divider);
         }
     }
