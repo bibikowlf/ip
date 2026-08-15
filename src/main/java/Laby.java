@@ -18,7 +18,12 @@ public class Laby {
     private static final String markMsg = "Understood. Laby has marked the task as done.\n";
     private static final String unmarkMsg = "Understood. Laby has marked the task as not done.\n";
     private static final String addMsg = "Laby has added the task. Make sure to rest, Chief :o\n";
+    private static final String deleteMsg = "Laby has deleted the task. Glad to see you resting ;)\n";
     private static final List<Task> tasks = new ArrayList<>();
+
+    private static void printNumberOfTasks() {
+        System.out.print("There is a total of " + tasks.size() + " task" + (tasks.size() > 1 ? "s" : "") + " in your list.\n" );
+    }
 
     private static void printTasks() {
         System.out.print(divider);
@@ -49,6 +54,19 @@ public class Laby {
         }
     }
 
+    private static void deleteTask(String input) throws LabyException {
+        try {
+            int taskId = Integer.parseInt(input.substring(7)) - 1;
+            Task task = tasks.get(taskId);
+            tasks.remove(taskId);
+            System.out.print(divider + deleteMsg + "  " + task.toString() + "\n");
+            Laby.printNumberOfTasks();
+            System.out.print(divider);
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            throw new LabyException("please enter a valid task index.");
+        }
+    }
+
     private static void addTodo(String input) throws LabyException {
         String description = input.substring(5);
         if (description.trim().isEmpty()) {
@@ -56,7 +74,9 @@ public class Laby {
         }
         Task task = new Todo(description);
         tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task + "\n" + divider);
+        System.out.print(divider + addMsg + "  " + task.toString() + "\n");
+        Laby.printNumberOfTasks();
+        System.out.print(divider);
     }
 
     private static void addDeadline(String input) throws LabyException {
@@ -76,7 +96,9 @@ public class Laby {
         }
         Task task = new Deadline(description, deadline);
         tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task + "\n" + divider);
+        System.out.print(divider + addMsg + "  " + task.toString() + "\n");
+        Laby.printNumberOfTasks();
+        System.out.print(divider);
     }
 
     private static void addEvent(String input) throws LabyException {
@@ -106,7 +128,9 @@ public class Laby {
         }
         Task task = new Event(description, startTime, endTime);
         tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task + "\n" + divider);
+        System.out.print(divider + addMsg + "  " + task.toString() + "\n");
+        Laby.printNumberOfTasks();
+        System.out.print(divider);
     }
 
     static void main(String[] args) {
@@ -123,12 +147,14 @@ public class Laby {
                     Laby.printTasks();
                 } else if (input.equals("todo") || input.equals("deadline") || input.equals("event")) {
                     throw new LabyException("task description cannot be empty.");
-                } else if (input.equals("mark") || input.equals("unmark")) {
+                } else if (input.equals("mark") || input.equals("unmark") || input.equals("delete")) {
                     throw new LabyException("please enter a valid task index.");
                 } else if (input.startsWith("mark ")) {
                     Laby.markTask(input);
                 } else if (input.startsWith("unmark ")) {
                     Laby.unmarkTask(input);
+                } else if (input.startsWith("delete ")) {
+                    Laby.deleteTask(input);
                 } else if (input.startsWith("todo ")) {
                     Laby.addTodo(input);
                 } else if (input.startsWith("deadline ")) {

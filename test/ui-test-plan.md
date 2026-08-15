@@ -78,18 +78,21 @@ ____________________________________________________________
 
 Laby has added the task. Make sure to rest, Chief :o
   [T][ ] borrow book
+There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
 Laby has added the task. Make sure to rest, Chief :o
   [D][ ] return book (by: Sunday)
+There is a total of 2 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
 Laby has added the task. Make sure to rest, Chief :o
   [E][ ] project meeting (from: Mon 2pm to: 4pm)
+There is a total of 3 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
@@ -141,6 +144,7 @@ ____________________________________________________________
 
 Laby has added the task. Make sure to rest, Chief :o
   [T][ ] read book
+There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
@@ -173,6 +177,7 @@ Verify that Laby reports a validation error when a task description or task inde
 todo
 mark
 unmark
+delete
 bye
 ```
 
@@ -205,6 +210,92 @@ ____________________________________________________________
 ____________________________________________________________
 
 System crashing... please enter a valid task index.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a valid task index.
+____________________________________________________________
+
+____________________________________________________________
+
+Goodbye. Switching to rest mode.
+____________________________________________________________
+```
+
+## Test case: Delete a task
+
+### Aim
+
+Verify that Laby removes the selected task, reports the remaining count, and renumbers the list.
+
+### Inputs
+
+```text
+todo read book
+deadline return book /by Sunday
+event project meeting /from Mon 2pm /to 4pm
+mark 3
+delete 3
+list
+bye
+```
+
+### Expected output
+
+```text
+____________________________________________________________
+
+#       ###   ####   #   #
+#      #   #  #   #   # #
+#      #####  ####     #
+#      #   #  #   #    #
+#####  #   #  ####     #
+____________________________________________________________
+
+Hello Chief. Laby is your personal assistant.
+What orders do you have today?
+____________________________________________________________
+
+____________________________________________________________
+
+Laby has added the task. Make sure to rest, Chief :o
+  [T][ ] read book
+There is a total of 1 task in your list.
+____________________________________________________________
+
+____________________________________________________________
+
+Laby has added the task. Make sure to rest, Chief :o
+  [D][ ] return book (by: Sunday)
+There is a total of 2 tasks in your list.
+____________________________________________________________
+
+____________________________________________________________
+
+Laby has added the task. Make sure to rest, Chief :o
+  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+There is a total of 3 tasks in your list.
+____________________________________________________________
+
+____________________________________________________________
+
+Understood. Laby has marked the task as done.
+  [E][X] project meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+
+____________________________________________________________
+
+Laby has deleted the task. Glad to see you resting ;)
+  [E][X] project meeting (from: Mon 2pm to: 4pm)
+There is a total of 2 tasks in your list.
+____________________________________________________________
+
+____________________________________________________________
+
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[D][ ] return book (by: Sunday)
 ____________________________________________________________
 
 ____________________________________________________________
@@ -355,6 +446,8 @@ blah
 mark abc
 mark 0
 unmark 2
+delete abc
+delete 0
 bye
 ```
 
@@ -382,6 +475,16 @@ ____________________________________________________________
 ____________________________________________________________
 
 System crashing... please input the correct commands.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a valid task index.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a valid task index.
 ____________________________________________________________
 
 ____________________________________________________________
