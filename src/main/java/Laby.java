@@ -56,6 +56,15 @@ public class Laby {
                 Task task = new Deadline(description, deadline);
                 tasks.add(task);
                 System.out.print(divider + "added:\n  " + task + "\n" + divider);
+            } else if (input.startsWith("event ")) {
+                int startIndex = input.indexOf(" /from ");
+                int endIndex = input.indexOf(" /to ");
+                String description = input.substring(6, startIndex);
+                String startTime = input.substring(startIndex + 7, endIndex);
+                String endTime = input.substring(endIndex + 5);
+                Task task = new Event(description, startTime, endTime);
+                tasks.add(task);
+                System.out.print(divider + "added:\n  " + task + "\n" + divider);
             }
         }
     }
