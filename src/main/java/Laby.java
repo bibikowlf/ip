@@ -15,6 +15,7 @@ public class Laby {
     private static final String listMsg = "Here are the tasks in your list:\n";
     private static final String markMsg = "Understood. Laby has marked the task as done.\n";
     private static final String unmarkMsg = "Understood. Laby has marked the task as not done.\n";
+    private static final String addMsg = "Laby has added the task. Make sure to rest, Chief :o\n";
     private static final List<Task> tasks = new ArrayList<>();
 
     private static void printTasks() {
@@ -48,14 +49,14 @@ public class Laby {
             } else if (input.startsWith("todo ")) {
                 Task task = new Todo(input.substring(5));
                 tasks.add(task);
-                System.out.print(divider + "added:\n  " + task + "\n" + divider);
+                System.out.print(divider + addMsg + "  " + task + "\n" + divider);
             } else if (input.startsWith("deadline ")) {
                 int deadlineIndex = input.indexOf(" /by ");
                 String description = input.substring(9, deadlineIndex);
                 String deadline = input.substring(deadlineIndex + 5);
                 Task task = new Deadline(description, deadline);
                 tasks.add(task);
-                System.out.print(divider + "added:\n  " + task + "\n" + divider);
+                System.out.print(divider + addMsg + "  " + task + "\n" + divider);
             } else if (input.startsWith("event ")) {
                 int startIndex = input.indexOf(" /from ");
                 int endIndex = input.indexOf(" /to ");
@@ -64,7 +65,7 @@ public class Laby {
                 String endTime = input.substring(endIndex + 5);
                 Task task = new Event(description, startTime, endTime);
                 tasks.add(task);
-                System.out.print(divider + "added:\n  " + task + "\n" + divider);
+                System.out.print(divider + addMsg + "  " + task + "\n" + divider);
             }
         }
     }
