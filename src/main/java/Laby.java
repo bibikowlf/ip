@@ -28,8 +28,6 @@ public class Laby {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
-            String[] parts = input.trim().split("\\s+");
-            String command = parts[0];
 
             if (input.equals("bye")) {
                 System.out.print(divider + exitMsg + divider);
@@ -39,16 +37,16 @@ public class Laby {
                 System.out.print(listMsg);
                 printTasks();
                 System.out.print(divider);
-            } else if (command.equals("mark")) {
-                int taskId = Integer.parseInt(parts[1]) - 1;
+            } else if (input.startsWith("mark ")) {
+                int taskId = Integer.parseInt(input.substring(5)) - 1;
                 tasks.get(taskId).markAsDone();
                 System.out.print(divider + markMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
-            } else if (command.equals("unmark")) {
-                int taskId = Integer.parseInt(parts[1]) - 1;
+            } else if (input.startsWith("unmark ")) {
+                int taskId = Integer.parseInt(input.substring(7)) - 1;
                 tasks.get(taskId).markAsUndone();
                 System.out.print(divider + unmarkMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
-            } else if (command.equals("todo")) {
-                Task task = new Todo(parts[1]);
+            } else if (input.startsWith("todo ")) {
+                Task task = new Todo(input.substring(5));
                 tasks.add(task);
                 System.out.print(divider + "added:\n  " + task.toString() + "\n" + divider);
             }
