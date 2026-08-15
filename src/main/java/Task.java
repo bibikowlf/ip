@@ -1,5 +1,5 @@
 public class Task {
-    private String description;
+    private final String description;
     private boolean done;
 
     public Task(String description) {

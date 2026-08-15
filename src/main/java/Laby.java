@@ -47,9 +47,10 @@ public class Laby {
                 int taskId = Integer.parseInt(parts[1]) - 1;
                 tasks.get(taskId).markAsUndone();
                 System.out.print(divider + unmarkMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
-            } else {
-                tasks.add(new Task(input));
-                System.out.print(divider + "added: " + input + "\n" + divider);
+            } else if (command.equals("todo")) {
+                Task task = new Todo(parts[1]);
+                tasks.add(task);
+                System.out.print(divider + "added:\n  " + task.toString() + "\n" + divider);
             }
         }
     }
