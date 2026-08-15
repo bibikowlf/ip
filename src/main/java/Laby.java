@@ -50,9 +50,9 @@ public class Laby {
                 tasks.add(task);
                 System.out.print(divider + "added:\n  " + task + "\n" + divider);
             } else if (input.startsWith("deadline ")) {
-                int deadlineIndex = input.indexOf(" /");
+                int deadlineIndex = input.indexOf(" /by ");
                 String description = input.substring(9, deadlineIndex);
-                String deadline = input.substring(deadlineIndex + 2);
+                String deadline = input.substring(deadlineIndex + 5);
                 Task task = new Deadline(description, deadline);
                 tasks.add(task);
                 System.out.print(divider + "added:\n  " + task + "\n" + divider);
