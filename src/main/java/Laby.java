@@ -74,7 +74,7 @@ public class Laby {
         }
         Task task = new Todo(description);
         tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task.toString() + "\n");
+        System.out.print(divider + addMsg + "  " + task + "\n");
         Laby.printNumberOfTasks();
         System.out.print(divider);
     }
@@ -96,7 +96,7 @@ public class Laby {
         }
         Task task = new Deadline(description, deadline);
         tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task.toString() + "\n");
+        System.out.print(divider + addMsg + "  " + task + "\n");
         Laby.printNumberOfTasks();
         System.out.print(divider);
     }
@@ -128,7 +128,7 @@ public class Laby {
         }
         Task task = new Event(description, startTime, endTime);
         tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task.toString() + "\n");
+        System.out.print(divider + addMsg + "  " + task + "\n");
         Laby.printNumberOfTasks();
         System.out.print(divider);
     }
