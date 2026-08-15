@@ -48,7 +48,14 @@ public class Laby {
             } else if (input.startsWith("todo ")) {
                 Task task = new Todo(input.substring(5));
                 tasks.add(task);
-                System.out.print(divider + "added:\n  " + task.toString() + "\n" + divider);
+                System.out.print(divider + "added:\n  " + task + "\n" + divider);
+            } else if (input.startsWith("deadline ")) {
+                int deadlineIndex = input.indexOf(" /");
+                String description = input.substring(9, deadlineIndex);
+                String deadline = input.substring(deadlineIndex + 2);
+                Task task = new Deadline(description, deadline);
+                tasks.add(task);
+                System.out.print(divider + "added:\n  " + task + "\n" + divider);
             }
         }
     }
