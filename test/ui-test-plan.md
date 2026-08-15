@@ -160,3 +160,247 @@ ____________________________________________________________
 Goodbye. Switching to rest mode.
 ____________________________________________________________
 ```
+
+## Test case: Reject commands with missing required input
+
+### Aim
+
+Verify that Laby reports a validation error when a task description or task index is omitted.
+
+### Inputs
+
+```text
+todo
+mark
+unmark
+bye
+```
+
+### Expected output
+
+```text
+____________________________________________________________
+
+#       ###   ####   #   #
+#      #   #  #   #   # #
+#      #####  ####     #
+#      #   #  #   #    #
+#####  #   #  ####     #
+____________________________________________________________
+
+Hello Chief. Laby is your personal assistant.
+What orders do you have today?
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... task description cannot be empty.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a valid task index.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a valid task index.
+____________________________________________________________
+
+____________________________________________________________
+
+Goodbye. Switching to rest mode.
+____________________________________________________________
+```
+
+## Test case: Reject malformed deadline commands
+
+### Aim
+
+Verify that Laby rejects deadlines with a missing description, `/by` marker, or deadline value.
+
+### Inputs
+
+```text
+deadline
+deadline buy milk
+deadline /by Friday
+deadline buy milk /by 
+bye
+```
+
+### Expected output
+
+```text
+____________________________________________________________
+
+#       ###   ####   #   #
+#      #   #  #   #   # #
+#      #####  ####     #
+#      #   #  #   #    #
+#####  #   #  ####     #
+____________________________________________________________
+
+Hello Chief. Laby is your personal assistant.
+What orders do you have today?
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... task description cannot be empty.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a deadline with /by.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... task description cannot be empty.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... task deadline cannot be empty.
+____________________________________________________________
+
+____________________________________________________________
+
+Goodbye. Switching to rest mode.
+____________________________________________________________
+```
+
+## Test case: Reject malformed event commands
+
+### Aim
+
+Verify that Laby rejects events with missing markers or empty descriptions, starting times, and ending times.
+
+### Inputs
+
+```text
+event
+event meeting /to noon
+event meeting /from morning
+event /from morning /to noon
+event meeting /from  /to noon
+event meeting /from morning /to 
+bye
+```
+
+### Expected output
+
+```text
+____________________________________________________________
+
+#       ###   ####   #   #
+#      #   #  #   #   # #
+#      #####  ####     #
+#      #   #  #   #    #
+#####  #   #  ####     #
+____________________________________________________________
+
+Hello Chief. Laby is your personal assistant.
+What orders do you have today?
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... task description cannot be empty.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a starting time with /from.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter an ending time with /to.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... task description cannot be empty.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... task starting time cannot be empty.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... task ending time cannot be empty.
+____________________________________________________________
+
+____________________________________________________________
+
+Goodbye. Switching to rest mode.
+____________________________________________________________
+```
+
+## Test case: Reject unknown commands and invalid task indices
+
+### Aim
+
+Verify that Laby rejects an empty command, an unknown command, non-numeric indices, and out-of-range indices.
+
+### Inputs
+
+```text
+
+blah
+mark abc
+mark 0
+unmark 2
+bye
+```
+
+### Expected output
+
+```text
+____________________________________________________________
+
+#       ###   ####   #   #
+#      #   #  #   #   # #
+#      #####  ####     #
+#      #   #  #   #    #
+#####  #   #  ####     #
+____________________________________________________________
+
+Hello Chief. Laby is your personal assistant.
+What orders do you have today?
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please input the correct commands.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please input the correct commands.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a valid task index.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a valid task index.
+____________________________________________________________
+
+____________________________________________________________
+
+System crashing... please enter a valid task index.
+____________________________________________________________
+
+____________________________________________________________
+
+Goodbye. Switching to rest mode.
+____________________________________________________________
+```
