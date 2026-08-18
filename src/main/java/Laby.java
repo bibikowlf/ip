@@ -138,31 +138,66 @@ public class Laby {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
+            String[] parts = input.trim().split("\\s+", 2);
+            CommandType command = CommandType.from(parts[0]);
 
             try {
+                switch (command) {
+                    case BYE:
+                        if (parts.length != 1) {
+                            throw new LabyException("please enter a valid command.");
+                        }
+                        System.out.print(divider + exitMsg + divider);
+                        break;
+                    case LIST:
+                        if (parts.length != 1) {
+                            throw new LabyException("please enter a valid command.");
+                        }
+                        Laby.printTasks();
+                        break;
+                    case MARK:
+                        if (parts.length != 2) {
+                            throw new LabyException("please enter a valid task index.");
+                        }
+                        Laby.markTask(input);
+                        break;
+                    case UNMARK:
+                        if (parts.length != 2) {
+                            throw new LabyException("please enter a valid task index.");
+                        }
+                        Laby.unmarkTask(input);
+                        break;
+                    case DELETE:
+                        if (parts.length != 2) {
+                            throw new LabyException("please enter a valid task index.");
+                        }
+                        Laby.deleteTask(input);
+                        break;
+                    case TODO:
+                        if (parts.length != 2) {
+                            throw new LabyException("task description cannot be empty.");
+                        }
+                        Laby.addTodo(input);
+                        break;
+                    case DEADLINE:
+                        if (parts.length != 2) {
+                            throw new LabyException("task description cannot be empty.");
+                        }
+                        Laby.addDeadline(input);
+                        break;
+                    case EVENT:
+                        if (parts.length != 2) {
+                            throw new LabyException("task description cannot be empty.");
+                        }
+                        Laby.addEvent(input);
+                        break;
+                    case UNKNOWN:
+                        throw new LabyException("please input the correct commands.");
+                    default:
+                        break;
+                }
                 if (input.equals("bye")) {
-                    System.out.print(divider + exitMsg + divider);
                     break;
-                } else if (input.equals("list")) {
-                    Laby.printTasks();
-                } else if (input.equals("todo") || input.equals("deadline") || input.equals("event")) {
-                    throw new LabyException("task description cannot be empty.");
-                } else if (input.equals("mark") || input.equals("unmark") || input.equals("delete")) {
-                    throw new LabyException("please enter a valid task index.");
-                } else if (input.startsWith("mark ")) {
-                    Laby.markTask(input);
-                } else if (input.startsWith("unmark ")) {
-                    Laby.unmarkTask(input);
-                } else if (input.startsWith("delete ")) {
-                    Laby.deleteTask(input);
-                } else if (input.startsWith("todo ")) {
-                    Laby.addTodo(input);
-                } else if (input.startsWith("deadline ")) {
-                    Laby.addDeadline(input);
-                } else if (input.startsWith("event ")) {
-                    Laby.addEvent(input);
-                } else {
-                    throw new LabyException("please input the correct commands.");
                 }
             } catch (LabyException e) {
                 System.out.print(divider + "System crashing... " + e.getMessage() + "\n" + divider);
