@@ -150,6 +150,27 @@ public class Laby {
         Laby.writeTasksToFile();
     }
 
+    private static void createFile () throws LabyException {
+        try {
+            File file = new File(filePath);
+
+            if (!file.exists()) {
+                boolean success = true;
+                if (file.getParentFile() != null && !file.getParentFile().exists()) {
+                    success = file.getParentFile().mkdirs();
+                }
+                if (success) {
+                    success = file.createNewFile();
+                }
+                if (!success) {
+                    throw new LabyException("cannot create file");
+                }
+            }
+        } catch (IOException e) {
+            throw new LabyException("cannot create file");
+        }
+    }
+
     private static void writeTasksToFile() throws LabyException {
         StringBuilder content = new StringBuilder();
         for (Task task : tasks) {
@@ -157,6 +178,7 @@ public class Laby {
         }
 
         try {
+            Laby.createFile();
             FileWriter fileWriter = new FileWriter(filePath);
             fileWriter.write(content.toString());
             fileWriter.close();
@@ -168,7 +190,7 @@ public class Laby {
     private static void readTasksFromFile() throws LabyException {
         try {
             tasks.clear();
-
+            Laby.createFile();
             File file = new File(filePath);
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
@@ -192,7 +214,7 @@ public class Laby {
                         throw new LabyException("invalid file format");
                 }
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new LabyException("cannot read from file");
         } catch (IndexOutOfBoundsException e) {
             throw new LabyException("invalid file format");
