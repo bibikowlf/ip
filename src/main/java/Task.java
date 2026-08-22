@@ -7,6 +7,11 @@ public class Task {
         this.done = false;
     }
 
+    public Task(String description, Boolean done) {
+        this.description = description;
+        this.done = done;
+    }
+
     @Override
     public String toString() {
         return "[" + (this.done ? "X" : " ") + "] " + this.description;

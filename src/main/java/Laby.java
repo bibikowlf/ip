@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -163,8 +165,49 @@ public class Laby {
         }
     }
 
+    private static void readTasksFromFile() throws LabyException {
+        try {
+            tasks.clear();
+
+            File file = new File(filePath);
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String current = scanner.nextLine();
+                String[] parts = current.trim().split("\\|");
+                if (!parts[1].equals("0") && !parts[1].equals("1")) {
+                    throw new LabyException("invalid file format");
+                }
+                boolean isDone = parts[1].equals("1");
+                switch (parts[0]) {
+                    case "T":
+                        tasks.add(new Todo(parts[2], isDone));
+                        break;
+                    case "D":
+                        tasks.add(new Deadline(parts[2], parts[3], isDone));
+                        break;
+                    case "E":
+                        tasks.add(new Event(parts[2], parts[3], parts[4], isDone));
+                        break;
+                    default:
+                        throw new LabyException("invalid file format");
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new LabyException("cannot read from file");
+        } catch (IndexOutOfBoundsException e) {
+            throw new LabyException("invalid file format");
+        }
+    }
+
     static void main(String[] args) {
         System.out.print(divider + banner + divider + openMsg + askMsg + divider);
+        try {
+            Laby.readTasksFromFile();
+        } catch (LabyException e) {
+            System.out.print(divider + "System crashing... " + e.getMessage() + "\n" + divider);
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();

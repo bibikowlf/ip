@@ -8,6 +8,12 @@ public class Event extends Task {
         this.endTime = endTime;
     }
 
+    public Event(String description, String startTime, String endTime, boolean isDone) {
+        super(description, isDone);
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + this.startTime + " to: " + this.endTime + ")";
@@ -15,6 +21,6 @@ public class Event extends Task {
 
     @Override
     public String toFileString() {
-        return "E|" + super.toFileString() + "|" + this.startTime + "|" + this.endTime;
+        return "E|" + super.toFileString() + "|" + this.startTime + "|" + this.endTime + "\n";
     }
 }
