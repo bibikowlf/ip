@@ -1,13 +1,13 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Laby {
-    private static final String filePath = "./data/laby.txt";
+    private static final String filePath = Paths.get("data", "laby.txt").toString();
     private static final String banner = """
             #       ###   ####   #   #
             #      #   #  #   #   # #
