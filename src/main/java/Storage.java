@@ -1,0 +1,90 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Storage {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private final String filePath;
+
+    public Storage(String filePath) {
+        this.filePath = filePath;
+    }
+
+    private void createFile () throws LabyException {
+        try {
+            File file = new File(filePath);
+
+            if (!file.exists()) {
+                boolean success = true;
+                if (file.getParentFile() != null && !file.getParentFile().exists()) {
+                    success = file.getParentFile().mkdirs();
+                }
+                if (!success || file.createNewFile()) {
+                    throw new LabyException("cannot create file");
+                }
+            }
+        } catch (IOException e) {
+            throw new LabyException("cannot create file");
+        }
+    }
+
+    public void writeTasksToFile(List<Task> tasks) throws LabyException {
+        StringBuilder content = new StringBuilder();
+        for (Task task : tasks) {
+            content.append(task.toFileString());
+        }
+
+        try {
+            this.createFile();
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.write(content.toString());
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new LabyException("cannot write to file");
+        }
+    }
+
+    public List<Task> readTasksFromFile() throws LabyException {
+        List<Task> tasks = new ArrayList<>();
+
+        try {
+            this.createFile();
+            File file = new File(filePath);
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String current = scanner.nextLine();
+                String[] parts = current.trim().split("\\|");
+                if (!parts[1].equals("0") && !parts[1].equals("1")) {
+                    throw new LabyException("invalid file format");
+                }
+                boolean isDone = parts[1].equals("1");
+                switch (parts[0]) {
+                    case "T":
+                        tasks.add(new Todo(parts[2], isDone));
+                        break;
+                    case "D":
+                        tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], formatter), isDone));
+                        break;
+                    case "E":
+                        tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], formatter),
+                                LocalDateTime.parse(parts[4], formatter), isDone));
+                        break;
+                    default:
+                        throw new LabyException("invalid file format");
+                }
+            }
+        } catch (IOException e) {
+            throw new LabyException("cannot read from file");
+        } catch (IndexOutOfBoundsException | DateTimeParseException e) {
+            throw new LabyException("invalid file format");
+        }
+
+        return tasks;
+    }
+}

@@ -1,6 +1,3 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,8 +7,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Laby {
-    private static final String filePath = Paths.get("data", "laby.txt").toString();
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final String banner = """
             #       ###   ####   #   #
             #      #   #  #   #   # #
@@ -28,13 +23,29 @@ public class Laby {
     private static final String unmarkMsg = "Understood. Laby has marked the task as not done.\n";
     private static final String addMsg = "Laby has added the task. Make sure to rest, Chief :o\n";
     private static final String deleteMsg = "Laby has deleted the task. Glad to see you resting ;)\n";
-    private static final List<Task> tasks = new ArrayList<>();
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private final List<Task> tasks;
+    private final Storage storage;
 
-    private static void printNumberOfTasks() {
+    public Laby(String filePath) {
+        this.storage = new Storage(filePath);
+        List<Task> tempTasks = new ArrayList<>();
+
+        try {
+            tempTasks = this.storage.readTasksFromFile();
+        } catch (LabyException e) {
+            System.out.print(divider + "System crashing... " + e.getMessage() + "\nUsing new file" + divider);
+            tempTasks = new ArrayList<>();
+        } finally {
+            this.tasks = tempTasks;
+        }
+    }
+
+    private void printNumberOfTasks() {
         System.out.print("There is a total of " + tasks.size() + " task" + (tasks.size() > 1 ? "s" : "") + " in your list.\n" );
     }
 
-    private static void printTasks() {
+    private void printTasks() {
         System.out.print(divider);
         System.out.print(listMsg);
         for (int i = 0; i < tasks.size(); i++) {
@@ -43,46 +54,46 @@ public class Laby {
         System.out.print(divider);
     }
 
-    private static void markTask(String input) throws LabyException {
+    private void markTask(String input) throws LabyException {
         try {
             int taskId = Integer.parseInt(input.substring(5)) - 1;
             tasks.get(taskId).markAsDone();
             System.out.print(divider + markMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
 
-            Laby.writeTasksToFile();
+            this.storage.writeTasksToFile(this.tasks);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
     }
 
-    private static void unmarkTask(String input) throws LabyException {
+    private void unmarkTask(String input) throws LabyException {
         try {
             int taskId = Integer.parseInt(input.substring(7)) - 1;
             tasks.get(taskId).markAsUndone();
             System.out.print(divider + unmarkMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
 
-            Laby.writeTasksToFile();
+            this.storage.writeTasksToFile(this.tasks);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
     }
 
-    private static void deleteTask(String input) throws LabyException {
+    private void deleteTask(String input) throws LabyException {
         try {
             int taskId = Integer.parseInt(input.substring(7)) - 1;
             Task task = tasks.get(taskId);
             tasks.remove(taskId);
             System.out.print(divider + deleteMsg + "  " + task.toString() + "\n");
-            Laby.printNumberOfTasks();
+            this.printNumberOfTasks();
             System.out.print(divider);
 
-            Laby.writeTasksToFile();
+            this.storage.writeTasksToFile(this.tasks);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
     }
 
-    private static void addTodo(String input) throws LabyException {
+    private void addTodo(String input) throws LabyException {
         String description = input.substring(5);
         if (description.trim().isEmpty()) {
             throw new LabyException("task description cannot be empty.");
@@ -90,13 +101,13 @@ public class Laby {
         Task task = new Todo(description);
         tasks.add(task);
         System.out.print(divider + addMsg + "  " + task + "\n");
-        Laby.printNumberOfTasks();
+        this.printNumberOfTasks();
         System.out.print(divider);
 
-        Laby.writeTasksToFile();
+        this.storage.writeTasksToFile(this.tasks);
     }
 
-    private static void addDeadline(String input) throws LabyException {
+    private void addDeadline(String input) throws LabyException {
         try {
             int deadlineIndex = input.indexOf(" /by ");
             if (deadlineIndex == -1) {
@@ -112,16 +123,16 @@ public class Laby {
             Task task = new Deadline(description, deadline);
             tasks.add(task);
             System.out.print(divider + addMsg + "  " + task + "\n");
-            Laby.printNumberOfTasks();
+            this.printNumberOfTasks();
             System.out.print(divider);
 
-            Laby.writeTasksToFile();
+            this.storage.writeTasksToFile(this.tasks);
         } catch (NumberFormatException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm");
         }
     }
 
-    private static void addEvent(String input) throws LabyException {
+    private void addEvent(String input) throws LabyException {
         try {
             int startIndex = input.indexOf(" /from ");
             if (startIndex == -1) {
@@ -144,96 +155,17 @@ public class Laby {
             Task task = new Event(description, startTime, endTime);
             tasks.add(task);
             System.out.print(divider + addMsg + "  " + task + "\n");
-            Laby.printNumberOfTasks();
+            this.printNumberOfTasks();
             System.out.print(divider);
 
-            Laby.writeTasksToFile();
+            this.storage.writeTasksToFile(this.tasks);
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm");
         }
     }
 
-    private static void createFile () throws LabyException {
-        try {
-            File file = new File(filePath);
-
-            if (!file.exists()) {
-                boolean success = true;
-                if (file.getParentFile() != null && !file.getParentFile().exists()) {
-                    success = file.getParentFile().mkdirs();
-                }
-                if (success) {
-                    success = file.createNewFile();
-                }
-                if (!success) {
-                    throw new LabyException("cannot create file");
-                }
-            }
-        } catch (IOException e) {
-            throw new LabyException("cannot create file");
-        }
-    }
-
-    private static void writeTasksToFile() throws LabyException {
-        StringBuilder content = new StringBuilder();
-        for (Task task : tasks) {
-            content.append(task.toFileString());
-        }
-
-        try {
-            Laby.createFile();
-            FileWriter fileWriter = new FileWriter(filePath);
-            fileWriter.write(content.toString());
-            fileWriter.close();
-        } catch (IOException e) {
-            throw new LabyException("cannot write to file");
-        }
-    }
-
-    private static void readTasksFromFile() throws LabyException {
-        try {
-            tasks.clear();
-            Laby.createFile();
-            File file = new File(filePath);
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String current = scanner.nextLine();
-                String[] parts = current.trim().split("\\|");
-                if (!parts[1].equals("0") && !parts[1].equals("1")) {
-                    throw new LabyException("invalid file format");
-                }
-                boolean isDone = parts[1].equals("1");
-                switch (parts[0]) {
-                    case "T":
-                        tasks.add(new Todo(parts[2], isDone));
-                        break;
-                    case "D":
-                        tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], formatter), isDone));
-                        break;
-                    case "E":
-                        tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], formatter),
-                                LocalDateTime.parse(parts[4], formatter), isDone));
-                        break;
-                    default:
-                        throw new LabyException("invalid file format");
-                }
-            }
-        } catch (IOException e) {
-            throw new LabyException("cannot read from file");
-        } catch (IndexOutOfBoundsException | DateTimeParseException e) {
-            throw new LabyException("invalid file format");
-        }
-    }
-
-    static void main(String[] args) {
+    public void run() {
         System.out.print(divider + banner + divider + openMsg + askMsg + divider);
-        try {
-            Laby.readTasksFromFile();
-        } catch (LabyException e) {
-            System.out.print(divider + "System crashing... " + e.getMessage() + "\n" + divider);
-            return;
-        }
-
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
@@ -252,43 +184,43 @@ public class Laby {
                         if (parts.length != 1) {
                             throw new LabyException("please enter a valid command.");
                         }
-                        Laby.printTasks();
+                        this.printTasks();
                         break;
                     case MARK:
                         if (parts.length != 2) {
                             throw new LabyException("please enter a valid task index.");
                         }
-                        Laby.markTask(input);
+                        this.markTask(input);
                         break;
                     case UNMARK:
                         if (parts.length != 2) {
                             throw new LabyException("please enter a valid task index.");
                         }
-                        Laby.unmarkTask(input);
+                        this.unmarkTask(input);
                         break;
                     case DELETE:
                         if (parts.length != 2) {
                             throw new LabyException("please enter a valid task index.");
                         }
-                        Laby.deleteTask(input);
+                        this.deleteTask(input);
                         break;
                     case TODO:
                         if (parts.length != 2) {
                             throw new LabyException("task description cannot be empty.");
                         }
-                        Laby.addTodo(input);
+                        this.addTodo(input);
                         break;
                     case DEADLINE:
                         if (parts.length != 2) {
                             throw new LabyException("task description cannot be empty.");
                         }
-                        Laby.addDeadline(input);
+                        this.addDeadline(input);
                         break;
                     case EVENT:
                         if (parts.length != 2) {
                             throw new LabyException("task description cannot be empty.");
                         }
-                        Laby.addEvent(input);
+                        this.addEvent(input);
                         break;
                     case UNKNOWN:
                         throw new LabyException("please input the correct commands.");
@@ -302,5 +234,9 @@ public class Laby {
                 System.out.print(divider + "System crashing... " + e.getMessage() + "\n" + divider);
             }
         }
+    }
+
+    static void main(String[] args) {
+        new Laby(Paths.get("data", "laby.txt").toString()).run();
     }
 }
