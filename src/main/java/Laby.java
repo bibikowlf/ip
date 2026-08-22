@@ -2,12 +2,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Laby {
     private static final String filePath = Paths.get("data", "laby.txt").toString();
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final String banner = """
             #       ###   ####   #   #
             #      #   #  #   #   # #
@@ -117,37 +121,35 @@ public class Laby {
     }
 
     private static void addEvent(String input) throws LabyException {
-        int startIndex = input.indexOf(" /from ");
-        if (startIndex == -1) {
-            throw new LabyException("please enter a starting time with /from.");
-        } else if (startIndex < 6) {
-            throw new LabyException("task description cannot be empty.");
-        }
-        int endIndex = input.indexOf(" /to ");
-        if (endIndex == -1) {
-            throw new LabyException("please enter an ending time with /to.");
-        } else if (endIndex < startIndex + 7) {
-            throw new LabyException("task starting time cannot be empty.");
-        }
-        String description = input.substring(6, startIndex);
-        if (description.trim().isEmpty()) {
-            throw new LabyException("task description cannot be empty.");
-        }
-        String startTime = input.substring(startIndex + 7, endIndex);
-        if (startTime.trim().isEmpty()) {
-            throw new LabyException("task starting time cannot be empty.");
-        }
-        String endTime = input.substring(endIndex + 5);
-        if (endTime.trim().isEmpty()) {
-            throw new LabyException("task ending time cannot be empty.");
-        }
-        Task task = new Event(description, startTime, endTime);
-        tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task + "\n");
-        Laby.printNumberOfTasks();
-        System.out.print(divider);
+        try {
+            int startIndex = input.indexOf(" /from ");
+            if (startIndex == -1) {
+                throw new LabyException("please enter a starting time with /from.");
+            } else if (startIndex < 6) {
+                throw new LabyException("task description cannot be empty.");
+            }
+            int endIndex = input.indexOf(" /to ");
+            if (endIndex == -1) {
+                throw new LabyException("please enter an ending time with /to.");
+            } else if (endIndex < startIndex + 7) {
+                throw new LabyException("task starting time cannot be empty.");
+            }
+            String description = input.substring(6, startIndex);
+            if (description.trim().isEmpty()) {
+                throw new LabyException("task description cannot be empty.");
+            }
+            LocalDateTime startTime = LocalDateTime.parse(input.substring(startIndex + 7, endIndex), formatter);
+            LocalDateTime endTime = LocalDateTime.parse(input.substring(endIndex + 5), formatter);
+            Task task = new Event(description, startTime, endTime);
+            tasks.add(task);
+            System.out.print(divider + addMsg + "  " + task + "\n");
+            Laby.printNumberOfTasks();
+            System.out.print(divider);
 
-        Laby.writeTasksToFile();
+            Laby.writeTasksToFile();
+        } catch (DateTimeParseException e) {
+            throw new LabyException("time format must be yyyy-MM-dd HH:mm");
+        }
     }
 
     private static void createFile () throws LabyException {
@@ -208,7 +210,8 @@ public class Laby {
                         tasks.add(new Deadline(parts[2], parts[3], isDone));
                         break;
                     case "E":
-                        tasks.add(new Event(parts[2], parts[3], parts[4], isDone));
+                        tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], formatter),
+                                LocalDateTime.parse(parts[4], formatter), isDone));
                         break;
                     default:
                         throw new LabyException("invalid file format");
@@ -216,7 +219,7 @@ public class Laby {
             }
         } catch (IOException e) {
             throw new LabyException("cannot read from file");
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException | DateTimeParseException e) {
             throw new LabyException("invalid file format");
         }
     }
