@@ -34,16 +34,11 @@ public class Storage {
         }
     }
 
-    public void writeTasksToFile(List<Task> tasks) throws LabyException {
-        StringBuilder content = new StringBuilder();
-        for (Task task : tasks) {
-            content.append(task.toFileString());
-        }
-
+    public void writeTasksToFile(TaskList taskList) throws LabyException {
         try {
             this.createFile();
             FileWriter fileWriter = new FileWriter(filePath);
-            fileWriter.write(content.toString());
+            fileWriter.write(taskList.toFileString());
             fileWriter.close();
         } catch (IOException e) {
             throw new LabyException("cannot write to file");

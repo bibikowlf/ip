@@ -35,29 +35,27 @@ public class Ui {
                 + " in your list.\n" + divider);
     }
 
-    public void displayTasks(List<Task> tasks) {
+    public void displayTasks(TaskList taskList) {
         System.out.print(divider);
         System.out.print(listMsg);
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i).toString());
-        }
+        System.out.print(taskList.toString());
         System.out.print(divider);
     }
 
-    public void displayMarkTask(List<Task> tasks, int taskId) {
-        System.out.print(divider + markMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
+    public void displayMarkTask(TaskList taskList, int taskId) {
+        System.out.print(divider + markMsg + "  " + taskList.taskToString(taskId) + "\n" + divider);
     }
 
-    public void displayUnmarkTask(List<Task> tasks, int taskId) {
-        System.out.print(divider + unmarkMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
+    public void displayUnmarkTask(TaskList taskList, int taskId) {
+        System.out.print(divider + unmarkMsg + "  " + taskList.taskToString(taskId) + "\n" + divider);
     }
 
-    public void displayDeleteTask(List<Task> tasks, int taskId) {
-        System.out.print(divider + deleteMsg + "  " + tasks.get(taskId).toString() + "\n");
+    public void displayDeleteTask(TaskList taskList, int taskId) {
+        System.out.print(divider + deleteMsg + "  " + taskList.taskToString(taskId) + "\n");
     }
 
-    public void displayAddTask(List<Task> tasks, int taskId) {
-        System.out.print(divider + addMsg + "  " + tasks.get(taskId).toString() + "\n");
+    public void displayAddTask(TaskList taskList) {
+        System.out.print(divider + addMsg + "  " + taskList.lastTaskToString() + "\n");
     }
 
     public void displayExitMessage() {
