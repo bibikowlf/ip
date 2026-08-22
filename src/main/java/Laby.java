@@ -97,27 +97,28 @@ public class Laby {
     }
 
     private static void addDeadline(String input) throws LabyException {
-        int deadlineIndex = input.indexOf(" /by ");
-        if (deadlineIndex == -1) {
-            throw new LabyException("please enter a deadline with /by.");
-        } else if (deadlineIndex < 9) {
-            throw new LabyException("task description cannot be empty.");
-        }
-        String description = input.substring(9, deadlineIndex);
-        if (description.trim().isEmpty()) {
-            throw new LabyException("task description cannot be empty.");
-        }
-        String deadline = input.substring(deadlineIndex + 5);
-        if (deadline.trim().isEmpty()) {
-            throw new LabyException("task deadline cannot be empty.");
-        }
-        Task task = new Deadline(description, deadline);
-        tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task + "\n");
-        Laby.printNumberOfTasks();
-        System.out.print(divider);
+        try {
+            int deadlineIndex = input.indexOf(" /by ");
+            if (deadlineIndex == -1) {
+                throw new LabyException("please enter a deadline with /by.");
+            } else if (deadlineIndex < 9) {
+                throw new LabyException("task description cannot be empty.");
+            }
+            String description = input.substring(9, deadlineIndex);
+            if (description.trim().isEmpty()) {
+                throw new LabyException("task description cannot be empty.");
+            }
+            LocalDateTime deadline = LocalDateTime.parse(input.substring(deadlineIndex + 5).trim(), formatter);
+            Task task = new Deadline(description, deadline);
+            tasks.add(task);
+            System.out.print(divider + addMsg + "  " + task + "\n");
+            Laby.printNumberOfTasks();
+            System.out.print(divider);
 
-        Laby.writeTasksToFile();
+            Laby.writeTasksToFile();
+        } catch (NumberFormatException e) {
+            throw new LabyException("time format must be yyyy-MM-dd HH:mm");
+        }
     }
 
     private static void addEvent(String input) throws LabyException {
@@ -138,8 +139,8 @@ public class Laby {
             if (description.trim().isEmpty()) {
                 throw new LabyException("task description cannot be empty.");
             }
-            LocalDateTime startTime = LocalDateTime.parse(input.substring(startIndex + 7, endIndex), formatter);
-            LocalDateTime endTime = LocalDateTime.parse(input.substring(endIndex + 5), formatter);
+            LocalDateTime startTime = LocalDateTime.parse(input.substring(startIndex + 7, endIndex).trim(), formatter);
+            LocalDateTime endTime = LocalDateTime.parse(input.substring(endIndex + 5).trim(), formatter);
             Task task = new Event(description, startTime, endTime);
             tasks.add(task);
             System.out.print(divider + addMsg + "  " + task + "\n");
@@ -207,7 +208,7 @@ public class Laby {
                         tasks.add(new Todo(parts[2], isDone));
                         break;
                     case "D":
-                        tasks.add(new Deadline(parts[2], parts[3], isDone));
+                        tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], formatter), isDone));
                         break;
                     case "E":
                         tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], formatter),
