@@ -7,59 +7,31 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Laby {
-    private static final String banner = """
-            #       ###   ####   #   #
-            #      #   #  #   #   # #
-            #      #####  ####     #
-            #      #   #  #   #    #
-            #####  #   #  ####     #
-            """;
-    private static final String divider = "____________________________________________________________\n\n";
-    private static final String openMsg = "Hello Chief. Laby is your personal assistant.\n";
-    private static final String askMsg =  "What orders do you have today?\n";
-    private static final String exitMsg = "Goodbye. Switching to rest mode.\n";
-    private static final String listMsg = "Here are the tasks in your list:\n";
-    private static final String markMsg = "Understood. Laby has marked the task as done.\n";
-    private static final String unmarkMsg = "Understood. Laby has marked the task as not done.\n";
-    private static final String addMsg = "Laby has added the task. Make sure to rest, Chief :o\n";
-    private static final String deleteMsg = "Laby has deleted the task. Glad to see you resting ;)\n";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final List<Task> tasks;
     private final Storage storage;
+    private final Ui ui;
 
     public Laby(String filePath) {
         this.storage = new Storage(filePath);
+        this.ui = new Ui();
         List<Task> tempTasks = new ArrayList<>();
 
         try {
             tempTasks = this.storage.readTasksFromFile();
         } catch (LabyException e) {
-            System.out.print(divider + "System crashing... " + e.getMessage() + "\nUsing new file" + divider);
+            this.ui.displayReadFileError(e);
             tempTasks = new ArrayList<>();
         } finally {
             this.tasks = tempTasks;
         }
     }
 
-    private void printNumberOfTasks() {
-        System.out.print("There is a total of " + tasks.size() + " task" + (tasks.size() > 1 ? "s" : "") + " in your list.\n" );
-    }
-
-    private void printTasks() {
-        System.out.print(divider);
-        System.out.print(listMsg);
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i).toString());
-        }
-        System.out.print(divider);
-    }
-
     private void markTask(String input) throws LabyException {
         try {
             int taskId = Integer.parseInt(input.substring(5)) - 1;
-            tasks.get(taskId).markAsDone();
-            System.out.print(divider + markMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
-
+            this.tasks.get(taskId).markAsDone();
+            this.ui.displayMarkTask(this.tasks, taskId);
             this.storage.writeTasksToFile(this.tasks);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
@@ -69,9 +41,8 @@ public class Laby {
     private void unmarkTask(String input) throws LabyException {
         try {
             int taskId = Integer.parseInt(input.substring(7)) - 1;
-            tasks.get(taskId).markAsUndone();
-            System.out.print(divider + unmarkMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
-
+            this.tasks.get(taskId).markAsUndone();
+            this.ui.displayUnmarkTask(this.tasks, taskId);
             this.storage.writeTasksToFile(this.tasks);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
@@ -81,12 +52,9 @@ public class Laby {
     private void deleteTask(String input) throws LabyException {
         try {
             int taskId = Integer.parseInt(input.substring(7)) - 1;
-            Task task = tasks.get(taskId);
-            tasks.remove(taskId);
-            System.out.print(divider + deleteMsg + "  " + task.toString() + "\n");
-            this.printNumberOfTasks();
-            System.out.print(divider);
-
+            this.tasks.remove(taskId);
+            this.ui.displayDeleteTask(this.tasks, taskId);
+            this.ui.displayNumberOfTasks(this.tasks.size());
             this.storage.writeTasksToFile(this.tasks);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
@@ -99,11 +67,9 @@ public class Laby {
             throw new LabyException("task description cannot be empty.");
         }
         Task task = new Todo(description);
-        tasks.add(task);
-        System.out.print(divider + addMsg + "  " + task + "\n");
-        this.printNumberOfTasks();
-        System.out.print(divider);
-
+        this.tasks.add(task);
+        this.ui.displayAddTask(this.tasks, this.tasks.size() - 1);
+        this.ui.displayNumberOfTasks(this.tasks.size());
         this.storage.writeTasksToFile(this.tasks);
     }
 
@@ -121,11 +87,9 @@ public class Laby {
             }
             LocalDateTime deadline = LocalDateTime.parse(input.substring(deadlineIndex + 5).trim(), formatter);
             Task task = new Deadline(description, deadline);
-            tasks.add(task);
-            System.out.print(divider + addMsg + "  " + task + "\n");
-            this.printNumberOfTasks();
-            System.out.print(divider);
-
+            this.tasks.add(task);
+            this.ui.displayAddTask(this.tasks, this.tasks.size() - 1);
+            this.ui.displayNumberOfTasks(this.tasks.size());
             this.storage.writeTasksToFile(this.tasks);
         } catch (NumberFormatException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm");
@@ -153,11 +117,9 @@ public class Laby {
             LocalDateTime startTime = LocalDateTime.parse(input.substring(startIndex + 7, endIndex).trim(), formatter);
             LocalDateTime endTime = LocalDateTime.parse(input.substring(endIndex + 5).trim(), formatter);
             Task task = new Event(description, startTime, endTime);
-            tasks.add(task);
-            System.out.print(divider + addMsg + "  " + task + "\n");
-            this.printNumberOfTasks();
-            System.out.print(divider);
-
+            this.tasks.add(task);
+            this.ui.displayAddTask(this.tasks, this.tasks.size() - 1);
+            this.ui.displayNumberOfTasks(this.tasks.size());
             this.storage.writeTasksToFile(this.tasks);
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm");
@@ -165,7 +127,7 @@ public class Laby {
     }
 
     public void run() {
-        System.out.print(divider + banner + divider + openMsg + askMsg + divider);
+        this.ui.displayWelcomeBanner();
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
@@ -178,13 +140,13 @@ public class Laby {
                         if (parts.length != 1) {
                             throw new LabyException("please enter a valid command.");
                         }
-                        System.out.print(divider + exitMsg + divider);
+                        this.ui.displayExitMessage();
                         break;
                     case LIST:
                         if (parts.length != 1) {
                             throw new LabyException("please enter a valid command.");
                         }
-                        this.printTasks();
+                        this.ui.displayTasks(this.tasks);
                         break;
                     case MARK:
                         if (parts.length != 2) {
@@ -231,7 +193,7 @@ public class Laby {
                     break;
                 }
             } catch (LabyException e) {
-                System.out.print(divider + "System crashing... " + e.getMessage() + "\n" + divider);
+                this.ui.displayError(e);
             }
         }
     }
