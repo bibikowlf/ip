@@ -19,4 +19,8 @@ public class Task {
     public void markAsUndone() {
         this.done = false;
     }
+
+    public String toFileString(){
+        return (this.done ? "1|" : "0|") + this.description;
+    }
 }

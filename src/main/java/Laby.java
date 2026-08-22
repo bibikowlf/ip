@@ -1,8 +1,11 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Laby {
+    private static final String filePath = "./data/laby.txt";
     private static final String banner = """
             #       ###   ####   #   #
             #      #   #  #   #   # #
@@ -39,6 +42,8 @@ public class Laby {
             int taskId = Integer.parseInt(input.substring(5)) - 1;
             tasks.get(taskId).markAsDone();
             System.out.print(divider + markMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
+
+            Laby.writeTasksToFile();
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
@@ -49,6 +54,8 @@ public class Laby {
             int taskId = Integer.parseInt(input.substring(7)) - 1;
             tasks.get(taskId).markAsUndone();
             System.out.print(divider + unmarkMsg + "  " + tasks.get(taskId).toString() + "\n" + divider);
+
+            Laby.writeTasksToFile();
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
@@ -62,6 +69,8 @@ public class Laby {
             System.out.print(divider + deleteMsg + "  " + task.toString() + "\n");
             Laby.printNumberOfTasks();
             System.out.print(divider);
+
+            Laby.writeTasksToFile();
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
@@ -77,6 +86,8 @@ public class Laby {
         System.out.print(divider + addMsg + "  " + task + "\n");
         Laby.printNumberOfTasks();
         System.out.print(divider);
+
+        Laby.writeTasksToFile();
     }
 
     private static void addDeadline(String input) throws LabyException {
@@ -99,6 +110,8 @@ public class Laby {
         System.out.print(divider + addMsg + "  " + task + "\n");
         Laby.printNumberOfTasks();
         System.out.print(divider);
+
+        Laby.writeTasksToFile();
     }
 
     private static void addEvent(String input) throws LabyException {
@@ -131,6 +144,23 @@ public class Laby {
         System.out.print(divider + addMsg + "  " + task + "\n");
         Laby.printNumberOfTasks();
         System.out.print(divider);
+
+        Laby.writeTasksToFile();
+    }
+
+    private static void writeTasksToFile() throws LabyException {
+        StringBuilder content = new StringBuilder();
+        for (Task task : tasks) {
+            content.append(task.toFileString());
+        }
+
+        try {
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.write(content.toString());
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new LabyException("cannot write to file");
+        }
     }
 
     static void main(String[] args) {
