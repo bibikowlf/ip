@@ -19,7 +19,7 @@ public class Ui {
     private static final String deleteMsg = "Laby has deleted the task. Glad to see you resting ;)\n";
 
     public void displayReadFileError(LabyException labyException) {
-        System.out.print(divider + "System crashing... " + labyException.getMessage() + "\nUsing new file" + divider);
+        System.out.print(divider + "System crashing... " + labyException.getMessage() + "\nUsing new file..." + divider);
     }
 
     public void displayError(LabyException labyException) {
