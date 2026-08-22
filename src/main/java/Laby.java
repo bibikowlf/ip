@@ -6,18 +6,16 @@ import java.util.Scanner;
 
 public class Laby {
     private final Storage storage;
-    private final Ui ui;
     private final TaskList taskList;
 
     public Laby(String filePath) {
         this.storage = new Storage(filePath);
-        this.ui = new Ui();
         List<Task> tempTasks = new ArrayList<>();
 
         try {
             tempTasks = this.storage.readTasksFromFile();
         } catch (LabyException e) {
-            this.ui.displayReadFileError(e);
+            Ui.displayReadFileError(e);
             tempTasks = new ArrayList<>();
         } finally {
             this.taskList = new TaskList(tempTasks);
@@ -26,46 +24,46 @@ public class Laby {
 
     private void markTask(int taskId) throws LabyException {
         this.taskList.markTask(taskId);
-        this.ui.displayMarkTask(this.taskList, taskId);
+        Ui.displayMarkTask(this.taskList, taskId);
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void unmarkTask(int taskId) throws LabyException {
         this.taskList.unmarkTask(taskId);
-        this.ui.displayUnmarkTask(this.taskList, taskId);
+        Ui.displayUnmarkTask(this.taskList, taskId);
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void deleteTask(int taskId) throws LabyException {
         this.taskList.deleteTask(taskId);
-        this.ui.displayDeleteTask(this.taskList, taskId);
-        this.ui.displayNumberOfTasks(this.taskList.size());
+        Ui.displayDeleteTask(this.taskList, taskId);
+        Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addTodo(String description) throws LabyException {
         this.taskList.addTodo(description);
-        this.ui.displayAddTask(this.taskList);
-        this.ui.displayNumberOfTasks(this.taskList.size());
+        Ui.displayAddTask(this.taskList);
+        Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addDeadline(String description, LocalDateTime deadline) throws LabyException {
         this.taskList.addDeadline(description, deadline);
-        this.ui.displayAddTask(this.taskList);
-        this.ui.displayNumberOfTasks(this.taskList.size());
+        Ui.displayAddTask(this.taskList);
+        Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addEvent(String description, LocalDateTime startTime, LocalDateTime endTime) throws LabyException {
         this.taskList.addEvent(description, startTime, endTime);
-        this.ui.displayAddTask(this.taskList);
-        this.ui.displayNumberOfTasks(this.taskList.size());
+        Ui.displayAddTask(this.taskList);
+        Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     public void run() {
-        this.ui.displayWelcomeBanner();
+        Ui.displayWelcomeBanner();
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
@@ -73,10 +71,11 @@ public class Laby {
                 Command command = Parser.parseInput(input);
                 switch (command.getCommandType()) {
                     case BYE:
-                        this.ui.displayExitMessage();
+                        Ui.displayExitMessage();
+                        System.exit(0);
                         break;
                     case LIST:
-                        this.ui.displayTasks(this.taskList);
+                        Ui.displayTasks(this.taskList);
                         break;
                     case MARK:
                         this.markTask(command.getId());
@@ -97,11 +96,8 @@ public class Laby {
                         this.addEvent(command.getDescription(), command.getFirstTime(), command.getSecondTime());
                         break;
                 }
-                if (command.getCommandType() == CommandType.BYE) {
-                    break;
-                }
             } catch (LabyException e) {
-                this.ui.displayError(e);
+                Ui.displayError(e);
             }
         }
     }
