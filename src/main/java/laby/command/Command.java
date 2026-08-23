@@ -1,3 +1,5 @@
+package laby.command;
+
 import java.time.LocalDateTime;
 
 public class Command {

@@ -1,6 +1,4 @@
-/**
- * Represents an error caused by invalid Laby command input.
- */
+package laby;
 
 public class LabyException extends Exception {
     public LabyException(String message){

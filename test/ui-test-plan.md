@@ -2,7 +2,7 @@
 
 ## Program command
 
-java -cp out\production\ip Laby
+java -cp out\production\ip laby.Laby
 
 ## Timeout seconds
 
@@ -12,7 +12,7 @@ java -cp out\production\ip Laby
 
 ### Aim
 
-Verify that Laby shows its welcome text and exits politely.
+Verify that laby.Laby shows its welcome text and exits politely.
 
 ### Inputs
 
@@ -32,7 +32,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. Laby is your personal assistant.
+Hello Chief. laby.Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
@@ -70,27 +70,27 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. Laby is your personal assistant.
+Hello Chief. laby.Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
 ____________________________________________________________
 
-Laby has added the task. Make sure to rest, Chief :o
+laby.Laby has added the task. Make sure to rest, Chief :o
   [T][ ] borrow book
 There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-Laby has added the task. Make sure to rest, Chief :o
+laby.Laby has added the task. Make sure to rest, Chief :o
   [D][ ] return book (by: Sunday)
 There is a total of 2 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-Laby has added the task. Make sure to rest, Chief :o
+laby.Laby has added the task. Make sure to rest, Chief :o
   [E][ ] project meeting (from: Mon 2pm to: 4pm)
 There is a total of 3 tasks in your list.
 ____________________________________________________________
@@ -136,26 +136,26 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. Laby is your personal assistant.
+Hello Chief. laby.Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
 ____________________________________________________________
 
-Laby has added the task. Make sure to rest, Chief :o
+laby.Laby has added the task. Make sure to rest, Chief :o
   [T][ ] read book
 There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-Understood. Laby has marked the task as done.
+Understood. laby.Laby has marked the task as done.
   [T][X] read book
 ____________________________________________________________
 
 ____________________________________________________________
 
-Understood. Laby has marked the task as not done.
+Understood. laby.Laby has marked the task as not done.
   [T][ ] read book
 ____________________________________________________________
 
@@ -169,7 +169,7 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that Laby reports a validation error when a task description or task index is omitted.
+Verify that laby.Laby reports a validation error when a task description or task index is omitted.
 
 ### Inputs
 
@@ -193,7 +193,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. Laby is your personal assistant.
+Hello Chief. laby.Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
@@ -227,7 +227,7 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that Laby removes the selected task, reports the remaining count, and renumbers the list.
+Verify that laby.Laby removes the selected task, reports the remaining count, and renumbers the list.
 
 ### Inputs
 
@@ -253,40 +253,40 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. Laby is your personal assistant.
+Hello Chief. laby.Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
 ____________________________________________________________
 
-Laby has added the task. Make sure to rest, Chief :o
+laby.Laby has added the task. Make sure to rest, Chief :o
   [T][ ] read book
 There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-Laby has added the task. Make sure to rest, Chief :o
+laby.Laby has added the task. Make sure to rest, Chief :o
   [D][ ] return book (by: Sunday)
 There is a total of 2 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-Laby has added the task. Make sure to rest, Chief :o
+laby.Laby has added the task. Make sure to rest, Chief :o
   [E][ ] project meeting (from: Mon 2pm to: 4pm)
 There is a total of 3 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-Understood. Laby has marked the task as done.
+Understood. laby.Laby has marked the task as done.
   [E][X] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 
 ____________________________________________________________
 
-Laby has deleted the task. Glad to see you resting ;)
+laby.Laby has deleted the task. Glad to see you resting ;)
   [E][X] project meeting (from: Mon 2pm to: 4pm)
 There is a total of 2 tasks in your list.
 ____________________________________________________________
@@ -308,7 +308,7 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that Laby rejects deadlines with a missing description, `/by` marker, or deadline value.
+Verify that laby.Laby rejects deadlines with a missing description, `/by` marker, or deadline value.
 
 ### Inputs
 
@@ -332,7 +332,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. Laby is your personal assistant.
+Hello Chief. laby.Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
@@ -366,7 +366,7 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that Laby rejects events with missing markers or empty descriptions, starting times, and ending times.
+Verify that laby.Laby rejects events with missing markers or empty descriptions, starting times, and ending times.
 
 ### Inputs
 
@@ -392,7 +392,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. Laby is your personal assistant.
+Hello Chief. laby.Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
@@ -436,7 +436,7 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that Laby rejects an empty command, an unknown command, non-numeric indices, and out-of-range indices.
+Verify that laby.Laby rejects an empty command, an unknown command, non-numeric indices, and out-of-range indices.
 
 ### Inputs
 
@@ -463,7 +463,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. Laby is your personal assistant.
+Hello Chief. laby.Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 

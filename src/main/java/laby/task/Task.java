@@ -1,3 +1,5 @@
+package laby.task;
+
 public class Task {
     private final String description;
     private boolean done;

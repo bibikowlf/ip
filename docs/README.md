@@ -1,4 +1,4 @@
-# Laby User Guide
+# laby.Laby User Guide
 
 // Update the title above to match the actual product name
 

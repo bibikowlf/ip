@@ -1,3 +1,7 @@
+package laby;
+
+import laby.task.TaskList;
+
 public class Ui {
     private static final String banner = """
             #       ###   ####   #   #
@@ -7,14 +11,14 @@ public class Ui {
             #####  #   #  ####     #
             """;
     private static final String divider = "____________________________________________________________\n\n";
-    private static final String openMsg = "Hello Chief. Laby is your personal assistant.\n";
+    private static final String openMsg = "Hello Chief. laby.Laby is your personal assistant.\n";
     private static final String askMsg =  "What orders do you have today?\n";
     private static final String exitMsg = "Goodbye. Switching to rest mode.\n";
     private static final String listMsg = "Here are the tasks in your list:\n";
-    private static final String markMsg = "Understood. Laby has marked the task as done.\n";
-    private static final String unmarkMsg = "Understood. Laby has marked the task as not done.\n";
-    private static final String addMsg = "Laby has added the task. Make sure to rest, Chief :o\n";
-    private static final String deleteMsg = "Laby has deleted the task. Glad to see you resting ;)\n";
+    private static final String markMsg = "Understood. laby.Laby has marked the task as done.\n";
+    private static final String unmarkMsg = "Understood. laby.Laby has marked the task as not done.\n";
+    private static final String addMsg = "laby.Laby has added the task. Make sure to rest, Chief :o\n";
+    private static final String deleteMsg = "laby.Laby has deleted the task. Glad to see you resting ;)\n";
 
     public static void displayReadFileError(LabyException labyException) {
         System.out.print(divider + "System crashing... " + labyException.getMessage() + "\nUsing new file..." + divider);
