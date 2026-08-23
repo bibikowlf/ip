@@ -30,4 +30,8 @@ public class Task {
     public String toFileString(){
         return (this.done ? "1|" : "0|") + this.description;
     }
+
+    public String getDescription() {
+        return this.description;
+    }
 }

@@ -80,4 +80,23 @@ public class TaskList {
         }
         return result.toString();
     }
+
+    /**
+     * Returns a string of tasks that match the input.
+     *
+     * @param input Input tasks are filtered on.
+     * @return String of tasks.
+     */
+    public String filterTasks(String input) {
+        input = input.toLowerCase().trim();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < this.tasks.size(); i++) {
+            Task task = this.tasks.get(i);
+
+            if (task.getDescription().toLowerCase().contains(input)) {
+                result.append((i + 1)).append(".").append(task.toString()).append("\n");
+            }
+        }
+        return result.toString();
+    }
 }

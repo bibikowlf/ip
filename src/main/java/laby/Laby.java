@@ -62,6 +62,15 @@ public class Laby {
         this.storage.writeTasksToFile(this.taskList);
     }
 
+    /**
+     * Filters tasks based on input.
+     *
+     * @param input Input which tasks are filtered by.
+     */
+    private void filterTasks(String input) {
+        Ui.displayFilteredTasks(this.taskList, input);
+    }
+
     public void run() {
         Ui.displayWelcomeBanner();
         Scanner scanner = new Scanner(System.in);
