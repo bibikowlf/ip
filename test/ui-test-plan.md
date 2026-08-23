@@ -2,7 +2,7 @@
 
 ## Program command
 
-java -cp out\production\ip laby.Laby
+java -cp build\classes\java\main laby.Laby
 
 ## Timeout seconds
 
@@ -101,6 +101,72 @@ Here are the tasks in your list:
 1.[T][ ] borrow book
 2.[D][ ] return book (by: Sunday)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+
+____________________________________________________________
+
+Goodbye. Switching to rest mode.
+____________________________________________________________
+```
+
+## Test case: Find tasks by description keyword
+
+### Aim
+
+Verify that `find` displays every task whose description contains the keyword, ignores keyword case, and retains the original task numbers.
+
+### Inputs
+
+```text
+todo read book
+todo write notes
+deadline return book /by 2026-08-24 12:00
+find BOOK
+bye
+```
+
+### Expected output
+
+```text
+____________________________________________________________
+
+#       ###   ####   #   #
+#      #   #  #   #   # #
+#      #####  ####     #
+#      #   #  #   #    #
+#####  #   #  ####     #
+____________________________________________________________
+
+Hello Chief. laby.Laby is your personal assistant.
+What orders do you have today?
+____________________________________________________________
+
+____________________________________________________________
+
+laby.Laby has added the task. Make sure to rest, Chief :o
+  [T][ ] read book
+There is a total of 1 task in your list.
+____________________________________________________________
+
+____________________________________________________________
+
+laby.Laby has added the task. Make sure to rest, Chief :o
+  [T][ ] write notes
+There is a total of 2 tasks in your list.
+____________________________________________________________
+
+____________________________________________________________
+
+laby.Laby has added the task. Make sure to rest, Chief :o
+  [D][ ] return book (by: Aug 24 2026 12:00)
+There is a total of 3 tasks in your list.
+____________________________________________________________
+
+____________________________________________________________
+
+Here are the matching tasks in your list:
+1.[T][ ] read book
+3.[D][ ] return book (by: Aug 24 2026 12:00)
 ____________________________________________________________
 
 ____________________________________________________________
