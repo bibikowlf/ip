@@ -16,14 +16,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/** Reads tasks from and writes tasks to the application's data file. */
 public class Storage {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final String filePath;
 
+    /**
+     * Creates storage backed by the file at {@code filePath}.
+     *
+     * @param filePath Path of the task data file.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Creates the data file and its parent directories when they do not exist.
+     *
+     * @throws LabyException If the file or its parent directories cannot be created.
+     */
     private void createFile () throws LabyException {
         try {
             File file = new File(filePath);
@@ -42,6 +53,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Persists every task in the supplied task list.
+     *
+     * @param taskList Task list to persist.
+     * @throws LabyException If the data file cannot be created or written.
+     */
     public void writeTasksToFile(TaskList taskList) throws LabyException {
         try {
             this.createFile();
@@ -53,6 +70,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads all persisted tasks, validating their stored format.
+     *
+     * @return Tasks loaded from the data file.
+     * @throws LabyException If the data file cannot be read or has invalid content.
+     */
     public List<Task> readTasksFromFile() throws LabyException {
         List<Task> tasks = new ArrayList<>();
 
