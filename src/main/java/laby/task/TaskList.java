@@ -19,7 +19,7 @@ public class TaskList {
     public String markTask(int index) throws LabyException {
         try {
             Task task = this.tasks.get(index);
-            task.markAsDone();
+            task.setDone(true);
             return task.toString();
         } catch (IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
@@ -29,7 +29,7 @@ public class TaskList {
     public String unmarkTask(int index) throws LabyException {
         try {
             Task task = this.tasks.get(index);
-            task.markAsUndone();
+            task.setDone(false);
             return task.toString();
         } catch (IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");

@@ -25,7 +25,7 @@ class StorageTest {
     void readTasksFromFile_missingFile_createsEmptyFile(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("nested").resolve("laby.txt");
 
-        List<Task> tasks = new Storage(file.toString()).readTasksFromFile();
+        List<Task> tasks = new Storage(file.toString()).readFile();
 
         assertEquals(0, tasks.size());
         assertFalse(Files.notExists(file));
@@ -42,8 +42,8 @@ class StorageTest {
         taskList.markTask(0);
 
         Storage storage = new Storage(file.toString());
-        storage.writeTasksToFile(taskList);
-        List<Task> tasks = storage.readTasksFromFile();
+        storage.writeFile(taskList);
+        List<Task> tasks = storage.readFile();
 
         assertEquals(3, tasks.size());
         assertEquals("[T][X] read book", tasks.get(0).toString());
@@ -58,7 +58,7 @@ class StorageTest {
         Files.writeString(file, "X|0|unknown\n");
 
         LabyException exception = assertThrows(LabyException.class,
-                () -> new Storage(file.toString()).readTasksFromFile());
+                () -> new Storage(file.toString()).readFile());
 
         assertEquals("invalid file format", exception.getMessage());
     }
@@ -69,7 +69,7 @@ class StorageTest {
         Files.writeString(file, "T|2|read book\n");
 
         LabyException exception = assertThrows(LabyException.class,
-                () -> new Storage(file.toString()).readTasksFromFile());
+                () -> new Storage(file.toString()).readFile());
 
         assertEquals("invalid file format", exception.getMessage());
     }
@@ -80,7 +80,7 @@ class StorageTest {
         Files.writeString(file, "D|0|return book\n");
 
         LabyException exception = assertThrows(LabyException.class,
-                () -> new Storage(file.toString()).readTasksFromFile());
+                () -> new Storage(file.toString()).readFile());
 
         assertEquals("invalid file format", exception.getMessage());
     }

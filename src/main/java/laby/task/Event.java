@@ -22,12 +22,14 @@ public class Event extends Task {
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy HH:mm");
-        return "[E]" + super.toString() + " (from: " + this.startTime.format(formatter) + " to: " + this.endTime.format(formatter) + ")";
+        return "[E]" + super.toString() + " (from: " + this.startTime.format(formatter)
+                + " to: " + this.endTime.format(formatter) + ")";
     }
 
     @Override
     public String toFileString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return "E|" + super.toFileString() + "|" + this.startTime.format(formatter) + "|" + this.endTime.format(formatter) + "\n";
+        return "E|" + super.toFileString() + "|" + this.startTime.format(formatter)
+                + "|" + this.endTime.format(formatter) + "\n";
     }
 }

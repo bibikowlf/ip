@@ -19,7 +19,7 @@ public class Laby {
         List<Task> tempTasks = new ArrayList<>();
 
         try {
-            tempTasks = this.storage.readTasksFromFile();
+            tempTasks = this.storage.readFile();
         } catch (LabyException e) {
             Ui.displayReadFileError(e);
             tempTasks = new ArrayList<>();
@@ -30,43 +30,45 @@ public class Laby {
 
     private void markTask(int taskId) throws LabyException {
         Ui.displayMarkTask(this.taskList.markTask(taskId));
-        this.storage.writeTasksToFile(this.taskList);
+        this.storage.writeFile(this.taskList);
     }
 
     private void unmarkTask(int taskId) throws LabyException {
         Ui.displayUnmarkTask(this.taskList.unmarkTask(taskId));
-        this.storage.writeTasksToFile(this.taskList);
+        this.storage.writeFile(this.taskList);
     }
 
     private void deleteTask(int taskId) throws LabyException {
         Ui.displayDeleteTask(this.taskList.deleteTask(taskId));
         Ui.displayNumberOfTasks(this.taskList.size());
-        this.storage.writeTasksToFile(this.taskList);
+        this.storage.writeFile(this.taskList);
     }
 
     private void addTodo(String description) throws LabyException {
         Ui.displayAddTask(this.taskList.addTodo(description));
         Ui.displayNumberOfTasks(this.taskList.size());
-        this.storage.writeTasksToFile(this.taskList);
+        this.storage.writeFile(this.taskList);
     }
 
     private void addDeadline(String description, LocalDateTime deadline) throws LabyException {
         Ui.displayAddTask(this.taskList.addDeadline(description, deadline));
         Ui.displayNumberOfTasks(this.taskList.size());
-        this.storage.writeTasksToFile(this.taskList);
+        this.storage.writeFile(this.taskList);
     }
 
     private void addEvent(String description, LocalDateTime startTime, LocalDateTime endTime) throws LabyException {
         Ui.displayAddTask(this.taskList.addEvent(description, startTime, endTime));
         Ui.displayNumberOfTasks(this.taskList.size());
-        this.storage.writeTasksToFile(this.taskList);
+        this.storage.writeFile(this.taskList);
     }
 
     public void run() {
         Ui.displayWelcomeBanner();
         Scanner scanner = new Scanner(System.in);
+
         while (true) {
             String input = scanner.nextLine();
+
             try {
                 Command command = Parser.parseInput(input);
                 switch (command.getCommandType()) {
