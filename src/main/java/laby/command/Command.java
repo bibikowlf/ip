@@ -19,7 +19,8 @@ public class Command {
      * @param firstTime First time argument, if applicable.
      * @param secondTime Second time argument, if applicable.
      */
-    public Command(CommandType commandType, int id, String description, LocalDateTime firstTime, LocalDateTime secondTime) {
+    public Command(CommandType commandType, int id, String description,
+                   LocalDateTime firstTime, LocalDateTime secondTime) {
         this.commandType = commandType;
         this.id = id;
         this.description = description;

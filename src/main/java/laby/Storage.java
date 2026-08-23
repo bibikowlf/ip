@@ -35,7 +35,7 @@ public class Storage {
      *
      * @throws LabyException If the file or its parent directories cannot be created.
      */
-    private void createFile () throws LabyException {
+    private void createFile() throws LabyException {
         try {
             File file = new File(filePath);
 
@@ -59,9 +59,10 @@ public class Storage {
      * @param taskList Task list to persist.
      * @throws LabyException If the data file cannot be created or written.
      */
-    public void writeTasksToFile(TaskList taskList) throws LabyException {
+    public void writeFile(TaskList taskList) throws LabyException {
         try {
             this.createFile();
+
             try (FileWriter fileWriter = new FileWriter(filePath)) {
                 fileWriter.write(taskList.toFileString());
             }
@@ -76,12 +77,13 @@ public class Storage {
      * @return Tasks loaded from the data file.
      * @throws LabyException If the data file cannot be read or has invalid content.
      */
-    public List<Task> readTasksFromFile() throws LabyException {
+    public List<Task> readFile() throws LabyException {
         List<Task> tasks = new ArrayList<>();
 
         try {
             this.createFile();
             File file = new File(filePath);
+
             try (Scanner scanner = new Scanner(file)) {
                 while (scanner.hasNextLine()) {
                     String current = scanner.nextLine();
@@ -89,6 +91,7 @@ public class Storage {
                     if (!parts[1].equals("0") && !parts[1].equals("1")) {
                         throw new LabyException("invalid file format");
                     }
+
                     boolean isDone = parts[1].equals("1");
                     switch (parts[0]) {
                         case "T":

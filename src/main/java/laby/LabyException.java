@@ -7,7 +7,7 @@ public class LabyException extends Exception {
      *
      * @param message Error message to expose to the user.
      */
-    public LabyException(String message){
+    public LabyException(String message) {
         super(message);
     }
 }

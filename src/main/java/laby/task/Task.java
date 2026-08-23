@@ -3,7 +3,7 @@ package laby.task;
 /** Represents a task description and whether the task is complete. */
 public class Task {
     private final String description;
-    private boolean done;
+    private boolean isDone;
 
     /**
      * Creates an incomplete task with the given description.
@@ -12,18 +12,18 @@ public class Task {
      */
     public Task(String description) {
         this.description = description;
-        this.done = false;
+        this.isDone = false;
     }
 
     /**
      * Creates a task with the given description and completion state.
      *
      * @param description Description of the task.
-     * @param done Whether the task is complete.
+     * @param isDone Whether the task is complete.
      */
-    public Task(String description, Boolean done) {
+    public Task(String description, boolean isDone) {
         this.description = description;
-        this.done = done;
+        this.isDone = isDone;
     }
 
     /**
@@ -31,21 +31,16 @@ public class Task {
      */
     @Override
     public String toString() {
-        return "[" + (this.done ? "X" : " ") + "] " + this.description;
+        return "[" + (this.isDone ? "X" : " ") + "] " + this.description;
     }
 
     /**
-     * Marks this task as complete.
+     * Sets the task's isDone.
+     *
+     * @param isDone Whether the task is done.
      */
-    public void markAsDone() {
-        this.done = true;
-    }
-
-    /**
-     * Marks this task as incomplete.
-     */
-    public void markAsUndone() {
-        this.done = false;
+    public void setDone(boolean isDone) {
+        this.isDone = isDone;
     }
 
     /**
@@ -53,8 +48,8 @@ public class Task {
      *
      * @return Serialized representation of the task.
      */
-    public String toFileString(){
-        return (this.done ? "1|" : "0|") + this.description;
+    public String toFileString() {
+        return (this.isDone ? "1|" : "0|") + this.description;
     }
 
     public String getDescription() {
