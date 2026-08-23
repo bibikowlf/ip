@@ -24,7 +24,7 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 ## JavaDoc coverage
 
-All production classes and public methods must have JavaDoc header comments. Non-trivial private methods must also have header comments. Getters and setters may omit JavaDoc, and comments may be omitted for overridden methods when the parent method's JavaDoc applies exactly as written. Use the project's established JavaDoc format, including a concise third-person summary and relevant `@param`, `@return`, and `@throws` tags.
+All production classes and public methods must have JavaDoc header comments. Non-trivial private methods must also have header comments. Methods whose names start with `get` or `set` are getters or setters and do not require JavaDoc headers. Comments may also be omitted for overridden methods when the parent method's JavaDoc applies exactly as written. Use the project's established JavaDoc format, including a concise third-person summary and relevant `@param`, `@return`, and `@throws` tags.
 
 After every code change, review the affected classes and methods and update their JavaDoc headers so this coverage target remains satisfied. JavaDoc-only changes do not require updates to the console UI test plan, but code changes must still follow the usual UI and JUnit verification requirements below.
 
