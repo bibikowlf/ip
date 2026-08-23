@@ -68,7 +68,7 @@ public class TaskList {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
-            result.append((i + 1)).append(".").append(this.tasks.get(i).toString()).append("\n");
+            result.append((i + 1)).append(".").append(this.tasks.get(i)).append("\n");
         }
         return result.toString();
     }
@@ -94,7 +94,7 @@ public class TaskList {
             Task task = this.tasks.get(i);
 
             if (task.getDescription().toLowerCase().contains(input)) {
-                result.append((i + 1)).append(".").append(task.toString()).append("\n");
+                result.append((i + 1)).append(".").append(task).append("\n");
             }
         }
         return result.toString();

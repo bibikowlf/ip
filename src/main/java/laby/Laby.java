@@ -104,6 +104,9 @@ public class Laby {
                     case EVENT:
                         this.addEvent(command.getDescription(), command.getFirstTime(), command.getSecondTime());
                         break;
+                    case FIND:
+                        this.filterTasks(command.getDescription());
+                        break;
                 }
             } catch (LabyException e) {
                 Ui.displayError(e);

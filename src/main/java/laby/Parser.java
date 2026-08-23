@@ -20,6 +20,7 @@ public class Parser {
             case TODO -> parseTodo(parts);
             case DEADLINE -> parseDeadline(parts);
             case EVENT -> parseEvent(parts);
+            case FIND -> parseFind(parts);
             case UNKNOWN -> throw new LabyException("please input the correct commands.");
         };
     }
@@ -104,5 +105,14 @@ public class Parser {
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm.");
         }
+    }
+
+    private static Command parseFind(String[] parts) throws LabyException {
+        if (parts.length != 2 || parts[1].trim().isEmpty()) {
+            throw new LabyException("search input cannot be empty.");
+        }
+
+        String description = parts[1].trim();
+        return new Command(CommandType.from(parts[0]), 0, description, null, null);
     }
 }
