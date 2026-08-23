@@ -169,6 +169,29 @@ class TaskListTest {
     }
 
     @Test
+    void filterTasks_matchingKeyword_returnsMatchingTasksWithOriginalNumbers() {
+        TaskList taskList = new TaskList(new ArrayList<>());
+        taskList.addTodo("read book");
+        taskList.addTodo("write notes");
+        taskList.addDeadline("return book", DEADLINE);
+
+        String matchingTasks = taskList.filterTasks(" BOOK ");
+
+        assertEquals("""
+                1.[T][ ] read book
+                3.[D][ ] return book (by: Aug 23 2026 10:00)
+                """, matchingTasks);
+    }
+
+    @Test
+    void filterTasks_noMatchingKeyword_returnsEmptyString() {
+        TaskList taskList = new TaskList(new ArrayList<>());
+        taskList.addTodo("read book");
+
+        assertEquals("", taskList.filterTasks("calendar"));
+    }
+
+    @Test
     void toFileString_multipleTaskTypes_returnsStorageFormat() throws LabyException {
         TaskList taskList = new TaskList(new ArrayList<>());
         taskList.addTodo("read book");

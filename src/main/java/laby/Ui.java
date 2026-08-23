@@ -15,6 +15,7 @@ public class Ui {
     private static final String askMsg =  "What orders do you have today?\n";
     private static final String exitMsg = "Goodbye. Switching to rest mode.\n";
     private static final String listMsg = "Here are the tasks in your list:\n";
+    private static final String filterMsg = "Here are the matching tasks in your list:\n";
     private static final String markMsg = "Understood. laby.Laby has marked the task as done.\n";
     private static final String unmarkMsg = "Understood. laby.Laby has marked the task as not done.\n";
     private static final String addMsg = "laby.Laby has added the task. Make sure to rest, Chief :o\n";
@@ -62,5 +63,18 @@ public class Ui {
 
     public static void displayExitMessage() {
         System.out.print(divider + exitMsg + divider);
+    }
+
+    /**
+     * Displays list of tasks matching the input.
+     *
+     * @param taskList List of tasks.
+     * @param input Input which tasks are filtered by.
+     */
+    public static void displayFilteredTasks(TaskList taskList, String input) {
+        System.out.print(divider);
+        System.out.print(filterMsg);
+        System.out.print(taskList.filterTasks(input));
+        System.out.print(divider);
     }
 }

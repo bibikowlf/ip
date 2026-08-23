@@ -68,7 +68,7 @@ public class TaskList {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
-            result.append((i + 1)).append(".").append(this.tasks.get(i).toString()).append("\n");
+            result.append((i + 1)).append(".").append(this.tasks.get(i)).append("\n");
         }
         return result.toString();
     }
@@ -77,6 +77,25 @@ public class TaskList {
         StringBuilder result = new StringBuilder();
         for (Task task : this.tasks) {
             result.append(task.toFileString());
+        }
+        return result.toString();
+    }
+
+    /**
+     * Returns a string of tasks that match the input.
+     *
+     * @param input Input tasks are filtered on.
+     * @return String of tasks.
+     */
+    public String filterTasks(String input) {
+        input = input.toLowerCase().trim();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < this.tasks.size(); i++) {
+            Task task = this.tasks.get(i);
+
+            if (task.getDescription().toLowerCase().contains(input)) {
+                result.append((i + 1)).append(".").append(task).append("\n");
+            }
         }
         return result.toString();
     }

@@ -39,6 +39,14 @@ class ParserTest {
     }
 
     @Test
+    void parseInput_findCommand_trimsSearchInput() throws LabyException {
+        Command command = Parser.parseInput("find   book  ");
+
+        assertEquals(CommandType.FIND, command.getCommandType());
+        assertEquals("book", command.getDescription());
+    }
+
+    @Test
     void parseInput_deadlineCommand_parsesDescriptionAndTime() throws LabyException {
         Command command = Parser.parseInput("deadline return book /by 2026-08-23 10:00");
 
@@ -71,6 +79,14 @@ class ParserTest {
                 () -> Parser.parseInput("todo   "));
 
         assertEquals("task description cannot be empty.", exception.getMessage());
+    }
+
+    @Test
+    void parseInput_emptyFindInput_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("find   "));
+
+        assertEquals("search input cannot be empty.", exception.getMessage());
     }
 
     @Test
