@@ -1,3 +1,5 @@
+package laby.command;
+
 public enum CommandType {
     BYE,
     LIST,

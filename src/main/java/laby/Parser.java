@@ -1,3 +1,8 @@
+package laby;
+
+import laby.command.Command;
+import laby.command.CommandType;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
