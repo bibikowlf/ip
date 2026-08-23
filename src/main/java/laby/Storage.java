@@ -33,7 +33,7 @@ public class Storage {
                 if (file.getParentFile() != null && !file.getParentFile().exists()) {
                     success = file.getParentFile().mkdirs();
                 }
-                if (!success || file.createNewFile()) {
+                if (!success || !file.createNewFile()) {
                     throw new LabyException("cannot create file");
                 }
             }
