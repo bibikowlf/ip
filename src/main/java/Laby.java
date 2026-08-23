@@ -24,40 +24,41 @@ public class Laby {
 
     private void markTask(int taskId) throws LabyException {
         this.taskList.markTask(taskId);
-        Ui.displayMarkTask(this.taskList, taskId);
+        Ui.displayMarkTask(this.taskList.taskToString(taskId));
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void unmarkTask(int taskId) throws LabyException {
         this.taskList.unmarkTask(taskId);
-        Ui.displayUnmarkTask(this.taskList, taskId);
+        Ui.displayUnmarkTask(this.taskList.taskToString(taskId));
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void deleteTask(int taskId) throws LabyException {
+        String content = this.taskList.taskToString(taskId);
         this.taskList.deleteTask(taskId);
-        Ui.displayDeleteTask(this.taskList, taskId);
+        Ui.displayDeleteTask(content);
         Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addTodo(String description) throws LabyException {
         this.taskList.addTodo(description);
-        Ui.displayAddTask(this.taskList);
+        Ui.displayAddTask(this.taskList.lastTaskToString());
         Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addDeadline(String description, LocalDateTime deadline) throws LabyException {
         this.taskList.addDeadline(description, deadline);
-        Ui.displayAddTask(this.taskList);
+        Ui.displayAddTask(this.taskList.lastTaskToString());
         Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addEvent(String description, LocalDateTime startTime, LocalDateTime endTime) throws LabyException {
         this.taskList.addEvent(description, startTime, endTime);
-        Ui.displayAddTask(this.taskList);
+        Ui.displayAddTask(this.taskList.lastTaskToString());
         Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }

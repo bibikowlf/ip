@@ -40,20 +40,20 @@ public class Ui {
         System.out.print(divider);
     }
 
-    public static void displayMarkTask(TaskList taskList, int taskId) {
-        System.out.print(divider + markMsg + "  " + taskList.taskToString(taskId) + "\n" + divider);
+    public static void displayMarkTask(String task) {
+        System.out.print(divider + markMsg + "  " + task + "\n" + divider);
     }
 
-    public static void displayUnmarkTask(TaskList taskList, int taskId) {
-        System.out.print(divider + unmarkMsg + "  " + taskList.taskToString(taskId) + "\n" + divider);
+    public static void displayUnmarkTask(String task) {
+        System.out.print(divider + unmarkMsg + "  " + task + "\n" + divider);
     }
 
-    public static void displayDeleteTask(TaskList taskList, int taskId) {
-        System.out.print(divider + deleteMsg + "  " + taskList.taskToString(taskId) + "\n");
+    public static void displayDeleteTask(String task) {
+        System.out.print(divider + deleteMsg + "  " + task + "\n");
     }
 
-    public static void displayAddTask(TaskList taskList) {
-        System.out.print(divider + addMsg + "  " + taskList.lastTaskToString() + "\n");
+    public static void displayAddTask(String task) {
+        System.out.print(divider + addMsg + "  " + task + "\n");
     }
 
     public static void displayExitMessage() {
