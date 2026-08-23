@@ -33,7 +33,7 @@ public class Storage {
                 if (file.getParentFile() != null && !file.getParentFile().exists()) {
                     success = file.getParentFile().mkdirs();
                 }
-                if (!success || file.createNewFile()) {
+                if (!success || !file.createNewFile()) {
                     throw new LabyException("cannot create file");
                 }
             }
@@ -45,9 +45,9 @@ public class Storage {
     public void writeTasksToFile(TaskList taskList) throws LabyException {
         try {
             this.createFile();
-            FileWriter fileWriter = new FileWriter(filePath);
-            fileWriter.write(taskList.toFileString());
-            fileWriter.close();
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(taskList.toFileString());
+            }
         } catch (IOException e) {
             throw new LabyException("cannot write to file");
         }
@@ -59,27 +59,28 @@ public class Storage {
         try {
             this.createFile();
             File file = new File(filePath);
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String current = scanner.nextLine();
-                String[] parts = current.trim().split("\\|");
-                if (!parts[1].equals("0") && !parts[1].equals("1")) {
-                    throw new LabyException("invalid file format");
-                }
-                boolean isDone = parts[1].equals("1");
-                switch (parts[0]) {
-                    case "T":
-                        tasks.add(new Todo(parts[2], isDone));
-                        break;
-                    case "D":
-                        tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], formatter), isDone));
-                        break;
-                    case "E":
-                        tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], formatter),
-                                LocalDateTime.parse(parts[4], formatter), isDone));
-                        break;
-                    default:
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNextLine()) {
+                    String current = scanner.nextLine();
+                    String[] parts = current.trim().split("\\|");
+                    if (!parts[1].equals("0") && !parts[1].equals("1")) {
                         throw new LabyException("invalid file format");
+                    }
+                    boolean isDone = parts[1].equals("1");
+                    switch (parts[0]) {
+                        case "T":
+                            tasks.add(new Todo(parts[2], isDone));
+                            break;
+                        case "D":
+                            tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], formatter), isDone));
+                            break;
+                        case "E":
+                            tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], formatter),
+                                    LocalDateTime.parse(parts[4], formatter), isDone));
+                            break;
+                        default:
+                            throw new LabyException("invalid file format");
+                    }
                 }
             }
         } catch (IOException e) {

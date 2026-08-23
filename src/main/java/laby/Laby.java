@@ -29,42 +29,35 @@ public class Laby {
     }
 
     private void markTask(int taskId) throws LabyException {
-        this.taskList.markTask(taskId);
-        Ui.displayMarkTask(this.taskList.taskToString(taskId));
+        Ui.displayMarkTask(this.taskList.markTask(taskId));
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void unmarkTask(int taskId) throws LabyException {
-        this.taskList.unmarkTask(taskId);
-        Ui.displayUnmarkTask(this.taskList.taskToString(taskId));
+        Ui.displayUnmarkTask(this.taskList.unmarkTask(taskId));
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void deleteTask(int taskId) throws LabyException {
-        String content = this.taskList.taskToString(taskId);
-        this.taskList.deleteTask(taskId);
-        Ui.displayDeleteTask(content);
+        Ui.displayDeleteTask(this.taskList.deleteTask(taskId));
         Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addTodo(String description) throws LabyException {
-        this.taskList.addTodo(description);
-        Ui.displayAddTask(this.taskList.lastTaskToString());
+        Ui.displayAddTask(this.taskList.addTodo(description));
         Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addDeadline(String description, LocalDateTime deadline) throws LabyException {
-        this.taskList.addDeadline(description, deadline);
-        Ui.displayAddTask(this.taskList.lastTaskToString());
+        Ui.displayAddTask(this.taskList.addDeadline(description, deadline));
         Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }
 
     private void addEvent(String description, LocalDateTime startTime, LocalDateTime endTime) throws LabyException {
-        this.taskList.addEvent(description, startTime, endTime);
-        Ui.displayAddTask(this.taskList.lastTaskToString());
+        Ui.displayAddTask(this.taskList.addEvent(description, startTime, endTime));
         Ui.displayNumberOfTasks(this.taskList.size());
         this.storage.writeTasksToFile(this.taskList);
     }

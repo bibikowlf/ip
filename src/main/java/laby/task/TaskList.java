@@ -16,51 +16,52 @@ public class TaskList {
         return this.tasks.size();
     }
 
-    public void markTask(int index) throws LabyException {
+    public String markTask(int index) throws LabyException {
         try {
-            this.tasks.get(index).markAsDone();
+            Task task = this.tasks.get(index);
+            task.markAsDone();
+            return task.toString();
         } catch (IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
     }
 
-    public void unmarkTask(int index) throws LabyException {
+    public String unmarkTask(int index) throws LabyException {
         try {
-            this.tasks.get(index).markAsUndone();
+            Task task = this.tasks.get(index);
+            task.markAsUndone();
+            return task.toString();
         } catch (IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
     }
 
-    public void deleteTask(int index) throws LabyException {
+    public String deleteTask(int index) throws LabyException {
         try {
+            Task task = this.tasks.get(index);
             this.tasks.remove(index);
+            return task.toString();
         } catch (IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");
         }
     }
 
-    public void addTodo(String description) {
+    public String addTodo(String description) {
         Task task = new Todo(description);
         this.tasks.add(task);
+        return task.toString();
     }
 
-    public void addDeadline(String description, LocalDateTime deadline) {
+    public String addDeadline(String description, LocalDateTime deadline) {
         Task task = new Deadline(description, deadline);
         this.tasks.add(task);
+        return task.toString();
     }
 
-    public void addEvent(String description, LocalDateTime startTime, LocalDateTime endTime) {
+    public String addEvent(String description, LocalDateTime startTime, LocalDateTime endTime) {
         Task task = new Event(description, startTime, endTime);
         this.tasks.add(task);
-    }
-
-    public String taskToString(int index) {
-        return this.tasks.get(index).toString();
-    }
-
-    public String lastTaskToString() {
-        return this.taskToString(this.tasks.size() - 1);
+        return task.toString();
     }
 
     @Override
