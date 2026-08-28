@@ -1,14 +1,14 @@
 package laby;
 
-import laby.command.Command;
-import laby.task.Task;
-import laby.task.TaskList;
-
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import laby.command.Command;
+import laby.task.Task;
+import laby.task.TaskList;
 
 /** Coordinates input parsing, task operations, storage, and console output. */
 public class Laby {
@@ -157,6 +157,8 @@ public class Laby {
                     case FIND:
                         this.filterTasks(command.getDescription());
                         break;
+                    default:
+                        throw new LabyException("invalid command.");
                 }
             } catch (LabyException e) {
                 Ui.displayError(e);

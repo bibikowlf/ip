@@ -1,11 +1,5 @@
 package laby;
 
-import laby.task.Deadline;
-import laby.task.Event;
-import laby.task.Task;
-import laby.task.TaskList;
-import laby.task.Todo;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,6 +9,12 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import laby.task.Deadline;
+import laby.task.Event;
+import laby.task.Task;
+import laby.task.TaskList;
+import laby.task.Todo;
 
 /** Reads tasks from and writes tasks to the application's data file. */
 public class Storage {

@@ -1,9 +1,9 @@
 package laby.task;
 
-import laby.LabyException;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import laby.LabyException;
 
 /** Stores and provides operations for the application's tasks. */
 public class TaskList {
