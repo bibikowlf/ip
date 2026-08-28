@@ -1,13 +1,14 @@
 package laby;
 
-import laby.command.Command;
-import laby.command.CommandType;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+
+import laby.command.Command;
+import laby.command.CommandType;
 
 /** Tests command parsing, including the validation rules used by the application. */
 class ParserTest {

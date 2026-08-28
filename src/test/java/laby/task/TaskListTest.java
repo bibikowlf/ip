@@ -1,13 +1,14 @@
 package laby.task;
 
-import laby.LabyException;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+
+import laby.LabyException;
 
 /** Tests the public behavior of {@link TaskList}. */
 class TaskListTest {
