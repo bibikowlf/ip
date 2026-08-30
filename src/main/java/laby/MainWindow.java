@@ -2,20 +2,26 @@ package laby;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 /** Controls the main FXML view and connects it to Laby's command logic. */
 public class MainWindow {
     @FXML
-    private TextArea chatArea;
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox dialogContainer;
     @FXML
     private TextField inputField;
-    @FXML
-    private Button sendButton;
 
     private Laby laby;
+
+    /** Keeps the newest message visible as the conversation grows. */
+    @FXML
+    private void initialize() {
+        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+    }
 
     /**
      * Injects the application logic and displays the opening message.
@@ -24,7 +30,7 @@ public class MainWindow {
      */
     public void setLaby(Laby laby) {
         this.laby = laby;
-        appendMessage("Hello Chief. Laby is your personal assistant.");
+        appendLabyMessage("Hello Chief. Laby is your personal assistant.");
     }
 
     /**
@@ -37,8 +43,8 @@ public class MainWindow {
             return;
         }
 
-        appendMessage("> " + input);
-        appendMessage(laby.executeCommand(input));
+        appendUserMessage(input);
+        appendLabyMessage(laby.executeCommand(input));
         inputField.clear();
 
         if (input.equalsIgnoreCase("bye")) {
@@ -51,7 +57,16 @@ public class MainWindow {
      *
      * @param message Message to display.
      */
-    private void appendMessage(String message) {
-        chatArea.appendText(message + System.lineSeparator());
+    private void appendUserMessage(String message) {
+        dialogContainer.getChildren().add(DialogBox.getUserDialog(message));
+    }
+
+    /**
+     * Adds a Laby response to the conversation.
+     *
+     * @param message Laby response to display.
+     */
+    private void appendLabyMessage(String message) {
+        dialogContainer.getChildren().add(DialogBox.getLabyDialog(message));
     }
 }

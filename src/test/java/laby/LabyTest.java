@@ -46,9 +46,7 @@ class LabyTest {
 
         String response = laby.executeCommand("archive");
 
-        assertEquals("____________________________________________________________\n\n"
-                + "System crashing... please input the correct commands.\n"
-                + "____________________________________________________________\n\n", response);
+        assertEquals("System crashing... please input the correct commands.\n", response);
     }
 
     @Test

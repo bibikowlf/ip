@@ -38,7 +38,7 @@ public class Ui {
      * @param labyException Application error to display.
      */
     public static String displayError(LabyException labyException) {
-        return MSG_DIVIDER + "System crashing... " + labyException.getMessage() + "\n" + MSG_DIVIDER;
+        return "System crashing... " + labyException.getMessage() + "\n";
     }
 
     /**
@@ -55,7 +55,7 @@ public class Ui {
      */
     public static String displayNumberOfTasks(int numberOfTasks) {
         return "There is a total of " + numberOfTasks + " task" + (numberOfTasks > 1 ? "s" : "")
-                + " in your list.\n" + MSG_DIVIDER;
+                + " in your list.\n";
     }
 
     /**
@@ -64,7 +64,7 @@ public class Ui {
      * @param taskList Task list to display.
      */
     public static String displayTasks(TaskList taskList) {
-        return MSG_DIVIDER + MSG_LIST + taskList + MSG_DIVIDER;
+        return MSG_LIST + taskList;
     }
 
     /**
@@ -73,7 +73,7 @@ public class Ui {
      * @param task Display text of the marked task.
      */
     public static String displayMarkTask(String task) {
-        return MSG_DIVIDER + MSG_MARK + "  " + task + "\n" + MSG_DIVIDER;
+        return MSG_MARK + "  " + task + "\n";
     }
 
     /**
@@ -82,7 +82,7 @@ public class Ui {
      * @param task Display text of the unmarked task.
      */
     public static String displayUnmarkTask(String task) {
-        return MSG_DIVIDER + MSG_UNMARK + "  " + task + "\n" + MSG_DIVIDER;
+        return MSG_UNMARK + "  " + task + "\n";
     }
 
     /**
@@ -91,7 +91,7 @@ public class Ui {
      * @param task Display text of the deleted task.
      */
     public static String displayDeleteTask(String task) {
-        return MSG_DIVIDER + MSG_DELETE + "  " + task + "\n";
+        return MSG_DELETE + "  " + task + "\n";
     }
 
     /**
@@ -100,14 +100,14 @@ public class Ui {
      * @param task Display text of the added task.
      */
     public static String displayAddTask(String task) {
-        return MSG_DIVIDER + MSG_ADD + "  " + task + "\n";
+        return MSG_ADD + "  " + task + "\n";
     }
 
     /**
      * Displays the application exit message.
      */
     public static String displayExitMessage() {
-        return MSG_DIVIDER + MSG_EXIT + MSG_DIVIDER;
+        return MSG_EXIT;
     }
 
     /**
@@ -117,6 +117,16 @@ public class Ui {
      * @param input Input which tasks are filtered by.
      */
     public static String displayFilteredTasks(TaskList taskList, String input) {
-        return MSG_DIVIDER + MSG_FILTER + taskList.filterTasks(input) + MSG_DIVIDER;
+        return MSG_FILTER + taskList.filterTasks(input);
+    }
+
+    /**
+     * Adds console divider lines around a response.
+     *
+     * @param response Response to format for the console.
+     * @return Response surrounded by console dividers.
+     */
+    public static String addDivider(String response) {
+        return MSG_DIVIDER + response + MSG_DIVIDER;
     }
 }

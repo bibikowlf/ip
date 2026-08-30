@@ -166,7 +166,7 @@ public class Laby {
             String input = scanner.nextLine();
 
             String response = executeCommand(input);
-            System.out.print(response);
+            System.out.print(Ui.addDivider(response));
             if (input.trim().equalsIgnoreCase("bye")) {
                 break;
             }
