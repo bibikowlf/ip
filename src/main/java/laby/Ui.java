@@ -37,15 +37,15 @@ public class Ui {
      *
      * @param labyException Application error to display.
      */
-    public static void displayError(LabyException labyException) {
-        System.out.print(MSG_DIVIDER + "System crashing... " + labyException.getMessage() + "\n" + MSG_DIVIDER);
+    public static String displayError(LabyException labyException) {
+        return MSG_DIVIDER + "System crashing... " + labyException.getMessage() + "\n" + MSG_DIVIDER;
     }
 
     /**
      * Displays the application banner and opening prompt.
      */
-    public static void displayWelcomeBanner() {
-        System.out.print(MSG_DIVIDER + MSG_BANNER + MSG_DIVIDER + MSG_OPEN + MSG_ASK + MSG_DIVIDER);
+    public static String displayWelcomeBanner() {
+        return MSG_DIVIDER + MSG_BANNER + MSG_DIVIDER + MSG_OPEN + MSG_ASK + MSG_DIVIDER;
     }
 
     /**
@@ -53,9 +53,9 @@ public class Ui {
      *
      * @param numberOfTasks Number of tasks to display.
      */
-    public static void displayNumberOfTasks(int numberOfTasks) {
-        System.out.print("There is a total of " + numberOfTasks + " task" + (numberOfTasks > 1 ? "s" : "")
-                + " in your list.\n" + MSG_DIVIDER);
+    public static String displayNumberOfTasks(int numberOfTasks) {
+        return "There is a total of " + numberOfTasks + " task" + (numberOfTasks > 1 ? "s" : "")
+                + " in your list.\n" + MSG_DIVIDER;
     }
 
     /**
@@ -63,11 +63,8 @@ public class Ui {
      *
      * @param taskList Task list to display.
      */
-    public static void displayTasks(TaskList taskList) {
-        System.out.print(MSG_DIVIDER);
-        System.out.print(MSG_LIST);
-        System.out.print(taskList.toString());
-        System.out.print(MSG_DIVIDER);
+    public static String displayTasks(TaskList taskList) {
+        return MSG_DIVIDER + MSG_LIST + taskList + MSG_DIVIDER;
     }
 
     /**
@@ -75,8 +72,8 @@ public class Ui {
      *
      * @param task Display text of the marked task.
      */
-    public static void displayMarkTask(String task) {
-        System.out.print(MSG_DIVIDER + MSG_MARK + "  " + task + "\n" + MSG_DIVIDER);
+    public static String displayMarkTask(String task) {
+        return MSG_DIVIDER + MSG_MARK + "  " + task + "\n" + MSG_DIVIDER;
     }
 
     /**
@@ -84,8 +81,8 @@ public class Ui {
      *
      * @param task Display text of the unmarked task.
      */
-    public static void displayUnmarkTask(String task) {
-        System.out.print(MSG_DIVIDER + MSG_UNMARK + "  " + task + "\n" + MSG_DIVIDER);
+    public static String displayUnmarkTask(String task) {
+        return MSG_DIVIDER + MSG_UNMARK + "  " + task + "\n" + MSG_DIVIDER;
     }
 
     /**
@@ -93,8 +90,8 @@ public class Ui {
      *
      * @param task Display text of the deleted task.
      */
-    public static void displayDeleteTask(String task) {
-        System.out.print(MSG_DIVIDER + MSG_DELETE + "  " + task + "\n");
+    public static String displayDeleteTask(String task) {
+        return MSG_DIVIDER + MSG_DELETE + "  " + task + "\n";
     }
 
     /**
@@ -102,15 +99,15 @@ public class Ui {
      *
      * @param task Display text of the added task.
      */
-    public static void displayAddTask(String task) {
-        System.out.print(MSG_DIVIDER + MSG_ADD + "  " + task + "\n");
+    public static String displayAddTask(String task) {
+        return MSG_DIVIDER + MSG_ADD + "  " + task + "\n";
     }
 
     /**
      * Displays the application exit message.
      */
-    public static void displayExitMessage() {
-        System.out.print(MSG_DIVIDER + MSG_EXIT + MSG_DIVIDER);
+    public static String displayExitMessage() {
+        return MSG_DIVIDER + MSG_EXIT + MSG_DIVIDER;
     }
 
     /**
@@ -119,10 +116,7 @@ public class Ui {
      * @param taskList List of tasks.
      * @param input Input which tasks are filtered by.
      */
-    public static void displayFilteredTasks(TaskList taskList, String input) {
-        System.out.print(MSG_DIVIDER);
-        System.out.print(MSG_FILTER);
-        System.out.print(taskList.filterTasks(input));
-        System.out.print(MSG_DIVIDER);
+    public static String displayFilteredTasks(TaskList taskList, String input) {
+        return MSG_DIVIDER + MSG_FILTER + taskList.filterTasks(input) + MSG_DIVIDER;
     }
 }
