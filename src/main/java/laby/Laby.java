@@ -1,5 +1,7 @@
 package laby;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -177,6 +179,14 @@ public class Laby {
      * @param args Unused command-line arguments.
      */
     static void main(String[] args) {
-        new Laby(Paths.get("data", "laby.txt").toString()).run();
+        String filePath = Paths.get("data", "laby.txt").toString();
+        if (args.length == 1 && args[0].equals("--fresh")) {
+            try {
+                filePath = Files.createTempFile("laby-ui-test-", ".txt").toString();
+            } catch (IOException e) {
+                Ui.displayReadFileError(new LabyException("cannot create temporary test file"));
+            }
+        }
+        new Laby(filePath).run();
     }
 }

@@ -53,7 +53,7 @@ test {
 }
 
 application {
-    mainClass = 'laby.Laby'
+    mainClass = 'laby.Launcher'
 }
 
 jar {
