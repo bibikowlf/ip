@@ -34,8 +34,7 @@
     -fx-background-color: #ffffff;
 }
 
-.avatar-placeholder {
-    -fx-background-color: #dfe3e8;
+.avatar-image {
     -fx-background-radius: 24px;
     -fx-border-color: #c6ccd3;
     -fx-border-radius: 24px;

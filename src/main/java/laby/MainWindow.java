@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 /** Controls the main FXML view and connects it to Laby's command logic. */
@@ -14,6 +15,11 @@ public class MainWindow {
     private VBox dialogContainer;
     @FXML
     private TextField inputField;
+
+    private final Image userImage = new Image(
+            MainWindow.class.getResourceAsStream("/images/chief.jpg"));
+    private final Image labyImage = new Image(
+            MainWindow.class.getResourceAsStream("/images/laby.jpg"));
 
     private Laby laby;
 
@@ -58,7 +64,7 @@ public class MainWindow {
      * @param message Message to display.
      */
     private void appendUserMessage(String message) {
-        dialogContainer.getChildren().add(DialogBox.getUserDialog(message));
+        dialogContainer.getChildren().add(DialogBox.getUserDialog(message, userImage));
     }
 
     /**
@@ -67,6 +73,6 @@ public class MainWindow {
      * @param message Laby response to display.
      */
     private void appendLabyMessage(String message) {
-        dialogContainer.getChildren().add(DialogBox.getLabyDialog(message));
+        dialogContainer.getChildren().add(DialogBox.getLabyDialog(message, labyImage));
     }
 }
