@@ -2,7 +2,7 @@
 
 ## Program command
 
-java -cp build\classes\java\main laby.Laby
+java -cp build\classes\java\main laby.Laby --fresh
 
 ## Timeout seconds
 
@@ -32,7 +32,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
@@ -52,8 +52,8 @@ Verify that ToDos, Deadlines, and Events are stored with their required details 
 
 ```text
 todo borrow book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+deadline return book /by 2026-08-24 12:00
+event project meeting /from 2026-08-25 14:00 /to 2026-08-25 16:00
 list
 bye
 ```
@@ -70,28 +70,28 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
+Laby has added the task. Make sure to rest, Chief :o
   [T][ ] borrow book
 There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
-  [D][ ] return book (by: Sunday)
+Laby has added the task. Make sure to rest, Chief :o
+  [D][ ] return book (by: Aug 24 2026 12:00)
 There is a total of 2 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
-  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Laby has added the task. Make sure to rest, Chief :o
+  [E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 There is a total of 3 tasks in your list.
 ____________________________________________________________
 
@@ -99,8 +99,8 @@ ____________________________________________________________
 
 Here are the tasks in your list:
 1.[T][ ] borrow book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+2.[D][ ] return book (by: Aug 24 2026 12:00)
+3.[E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 ____________________________________________________________
 
 ____________________________________________________________
@@ -137,27 +137,27 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
+Laby has added the task. Make sure to rest, Chief :o
   [T][ ] read book
 There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
+Laby has added the task. Make sure to rest, Chief :o
   [T][ ] write notes
 There is a total of 2 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
+Laby has added the task. Make sure to rest, Chief :o
   [D][ ] return book (by: Aug 24 2026 12:00)
 There is a total of 3 tasks in your list.
 ____________________________________________________________
@@ -202,26 +202,26 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
+Laby has added the task. Make sure to rest, Chief :o
   [T][ ] read book
 There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-Understood. laby.Laby has marked the task as done.
+Understood. Laby has marked the task as done.
   [T][X] read book
 ____________________________________________________________
 
 ____________________________________________________________
 
-Understood. laby.Laby has marked the task as not done.
+Understood. Laby has marked the task as not done.
   [T][ ] read book
 ____________________________________________________________
 
@@ -259,7 +259,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
@@ -299,8 +299,8 @@ Verify that laby.Laby removes the selected task, reports the remaining count, an
 
 ```text
 todo read book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+deadline return book /by 2026-08-24 12:00
+event project meeting /from 2026-08-25 14:00 /to 2026-08-25 16:00
 mark 3
 delete 3
 list
@@ -319,41 +319,41 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
+Laby has added the task. Make sure to rest, Chief :o
   [T][ ] read book
 There is a total of 1 task in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
-  [D][ ] return book (by: Sunday)
+Laby has added the task. Make sure to rest, Chief :o
+  [D][ ] return book (by: Aug 24 2026 12:00)
 There is a total of 2 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has added the task. Make sure to rest, Chief :o
-  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Laby has added the task. Make sure to rest, Chief :o
+  [E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 There is a total of 3 tasks in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 
-Understood. laby.Laby has marked the task as done.
-  [E][X] project meeting (from: Mon 2pm to: 4pm)
+Understood. Laby has marked the task as done.
+  [E][X] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 ____________________________________________________________
 
 ____________________________________________________________
 
-laby.Laby has deleted the task. Glad to see you resting ;)
-  [E][X] project meeting (from: Mon 2pm to: 4pm)
+Laby has deleted the task. Glad to see you resting ;)
+  [E][X] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 There is a total of 2 tasks in your list.
 ____________________________________________________________
 
@@ -361,7 +361,7 @@ ____________________________________________________________
 
 Here are the tasks in your list:
 1.[T][ ] read book
-2.[D][ ] return book (by: Sunday)
+2.[D][ ] return book (by: Aug 24 2026 12:00)
 ____________________________________________________________
 
 ____________________________________________________________
@@ -398,7 +398,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
@@ -458,7 +458,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 
@@ -529,7 +529,7 @@ ____________________________________________________________
 #####  #   #  ####     #
 ____________________________________________________________
 
-Hello Chief. laby.Laby is your personal assistant.
+Hello Chief. Laby is your personal assistant.
 What orders do you have today?
 ____________________________________________________________
 

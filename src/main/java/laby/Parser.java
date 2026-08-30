@@ -101,7 +101,7 @@ public class Parser {
         }
 
         try {
-            int deadlineIndex = parts[1].indexOf(" /by ");
+            int deadlineIndex = parts[1].indexOf("/by");
             if (deadlineIndex == -1) {
                 throw new LabyException("please enter a deadline with /by.");
             } else if (deadlineIndex < 1) {
@@ -113,7 +113,12 @@ public class Parser {
                 throw new LabyException("task description cannot be empty.");
             }
 
-            LocalDateTime deadline = LocalDateTime.parse(parts[1].substring(deadlineIndex + 5).trim(), formatter);
+            String deadlineText = parts[1].substring(deadlineIndex + 3).trim();
+            if (deadlineText.isEmpty()) {
+                throw new LabyException("task deadline cannot be empty.");
+            }
+
+            LocalDateTime deadline = LocalDateTime.parse(deadlineText, formatter);
             return new Command(CommandType.from(parts[0]), 0, description, deadline, null);
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm.");
@@ -133,18 +138,26 @@ public class Parser {
         }
 
         try {
-            int startIndex = parts[1].indexOf(" /from ");
+            int startIndex = parts[1].indexOf("/from");
             if (startIndex == -1) {
                 throw new LabyException("please enter a starting time with /from.");
             } else if (startIndex < 1) {
                 throw new LabyException("task description cannot be empty.");
             }
 
-            int endIndex = parts[1].indexOf(" /to ");
+            int endIndex = parts[1].indexOf("/to", startIndex + 5);
             if (endIndex == -1) {
                 throw new LabyException("please enter an ending time with /to.");
-            } else if (endIndex < startIndex + 7) {
+            }
+
+            String startText = parts[1].substring(startIndex + 5, endIndex).trim();
+            if (startText.isEmpty()) {
                 throw new LabyException("task starting time cannot be empty.");
+            }
+
+            String endText = parts[1].substring(endIndex + 3).trim();
+            if (endText.isEmpty()) {
+                throw new LabyException("task ending time cannot be empty.");
             }
 
             String description = parts[1].substring(0, startIndex).trim();
@@ -152,10 +165,8 @@ public class Parser {
                 throw new LabyException("task description cannot be empty.");
             }
 
-            LocalDateTime startTime = LocalDateTime
-                    .parse(parts[1].substring(startIndex + 7, endIndex).trim(), formatter);
-            LocalDateTime endTime = LocalDateTime
-                    .parse(parts[1].substring(endIndex + 5).trim(), formatter);
+            LocalDateTime startTime = LocalDateTime.parse(startText, formatter);
+            LocalDateTime endTime = LocalDateTime.parse(endText, formatter);
             return new Command(CommandType.from(parts[0]), 0, description, startTime, endTime);
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm.");

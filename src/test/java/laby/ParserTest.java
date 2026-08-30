@@ -115,6 +115,38 @@ class ParserTest {
     }
 
     @Test
+    void parseInput_eventWithoutDescription_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("event /from 2026-08-23 11:00 /to 2026-08-23 12:00"));
+
+        assertEquals("task description cannot be empty.", exception.getMessage());
+    }
+
+    @Test
+    void parseInput_eventWithoutEndTime_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("event project meeting /from 2026-08-23 11:00 /to "));
+
+        assertEquals("task ending time cannot be empty.", exception.getMessage());
+    }
+
+    @Test
+    void parseInput_deadlineWithoutDescription_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("deadline /by Friday"));
+
+        assertEquals("task description cannot be empty.", exception.getMessage());
+    }
+
+    @Test
+    void parseInput_deadlineWithoutValue_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("deadline buy milk /by "));
+
+        assertEquals("task deadline cannot be empty.", exception.getMessage());
+    }
+
+    @Test
     void parseInput_missingEventMarker_exceptionThrown() {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event project meeting /from 2026-08-23 11:00"));
@@ -127,6 +159,6 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event project meeting /from  /to 2026-08-23 12:00"));
 
-        assertEquals("time format must be yyyy-MM-dd HH:mm.", exception.getMessage());
+        assertEquals("task starting time cannot be empty.", exception.getMessage());
     }
 }
