@@ -34,7 +34,9 @@ class LabyTest {
         String deleteResponse = laby.executeCommand("delete 1");
 
         assertTrue(markResponse.contains("[T][X] read book"));
+        assertTrue(markResponse.contains("Understood. Laby has marked the task as done."));
         assertTrue(unmarkResponse.contains("[T][ ] read book"));
+        assertTrue(unmarkResponse.contains("Understood. Laby has marked the task as not done."));
         assertTrue(deleteResponse.contains("Laby has deleted the task"));
         assertTrue(laby.executeCommand("list").contains("Here are the tasks in your list:"));
         assertFalse(laby.executeCommand("list").contains("read book"));
