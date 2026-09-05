@@ -14,6 +14,7 @@ import laby.task.Todo;
 /** Converts user-entered command text into structured commands. */
 public class Parser {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final String DESCRIPTION_FIELD = "description";
 
     /**
      * Parses a complete input line or throws an error for invalid syntax.
@@ -29,11 +30,9 @@ public class Parser {
         return switch (commandType) {
             case BYE, LIST -> parseByeOrList(parts);
             case MARK, UNMARK, DELETE -> parseModifyTask(parts);
-            case TODO -> parseTodo(parts);
-            case DEADLINE -> parseDeadline(parts);
-            case EVENT -> parseEvent(parts);
+            case TODO, DEADLINE, EVENT -> parseTask(parts);
             case FIND -> parseFind(parts);
-            case UNKNOWN -> throw new LabyException("please input the correct commands.");
+            default -> throw new LabyException("please input the correct commands.");
         };
     }
 
@@ -72,6 +71,20 @@ public class Parser {
         }
     }
 
+    private static Command parseTask(String[] parts) throws LabyException {
+        if (parts.length != 2) {
+            throw new LabyException(getErrorMessage(DESCRIPTION_FIELD));
+        }
+
+        CommandType commandType = CommandType.from(parts[0]);
+        return switch (commandType) {
+            case TODO -> parseTodo(parts);
+            case DEADLINE -> parseDeadline(parts);
+            case EVENT -> parseEvent(parts);
+            default -> throw new LabyException("please input the correct commands.");
+        };
+    }
+
     /**
      * Parses a todo command and validates its description.
      *
@@ -80,14 +93,8 @@ public class Parser {
      * @throws LabyException If the task description is missing.
      */
     private static Command parseTodo(String[] parts) throws LabyException {
-        if (parts.length != 2) {
-            throw new LabyException("task description cannot be empty.");
-        }
-
-        String description = parts[1].trim();
-        if (description.isEmpty()) {
-            throw new LabyException("task description cannot be empty.");
-        }
+        String description = parseField(parts[1], 0, parts[1].length(),
+                DESCRIPTION_FIELD);
 
         return new Command(CommandType.from(parts[0]), 0, description, null, null);
     }
@@ -100,35 +107,18 @@ public class Parser {
      * @throws LabyException If the description, marker, or deadline is invalid.
      */
     private static Command parseDeadline(String[] parts) throws LabyException {
-        if (parts.length != 2) {
-            throw new LabyException("task description cannot be empty.");
-        }
+        String deadlineIndicator = "/by";
+        int deadlineIndex = parts[1].indexOf(deadlineIndicator);
+        int deadlineBeginIndex = deadlineIndex + deadlineIndicator.length();
 
-        try {
-            String deadlineIndicator = "/by";
-            int deadlineIndex = parts[1].indexOf(deadlineIndicator);
-            int deadlineBeginIndex = deadlineIndex + deadlineIndicator.length();
-            if (deadlineIndex == -1) {
-                throw new LabyException("please enter a deadline with /by.");
-            } else if (deadlineIndex < 1) {
-                throw new LabyException("task description cannot be empty.");
-            }
+        String description = parseField(parts[1], 0, deadlineIndex,
+                DESCRIPTION_FIELD);
 
-            String description = parts[1].substring(0, deadlineIndex).trim();
-            if (description.isEmpty()) {
-                throw new LabyException("task description cannot be empty.");
-            }
+        String deadlineText = parseField(parts[1], deadlineBeginIndex, parts[1].length(),
+                "deadline");
+        LocalDateTime deadline = parseDateTime(deadlineText);
 
-            String deadlineText = parts[1].substring(deadlineBeginIndex).trim();
-            if (deadlineText.isEmpty()) {
-                throw new LabyException("task deadline cannot be empty.");
-            }
-
-            LocalDateTime deadline = LocalDateTime.parse(deadlineText, DATE_TIME_FORMATTER);
-            return new Command(CommandType.from(parts[0]), 0, description, deadline, null);
-        } catch (DateTimeParseException e) {
-            throw new LabyException("time format must be yyyy-MM-dd HH:mm.");
-        }
+        return new Command(CommandType.from(parts[0]), 0, description, deadline, null);
     }
 
     /**
@@ -139,57 +129,79 @@ public class Parser {
      * @throws LabyException If the description, markers, or event times are invalid.
      */
     private static Command parseEvent(String[] parts) throws LabyException {
-        if (parts.length != 2) {
-            throw new LabyException("task description cannot be empty.");
+        String startIndicator = "/from";
+        int startIndex = parts[1].indexOf(startIndicator);
+        int startBeginIndex = startIndex + startIndicator.length();
+
+        String endIndicator = "/to";
+        int endIndex = parts[1].indexOf(endIndicator, startBeginIndex);
+        int endBeginIndex = endIndex + endIndicator.length();
+
+        String description = parseField(parts[1], 0, startIndex,
+                DESCRIPTION_FIELD);
+
+        String startText = parseField(parts[1], startBeginIndex, endIndex,
+                "starting time");
+        LocalDateTime startTime = parseDateTime(startText);
+
+        String endText = parseField(parts[1], endBeginIndex, parts[1].length(),
+                "ending time");
+        LocalDateTime endTime = parseDateTime(endText);
+
+        return new Command(CommandType.from(parts[0]), 0, description, startTime, endTime);
+    }
+
+    private static Command parseFind(String[] parts) throws LabyException {
+        if (parts.length != 2 || parts[1].trim().isEmpty()) {
+            throw new LabyException(getErrorMessage("search input"));
         }
 
+        String description = parts[1].trim();
+        return new Command(CommandType.from(parts[0]), 0, description, null, null);
+    }
+
+    private static LocalDateTime parseDateTime(String input) throws LabyException {
+        if (input.isEmpty()) {
+            throw new LabyException(getErrorMessage("time"));
+        }
         try {
-            String startIndicator = "/from";
-            int startIndex = parts[1].indexOf(startIndicator);
-            int startBeginIndex = startIndex + startIndicator.length();
-            if (startIndex == -1) {
-                throw new LabyException("please enter a starting time with /from.");
-            } else if (startIndex < 1) {
-                throw new LabyException("task description cannot be empty.");
-            }
-
-            String endIndicator = "/to";
-            int endIndex = parts[1].indexOf(endIndicator, startBeginIndex);
-            int endBeginIndex = endIndex + endIndicator.length();
-            if (endIndex == -1) {
-                throw new LabyException("please enter an ending time with /to.");
-            }
-
-            String startText = parts[1].substring(startBeginIndex, endIndex).trim();
-            if (startText.isEmpty()) {
-                throw new LabyException("task starting time cannot be empty.");
-            }
-
-            String endText = parts[1].substring(endBeginIndex).trim();
-            if (endText.isEmpty()) {
-                throw new LabyException("task ending time cannot be empty.");
-            }
-
-            String description = parts[1].substring(0, startIndex).trim();
-            if (description.isEmpty()) {
-                throw new LabyException("task description cannot be empty.");
-            }
-
-            LocalDateTime startTime = LocalDateTime.parse(startText, DATE_TIME_FORMATTER);
-            LocalDateTime endTime = LocalDateTime.parse(endText, DATE_TIME_FORMATTER);
-            return new Command(CommandType.from(parts[0]), 0, description, startTime, endTime);
+            return LocalDateTime.parse(input, DATE_TIME_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm.");
         }
     }
 
-    private static Command parseFind(String[] parts) throws LabyException {
-        if (parts.length != 2 || parts[1].trim().isEmpty()) {
-            throw new LabyException("search input cannot be empty.");
+    /**
+     * Extracts a non-empty field from a command string.
+     *
+     * @param input Input containing the field.
+     * @param startIndex Inclusive start index of the field.
+     * @param endIndex Exclusive end index of the field.
+     * @param fieldType Name used in the missing-field error message.
+     * @return Trimmed field value.
+     * @throws LabyException If the field is empty or its indexes are invalid.
+     */
+    private static String parseField(String input, int startIndex, int endIndex,
+                                     String fieldType) throws LabyException {
+        try {
+            String field = input.substring(startIndex, endIndex).trim();
+            if (field.isEmpty()) {
+                throw new LabyException(getErrorMessage(fieldType));
+            }
+            return field;
+        } catch (IndexOutOfBoundsException e) {
+            throw new LabyException(getErrorMessage(fieldType));
         }
+    }
 
-        String description = parts[1].trim();
-        return new Command(CommandType.from(parts[0]), 0, description, null, null);
+    /**
+     * Creates the standard missing-field error message.
+     *
+     * @param missingField Name of the missing field.
+     * @return Formatted missing-field error message.
+     */
+    private static String getErrorMessage(String missingField) {
+        return missingField + " cannot be empty.";
     }
 
     /**
@@ -215,7 +227,8 @@ public class Parser {
 
             return switch (parts[0]) {
                 case todoSymbol -> new Todo(parts[2], isTaskDone);
-                case deadlineSymbol -> new Deadline(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isTaskDone);
+                case deadlineSymbol -> new Deadline(parts[2],
+                        LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isTaskDone);
                 case eventSymbol -> new Event(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
                             LocalDateTime.parse(parts[4], DATE_TIME_FORMATTER), isTaskDone);
                 default -> throw new LabyException("invalid file format");
