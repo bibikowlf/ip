@@ -29,7 +29,7 @@ public class Laby {
         try {
             tempTasks = this.storage.readFile();
         } catch (LabyException e) {
-            Ui.displayReadFileError(e);
+            System.out.print(Ui.getReadFileError(e));
             tempTasks = new ArrayList<>();
         } finally {
             this.taskList = new TaskList(tempTasks);
@@ -45,7 +45,7 @@ public class Laby {
     private String markTask(int taskId) throws LabyException {
         String task = this.taskList.markTask(taskId);
         this.storage.writeFile(this.taskList);
-        return Ui.displayMarkTask(task);
+        return Ui.getMarkTask(task);
     }
 
     /**
@@ -57,7 +57,7 @@ public class Laby {
     private String unmarkTask(int taskId) throws LabyException {
         String task = this.taskList.unmarkTask(taskId);
         this.storage.writeFile(this.taskList);
-        return Ui.displayUnmarkTask(task);
+        return Ui.getUnmarkTask(task);
     }
 
     /**
@@ -69,7 +69,7 @@ public class Laby {
     private String deleteTask(int taskId) throws LabyException {
         String task = this.taskList.deleteTask(taskId);
         this.storage.writeFile(this.taskList);
-        return Ui.displayDeleteTask(task) + numberOfTasksMessage();
+        return Ui.getDeleteTask(task) + numberOfTasksMessage();
     }
 
     /**
@@ -81,7 +81,7 @@ public class Laby {
     private String addTodo(String description) throws LabyException {
         String task = this.taskList.addTodo(description);
         this.storage.writeFile(this.taskList);
-        return Ui.displayAddTask(task) + numberOfTasksMessage();
+        return Ui.getAddTask(task) + numberOfTasksMessage();
     }
 
     /**
@@ -94,7 +94,7 @@ public class Laby {
     private String addDeadline(String description, LocalDateTime deadline) throws LabyException {
         String task = this.taskList.addDeadline(description, deadline);
         this.storage.writeFile(this.taskList);
-        return Ui.displayAddTask(task) + numberOfTasksMessage();
+        return Ui.getAddTask(task) + numberOfTasksMessage();
     }
 
     /**
@@ -108,7 +108,7 @@ public class Laby {
     private String addEvent(String description, LocalDateTime startTime, LocalDateTime endTime) throws LabyException {
         String task = this.taskList.addEvent(description, startTime, endTime);
         this.storage.writeFile(this.taskList);
-        return Ui.displayAddTask(task) + numberOfTasksMessage();
+        return Ui.getAddTask(task) + numberOfTasksMessage();
     }
 
     /**
@@ -117,7 +117,7 @@ public class Laby {
      * @param input Input which tasks are filtered by.
      */
     private String filterTasks(String input) {
-        return Ui.displayFilteredTasks(this.taskList, input);
+        return Ui.getFilteredTasks(this.taskList, input);
     }
 
     /**
@@ -126,7 +126,7 @@ public class Laby {
      * @return Formatted task-count message.
      */
     private String numberOfTasksMessage() {
-        return Ui.displayNumberOfTasks(this.taskList.size());
+        return Ui.getNumberOfTasks(this.taskList.size());
     }
 
     /**
@@ -139,8 +139,8 @@ public class Laby {
         try {
             Command command = Parser.parseInput(input);
             return switch (command.getCommandType()) {
-                case BYE -> Ui.displayExitMessage();
-                case LIST -> Ui.displayTasks(this.taskList);
+                case BYE -> Ui.getExitMessage();
+                case LIST -> Ui.getTasks(this.taskList);
                 case MARK -> this.markTask(command.getId());
                 case UNMARK -> this.unmarkTask(command.getId());
                 case DELETE -> this.deleteTask(command.getId());
@@ -151,7 +151,7 @@ public class Laby {
                 default -> throw new LabyException("invalid command.");
             };
         } catch (LabyException e) {
-            return Ui.displayError(e);
+            return Ui.getError(e);
         }
     }
 
@@ -159,7 +159,7 @@ public class Laby {
      * Starts the command loop and processes input until the user exits.
      */
     public void run() {
-        System.out.print(Ui.displayWelcomeBanner());
+        System.out.print(Ui.getWelcomeBanner());
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -184,7 +184,7 @@ public class Laby {
             try {
                 filePath = Files.createTempFile("laby-ui-test-", ".txt").toString();
             } catch (IOException e) {
-                Ui.displayReadFileError(new LabyException("cannot create temporary test file"));
+                System.out.print(Ui.getReadFileError(new LabyException("cannot create temporary test file")));
             }
         }
         new Laby(filePath).run();

@@ -9,7 +9,7 @@ import laby.command.CommandType;
 
 /** Converts user-entered command text into structured commands. */
 public class Parser {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     /**
      * Parses a complete input line or throws an error for invalid syntax.
@@ -118,7 +118,7 @@ public class Parser {
                 throw new LabyException("task deadline cannot be empty.");
             }
 
-            LocalDateTime deadline = LocalDateTime.parse(deadlineText, formatter);
+            LocalDateTime deadline = LocalDateTime.parse(deadlineText, DATE_TIME_FORMATTER);
             return new Command(CommandType.from(parts[0]), 0, description, deadline, null);
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm.");
@@ -165,8 +165,8 @@ public class Parser {
                 throw new LabyException("task description cannot be empty.");
             }
 
-            LocalDateTime startTime = LocalDateTime.parse(startText, formatter);
-            LocalDateTime endTime = LocalDateTime.parse(endText, formatter);
+            LocalDateTime startTime = LocalDateTime.parse(startText, DATE_TIME_FORMATTER);
+            LocalDateTime endTime = LocalDateTime.parse(endText, DATE_TIME_FORMATTER);
             return new Command(CommandType.from(parts[0]), 0, description, startTime, endTime);
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm.");

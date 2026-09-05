@@ -27,9 +27,9 @@ public class Ui {
      *
      * @param labyException File-loading error to display.
      */
-    public static void displayReadFileError(LabyException labyException) {
-        System.out.print(MSG_DIVIDER + "System crashing... " + labyException.getMessage()
-                + "\nUsing new file..." + MSG_DIVIDER);
+    public static String getReadFileError(LabyException labyException) {
+        return MSG_DIVIDER + "System crashing... " + labyException.getMessage()
+                + "\nUsing new file..." + MSG_DIVIDER;
     }
 
     /**
@@ -37,14 +37,14 @@ public class Ui {
      *
      * @param labyException Application error to display.
      */
-    public static String displayError(LabyException labyException) {
+    public static String getError(LabyException labyException) {
         return "System crashing... " + labyException.getMessage() + "\n";
     }
 
     /**
      * Displays the application banner and opening prompt.
      */
-    public static String displayWelcomeBanner() {
+    public static String getWelcomeBanner() {
         return MSG_DIVIDER + MSG_BANNER + MSG_DIVIDER + MSG_OPEN + MSG_ASK + MSG_DIVIDER;
     }
 
@@ -53,7 +53,7 @@ public class Ui {
      *
      * @param numberOfTasks Number of tasks to display.
      */
-    public static String displayNumberOfTasks(int numberOfTasks) {
+    public static String getNumberOfTasks(int numberOfTasks) {
         return "There is a total of " + numberOfTasks + " task" + (numberOfTasks > 1 ? "s" : "")
                 + " in your list.\n";
     }
@@ -63,7 +63,7 @@ public class Ui {
      *
      * @param taskList Task list to display.
      */
-    public static String displayTasks(TaskList taskList) {
+    public static String getTasks(TaskList taskList) {
         return MSG_LIST + taskList;
     }
 
@@ -72,7 +72,7 @@ public class Ui {
      *
      * @param task Display text of the marked task.
      */
-    public static String displayMarkTask(String task) {
+    public static String getMarkTask(String task) {
         return MSG_MARK + "  " + task + "\n";
     }
 
@@ -81,7 +81,7 @@ public class Ui {
      *
      * @param task Display text of the unmarked task.
      */
-    public static String displayUnmarkTask(String task) {
+    public static String getUnmarkTask(String task) {
         return MSG_UNMARK + "  " + task + "\n";
     }
 
@@ -90,7 +90,7 @@ public class Ui {
      *
      * @param task Display text of the deleted task.
      */
-    public static String displayDeleteTask(String task) {
+    public static String getDeleteTask(String task) {
         return MSG_DELETE + "  " + task + "\n";
     }
 
@@ -99,14 +99,14 @@ public class Ui {
      *
      * @param task Display text of the added task.
      */
-    public static String displayAddTask(String task) {
+    public static String getAddTask(String task) {
         return MSG_ADD + "  " + task + "\n";
     }
 
     /**
      * Displays the application exit message.
      */
-    public static String displayExitMessage() {
+    public static String getExitMessage() {
         return MSG_EXIT;
     }
 
@@ -116,7 +116,7 @@ public class Ui {
      * @param taskList List of tasks.
      * @param input Input which tasks are filtered by.
      */
-    public static String displayFilteredTasks(TaskList taskList, String input) {
+    public static String getFilteredTasks(TaskList taskList, String input) {
         return MSG_FILTER + taskList.filterTasks(input);
     }
 

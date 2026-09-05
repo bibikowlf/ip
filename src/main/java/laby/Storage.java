@@ -18,7 +18,7 @@ import laby.task.Todo;
 
 /** Reads tasks from and writes tasks to the application's data file. */
 public class Storage {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final String filePath;
 
     /**
@@ -40,11 +40,14 @@ public class Storage {
             File file = new File(filePath);
 
             if (!file.exists()) {
-                boolean success = true;
-                if (file.getParentFile() != null && !file.getParentFile().exists()) {
-                    success = file.getParentFile().mkdirs();
+                boolean hasParentFile = file.getParentFile() != null && file.getParentFile().exists();
+                if (!hasParentFile) {
+                    boolean isSuccess = file.getParentFile().mkdirs();
+                    if (!isSuccess) {
+                        throw new LabyException("cannot create file");
+                    }
                 }
-                if (!success || !file.createNewFile()) {
+                if (!file.createNewFile()) {
                     throw new LabyException("cannot create file");
                 }
             }
@@ -98,11 +101,11 @@ public class Storage {
                             tasks.add(new Todo(parts[2], isDone));
                             break;
                         case "D":
-                            tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], formatter), isDone));
+                            tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isDone));
                             break;
                         case "E":
-                            tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], formatter),
-                                    LocalDateTime.parse(parts[4], formatter), isDone));
+                            tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
+                                    LocalDateTime.parse(parts[4], DATE_TIME_FORMATTER), isDone));
                             break;
                         default:
                             throw new LabyException("invalid file format");
