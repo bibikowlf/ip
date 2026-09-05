@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import laby.command.Command;
-import laby.command.CommandType;
 import laby.task.Task;
 import laby.task.TaskList;
 
@@ -44,7 +43,12 @@ public class Laby {
      * @throws LabyException If the task does not exist or cannot be saved.
      */
     private String modifyTaskStatus(Command command) throws LabyException {
-        boolean isDone = command.getCommandType() == CommandType.MARK;
+        boolean isDone = switch (command.getCommandType()) {
+            case MARK -> true;
+            case UNMARK -> false;
+            default -> throw new LabyException("invalid command.");
+        };
+
         String task = this.taskList.modifyTaskStatus(command.getId(), isDone);
         this.saveTasks();
         return isDone ? Ui.getMarkTask(task) : Ui.getUnmarkTask(task);
@@ -53,13 +57,13 @@ public class Laby {
     /**
      * Saves a task-list change and formats the corresponding add or delete response.
      *
-     * @param task Display text of the changed task.
+     * @param taskText Display text of the changed task.
      * @return Formatted response describing the change and current task count.
      * @throws LabyException If the updated task list cannot be saved.
      */
-    private String addTask(String task) throws LabyException {
+    private String addTask(String taskText) throws LabyException {
         this.saveTasks();
-        return Ui.getAddTask(task) + numberOfTasksMessage();
+        return Ui.getAddTask(taskText) + numberOfTasksMessage();
     }
 
     /**
