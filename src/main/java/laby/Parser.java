@@ -105,7 +105,9 @@ public class Parser {
         }
 
         try {
-            int deadlineIndex = parts[1].indexOf("/by");
+            String deadlineIndicator = "/by";
+            int deadlineIndex = parts[1].indexOf(deadlineIndicator);
+            int deadlineBeginIndex = deadlineIndex + deadlineIndicator.length();
             if (deadlineIndex == -1) {
                 throw new LabyException("please enter a deadline with /by.");
             } else if (deadlineIndex < 1) {
@@ -117,7 +119,7 @@ public class Parser {
                 throw new LabyException("task description cannot be empty.");
             }
 
-            String deadlineText = parts[1].substring(deadlineIndex + 3).trim();
+            String deadlineText = parts[1].substring(deadlineBeginIndex).trim();
             if (deadlineText.isEmpty()) {
                 throw new LabyException("task deadline cannot be empty.");
             }
@@ -142,24 +144,28 @@ public class Parser {
         }
 
         try {
-            int startIndex = parts[1].indexOf("/from");
+            String startIndicator = "/from";
+            int startIndex = parts[1].indexOf(startIndicator);
+            int startBeginIndex = startIndex + startIndicator.length();
             if (startIndex == -1) {
                 throw new LabyException("please enter a starting time with /from.");
             } else if (startIndex < 1) {
                 throw new LabyException("task description cannot be empty.");
             }
 
-            int endIndex = parts[1].indexOf("/to", startIndex + 5);
+            String endIndicator = "/to";
+            int endIndex = parts[1].indexOf(endIndicator, startBeginIndex);
+            int endBeginIndex = endIndex + endIndicator.length();
             if (endIndex == -1) {
                 throw new LabyException("please enter an ending time with /to.");
             }
 
-            String startText = parts[1].substring(startIndex + 5, endIndex).trim();
+            String startText = parts[1].substring(startBeginIndex, endIndex).trim();
             if (startText.isEmpty()) {
                 throw new LabyException("task starting time cannot be empty.");
             }
 
-            String endText = parts[1].substring(endIndex + 3).trim();
+            String endText = parts[1].substring(endBeginIndex).trim();
             if (endText.isEmpty()) {
                 throw new LabyException("task ending time cannot be empty.");
             }
@@ -200,12 +206,17 @@ public class Parser {
                 throw new LabyException("invalid file format");
             }
 
-            boolean isTaskDone = parts[1].equals("1");
+            final String todoSymbol = "T";
+            final String deadlineSymbol = "D";
+            final String eventSymbol = "E";
+            final String doneSymbol = "1";
+
+            boolean isTaskDone = parts[1].equals(doneSymbol);
 
             return switch (parts[0]) {
-                case "T" -> new Todo(parts[2], isTaskDone);
-                case "D" -> new Deadline(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isTaskDone);
-                case "E" -> new Event(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
+                case todoSymbol -> new Todo(parts[2], isTaskDone);
+                case deadlineSymbol -> new Deadline(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isTaskDone);
+                case eventSymbol -> new Event(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
                             LocalDateTime.parse(parts[4], DATE_TIME_FORMATTER), isTaskDone);
                 default -> throw new LabyException("invalid file format");
             };
