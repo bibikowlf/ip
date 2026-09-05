@@ -43,7 +43,7 @@ public class Laby {
      * @throws LabyException If the task does not exist or cannot be saved.
      */
     private String markTask(int taskId) throws LabyException {
-        String task = this.taskList.markTask(taskId);
+        String task = this.taskList.modifyTaskStatus(taskId, true);
         this.storage.writeFile(this.taskList);
         return Ui.getMarkTask(task);
     }
@@ -55,7 +55,7 @@ public class Laby {
      * @throws LabyException If the task does not exist or cannot be saved.
      */
     private String unmarkTask(int taskId) throws LabyException {
-        String task = this.taskList.unmarkTask(taskId);
+        String task = this.taskList.modifyTaskStatus(taskId, false);
         this.storage.writeFile(this.taskList);
         return Ui.getUnmarkTask(task);
     }
