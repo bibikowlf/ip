@@ -24,16 +24,16 @@ public class Laby {
      */
     public Laby(String filePath) {
         this.storage = new Storage(filePath);
-        List<Task> tempTasks = new ArrayList<>();
+        List<Task> tempTasks;
 
         try {
             tempTasks = this.storage.readFile();
         } catch (LabyException e) {
             System.out.print(Ui.getReadFileError(e));
             tempTasks = new ArrayList<>();
-        } finally {
-            this.taskList = new TaskList(tempTasks);
         }
+
+        this.taskList = new TaskList(tempTasks);
     }
 
     /**
