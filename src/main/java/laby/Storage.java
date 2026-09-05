@@ -3,22 +3,15 @@ package laby;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import laby.task.Deadline;
-import laby.task.Event;
 import laby.task.Task;
 import laby.task.TaskList;
-import laby.task.Todo;
 
 /** Reads tasks from and writes tasks to the application's data file. */
 public class Storage {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final String filePath;
 
     /**
@@ -90,32 +83,12 @@ public class Storage {
             try (Scanner scanner = new Scanner(file)) {
                 while (scanner.hasNextLine()) {
                     String current = scanner.nextLine();
-                    String[] parts = current.trim().split("\\|");
-                    if (!parts[1].equals("0") && !parts[1].equals("1")) {
-                        throw new LabyException("invalid file format");
-                    }
-
-                    boolean isDone = parts[1].equals("1");
-                    switch (parts[0]) {
-                        case "T":
-                            tasks.add(new Todo(parts[2], isDone));
-                            break;
-                        case "D":
-                            tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isDone));
-                            break;
-                        case "E":
-                            tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
-                                    LocalDateTime.parse(parts[4], DATE_TIME_FORMATTER), isDone));
-                            break;
-                        default:
-                            throw new LabyException("invalid file format");
-                    }
+                    Task currentTask = Parser.parseTaskFromFile(current);
+                    tasks.add(currentTask);
                 }
             }
         } catch (IOException e) {
             throw new LabyException("cannot read from file");
-        } catch (IndexOutOfBoundsException | DateTimeParseException e) {
-            throw new LabyException("invalid file format");
         }
 
         return tasks;

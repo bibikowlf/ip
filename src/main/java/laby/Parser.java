@@ -6,6 +6,10 @@ import java.time.format.DateTimeParseException;
 
 import laby.command.Command;
 import laby.command.CommandType;
+import laby.task.Deadline;
+import laby.task.Event;
+import laby.task.Task;
+import laby.task.Todo;
 
 /** Converts user-entered command text into structured commands. */
 public class Parser {
@@ -180,5 +184,33 @@ public class Parser {
 
         String description = parts[1].trim();
         return new Command(CommandType.from(parts[0]), 0, description, null, null);
+    }
+
+    /**
+     * Parses one serialized task record from the application's data file.
+     *
+     * @param input Serialized task record.
+     * @return Task represented by the record.
+     * @throws LabyException If the record does not follow the storage format.
+     */
+    public static Task parseTaskFromFile(String input) throws LabyException {
+        try {
+            String[] parts = input.trim().split("\\|");
+            if (!parts[1].equals("0") && !parts[1].equals("1")) {
+                throw new LabyException("invalid file format");
+            }
+
+            boolean isTaskDone = parts[1].equals("1");
+
+            return switch (parts[0]) {
+                case "T" -> new Todo(parts[2], isTaskDone);
+                case "D" -> new Deadline(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isTaskDone);
+                case "E" -> new Event(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
+                            LocalDateTime.parse(parts[4], DATE_TIME_FORMATTER), isTaskDone);
+                default -> throw new LabyException("invalid file format");
+            };
+        } catch (IndexOutOfBoundsException | DateTimeParseException e) {
+            throw new LabyException("invalid file format");
+        }
     }
 }
