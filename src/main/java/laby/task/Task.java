@@ -6,15 +6,6 @@ public class Task {
     private boolean isDone;
 
     /**
-     * Creates an incomplete task with the given description.
-     *
-     * @param description Description of the task.
-     */
-    public Task(String description) {
-        this(description, false);
-    }
-
-    /**
      * Creates a task with the given description and completion state.
      *
      * @param description Description of the task.
