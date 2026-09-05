@@ -142,7 +142,6 @@ public class Laby {
             assert command != null : "parser must return a command";
             assert command.getCommandType() != null && command.getCommandType() != CommandType.UNKNOWN
                     : "parser must return a supported command";
-            
             return switch (command.getCommandType()) {
                 case BYE -> Ui.getExitMessage();
                 case LIST -> Ui.getTasks(this.taskList);

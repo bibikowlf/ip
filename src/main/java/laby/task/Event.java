@@ -28,10 +28,11 @@ public class Event extends Task {
      * @param isDone Whether the task is complete.
      */
     public Event(String description, LocalDateTime startTime, LocalDateTime endTime, boolean isDone) {
-        assert startTime != null: "starting time cannot be null";
-        assert endTime != null: "ending time cannot be null";
-
         super(description, isDone);
+
+        assert startTime != null : "starting time cannot be null";
+        assert endTime != null : "ending time cannot be null";
+
         this.startTime = startTime;
         this.endTime = endTime;
     }
