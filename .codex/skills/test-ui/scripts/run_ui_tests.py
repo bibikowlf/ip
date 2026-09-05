@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -67,7 +68,8 @@ def main() -> int:
         inputs = test["inputs"]
         stdin = f"{inputs}\n" if inputs and not inputs.endswith("\n") else inputs
         try:
-            result = subprocess.run(command, shell=True, input=stdin, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout, cwd=Path.cwd())
+            command_parts = shlex.split(command, posix=False)
+            result = subprocess.run(command_parts, input=stdin, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout, cwd=Path.cwd())
         except subprocess.TimeoutExpired as error:
             print_session(test["name"], inputs, error.stdout or "")
             print(f"FAIL: Test {index} timed out after {timeout} seconds.")
