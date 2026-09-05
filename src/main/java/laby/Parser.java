@@ -114,9 +114,8 @@ public class Parser {
         String description = parseField(parts[1], 0, deadlineIndex,
                 DESCRIPTION_FIELD);
 
-        String deadlineText = parseField(parts[1], deadlineBeginIndex, parts[1].length(),
-                "deadline");
-        LocalDateTime deadline = parseDateTime(deadlineText);
+        LocalDateTime deadline = parseDateTimeField(
+                parts[1], deadlineBeginIndex, parts[1].length(), "deadline");
 
         return new Command(CommandType.from(parts[0]), 0, description, deadline, null);
     }
@@ -140,13 +139,10 @@ public class Parser {
         String description = parseField(parts[1], 0, startIndex,
                 DESCRIPTION_FIELD);
 
-        String startText = parseField(parts[1], startBeginIndex, endIndex,
-                "starting time");
-        LocalDateTime startTime = parseDateTime(startText);
-
-        String endText = parseField(parts[1], endBeginIndex, parts[1].length(),
-                "ending time");
-        LocalDateTime endTime = parseDateTime(endText);
+        LocalDateTime startTime = parseDateTimeField(
+                parts[1], startBeginIndex, endIndex, "starting time");
+        LocalDateTime endTime = parseDateTimeField(
+                parts[1], endBeginIndex, parts[1].length(), "ending time");
 
         return new Command(CommandType.from(parts[0]), 0, description, startTime, endTime);
     }
@@ -169,6 +165,23 @@ public class Parser {
         } catch (DateTimeParseException e) {
             throw new LabyException("time format must be yyyy-MM-dd HH:mm.");
         }
+    }
+
+    /**
+     * Extracts and parses a non-empty date-time field from a command string.
+     *
+     * @param input Input containing the date-time field.
+     * @param startIndex Inclusive start index of the field.
+     * @param endIndex Exclusive end index of the field.
+     * @param fieldType Name used in the missing-field error message.
+     * @return Parsed date and time.
+     * @throws LabyException If the field is empty, malformed, or its indexes are invalid.
+     */
+    private static LocalDateTime parseDateTimeField(String input, int startIndex,
+                                                     int endIndex, String fieldType)
+            throws LabyException {
+        String timeText = parseField(input, startIndex, endIndex, fieldType);
+        return parseDateTime(timeText);
     }
 
     /**
