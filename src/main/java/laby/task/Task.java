@@ -11,8 +11,7 @@ public class Task {
      * @param description Description of the task.
      */
     public Task(String description) {
-        this.description = description;
-        this.isDone = false;
+        this(description, false);
     }
 
     /**
@@ -22,6 +21,8 @@ public class Task {
      * @param isDone Whether the task is complete.
      */
     public Task(String description, boolean isDone) {
+        assert description != null && !description.trim().isEmpty() : "description cannot be empty";
+
         this.description = description;
         this.isDone = isDone;
     }

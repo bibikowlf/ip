@@ -14,8 +14,7 @@ public class Deadline extends Task {
      * @param deadline Time by which the task should be completed.
      */
     public Deadline(String description, LocalDateTime deadline) {
-        super(description);
-        this.deadline = deadline;
+        this(description, deadline, false);
     }
 
     /**
@@ -26,6 +25,8 @@ public class Deadline extends Task {
      * @param isDone Whether the task is complete.
      */
     public Deadline(String description, LocalDateTime deadline, boolean isDone) {
+        assert deadline != null: "deadline cannot be null";
+
         super(description, isDone);
         this.deadline = deadline;
     }
