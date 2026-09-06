@@ -101,8 +101,8 @@ public class Storage {
                             tasks.add(new Todo(parts[2], isDone));
                             break;
                         case "D":
-                            tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3],
-                                    DATE_TIME_FORMATTER), isDone));
+                            tasks.add(new Deadline(parts[2],
+                                    LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isDone));
                             break;
                         case "E":
                             tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),

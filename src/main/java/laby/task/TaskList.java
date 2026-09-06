@@ -16,6 +16,10 @@ public class TaskList {
      * @param tasks Mutable list of tasks to manage.
      */
     public TaskList(List<Task> tasks) {
+        assert tasks != null : "task list must be present";
+        for (Task task : tasks) {
+            assert task != null : "task list must not contain null tasks";
+        }
         this.tasks = tasks;
     }
 
