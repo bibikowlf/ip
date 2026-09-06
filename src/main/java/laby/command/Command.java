@@ -21,11 +21,61 @@ public class Command {
      */
     public Command(CommandType commandType, int id, String description,
                    LocalDateTime firstTime, LocalDateTime secondTime) {
+        assert commandType != null : "command type must be present";
+
+        switch (commandType) {
+            case BYE, LIST -> assertNoArguments(id, description, firstTime, secondTime);
+            case MARK, UNMARK, DELETE -> {
+                assert id >= 0 : "task index must be non-negative";
+                assert description == null && firstTime == null && secondTime == null
+                        : "task modification commands must not have extra arguments";
+            }
+            case TODO, FIND -> {
+                assert description != null && !description.isBlank()
+                        : "description must be present";
+                assert firstTime == null && secondTime == null
+                        : "text commands must not have time arguments";
+            }
+            case DEADLINE -> {
+                assert description != null && !description.isBlank()
+                        : "description must be present";
+                assert firstTime != null && secondTime == null
+                        : "deadline must have exactly one time argument";
+            }
+            case EVENT -> {
+                assert description != null && !description.isBlank()
+                        : "description must be present";
+                assert firstTime != null && secondTime != null
+                        : "event must have two time arguments";
+            }
+            case UNKNOWN -> {
+                assert false : "unknown commands must not be constructed";
+            }
+            default -> {
+                assert false : "command type is not handled";
+            }
+        }
+
         this.commandType = commandType;
         this.id = id;
         this.description = description;
         this.firstTime = firstTime;
         this.secondTime = secondTime;
+    }
+
+    /**
+     * Verifies that a command without arguments has no argument values.
+     *
+     * @param id Task index value stored in the command.
+     * @param description Description value stored in the command.
+     * @param firstTime First time value stored in the command.
+     * @param secondTime Second time value stored in the command.
+     */
+    private static void assertNoArguments(int id, String description,
+                                          LocalDateTime firstTime, LocalDateTime secondTime) {
+        assert id == 0 : "argument-free commands must use the default task index";
+        assert description == null && firstTime == null && secondTime == null
+                : "argument-free commands must not have arguments";
     }
 
     /**
