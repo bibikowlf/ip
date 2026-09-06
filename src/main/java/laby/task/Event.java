@@ -16,9 +16,7 @@ public class Event extends Task {
      * @param endTime End of the event.
      */
     public Event(String description, LocalDateTime startTime, LocalDateTime endTime) {
-        super(description);
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this(description, startTime, endTime, false);
     }
 
     /**
@@ -31,6 +29,10 @@ public class Event extends Task {
      */
     public Event(String description, LocalDateTime startTime, LocalDateTime endTime, boolean isDone) {
         super(description, isDone);
+
+        assert startTime != null : "starting time cannot be null";
+        assert endTime != null : "ending time cannot be null";
+
         this.startTime = startTime;
         this.endTime = endTime;
     }

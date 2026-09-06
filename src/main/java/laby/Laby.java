@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import laby.command.Command;
+import laby.command.CommandType;
 import laby.task.Task;
 import laby.task.TaskList;
 
@@ -150,6 +151,9 @@ public class Laby {
     public String executeCommand(String input) {
         try {
             Command command = Parser.parseInput(input);
+            assert command != null : "parser must return a command";
+            assert command.getCommandType() != null && command.getCommandType() != CommandType.UNKNOWN
+                    : "parser must return a supported command";
             return switch (command.getCommandType()) {
                 case BYE -> Ui.getExitMessage();
                 case LIST -> Ui.getTasks(this.taskList);
