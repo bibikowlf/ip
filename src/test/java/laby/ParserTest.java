@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import laby.command.Command;
 import laby.command.CommandType;
+import laby.task.Task;
 
 /** Tests command parsing, including the validation rules used by the application. */
 class ParserTest {
@@ -79,7 +80,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("todo   "));
 
-        assertEquals("task description cannot be empty.", exception.getMessage());
+        assertEquals("description cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -103,7 +104,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("deadline return book"));
 
-        assertEquals("please enter a deadline with /by.", exception.getMessage());
+        assertEquals("description cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -119,7 +120,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event /from 2026-08-23 11:00 /to 2026-08-23 12:00"));
 
-        assertEquals("task description cannot be empty.", exception.getMessage());
+        assertEquals("description cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -127,7 +128,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event project meeting /from 2026-08-23 11:00 /to "));
 
-        assertEquals("task ending time cannot be empty.", exception.getMessage());
+        assertEquals("ending time cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -135,7 +136,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("deadline /by Friday"));
 
-        assertEquals("task description cannot be empty.", exception.getMessage());
+        assertEquals("description cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -143,7 +144,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("deadline buy milk /by "));
 
-        assertEquals("task deadline cannot be empty.", exception.getMessage());
+        assertEquals("deadline cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -151,7 +152,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event project meeting /from 2026-08-23 11:00"));
 
-        assertEquals("please enter an ending time with /to.", exception.getMessage());
+        assertEquals("starting time cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -159,6 +160,30 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event project meeting /from  /to 2026-08-23 12:00"));
 
-        assertEquals("task starting time cannot be empty.", exception.getMessage());
+        assertEquals("starting time cannot be empty.", exception.getMessage());
+    }
+
+    @Test
+    void parseTaskFromFile_validDeadlineRecord_taskParsed() throws LabyException {
+        Task task = Parser.parseTaskFromFile("D|1|return book|2026-08-23 10:00");
+
+        assertEquals("[D][X] return book (by: Aug 23 2026 10:00)", task.toString());
+    }
+
+    @Test
+    void parseTaskFromFile_validEventRecord_taskParsed() throws LabyException {
+        Task task = Parser.parseTaskFromFile(
+                "E|0|project meeting|2026-08-23 11:00|2026-08-23 12:00");
+
+        assertEquals("[E][ ] project meeting (from: Aug 23 2026 11:00 to: Aug 23 2026 12:00)",
+                task.toString());
+    }
+
+    @Test
+    void parseTaskFromFile_malformedRecord_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseTaskFromFile("D|0|return book"));
+
+        assertEquals("invalid file format", exception.getMessage());
     }
 }

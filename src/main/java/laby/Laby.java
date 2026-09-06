@@ -25,40 +25,46 @@ public class Laby {
      */
     public Laby(String filePath) {
         this.storage = new Storage(filePath);
-        List<Task> tempTasks = new ArrayList<>();
+        List<Task> tempTasks;
 
         try {
             tempTasks = this.storage.readFile();
         } catch (LabyException e) {
             System.out.print(Ui.getReadFileError(e));
             tempTasks = new ArrayList<>();
-        } finally {
-            this.taskList = new TaskList(tempTasks);
         }
+
+        this.taskList = new TaskList(tempTasks);
     }
 
     /**
-     * Marks a task, displays the result, and saves the updated list.
+     * Modifies a task's completion status, displays the result, and saves the updated list.
      *
-     * @param taskId Zero-based index of the task to mark.
+     * @param command Command containing the zero-based task index and requested status change.
      * @throws LabyException If the task does not exist or cannot be saved.
      */
-    private String markTask(int taskId) throws LabyException {
-        String task = this.taskList.markTask(taskId);
-        this.storage.writeFile(this.taskList);
-        return Ui.getMarkTask(task);
+    private String modifyTaskStatus(Command command) throws LabyException {
+        boolean isDone = switch (command.getCommandType()) {
+            case MARK -> true;
+            case UNMARK -> false;
+            default -> throw new LabyException("invalid command.");
+        };
+
+        String task = this.taskList.modifyTaskStatus(command.getId(), isDone);
+        this.saveTasks();
+        return isDone ? Ui.getMarkTask(task) : Ui.getUnmarkTask(task);
     }
 
     /**
-     * Unmarks a task, displays the result, and saves the updated list.
+     * Saves a task-list change and formats the corresponding add or delete response.
      *
-     * @param taskId Zero-based index of the task to unmark.
-     * @throws LabyException If the task does not exist or cannot be saved.
+     * @param taskText Display text of the changed task.
+     * @return Formatted response describing the change and current task count.
+     * @throws LabyException If the updated task list cannot be saved.
      */
-    private String unmarkTask(int taskId) throws LabyException {
-        String task = this.taskList.unmarkTask(taskId);
-        this.storage.writeFile(this.taskList);
-        return Ui.getUnmarkTask(task);
+    private String addTask(String taskText) throws LabyException {
+        this.saveTasks();
+        return Ui.getAddTask(taskText) + numberOfTasksMessage();
     }
 
     /**
@@ -69,7 +75,7 @@ public class Laby {
      */
     private String deleteTask(int taskId) throws LabyException {
         String task = this.taskList.deleteTask(taskId);
-        this.storage.writeFile(this.taskList);
+        this.saveTasks();
         return Ui.getDeleteTask(task) + numberOfTasksMessage();
     }
 
@@ -81,8 +87,7 @@ public class Laby {
      */
     private String addTodo(String description) throws LabyException {
         String task = this.taskList.addTodo(description);
-        this.storage.writeFile(this.taskList);
-        return Ui.getAddTask(task) + numberOfTasksMessage();
+        return this.addTask(task);
     }
 
     /**
@@ -94,8 +99,7 @@ public class Laby {
      */
     private String addDeadline(String description, LocalDateTime deadline) throws LabyException {
         String task = this.taskList.addDeadline(description, deadline);
-        this.storage.writeFile(this.taskList);
-        return Ui.getAddTask(task) + numberOfTasksMessage();
+        return this.addTask(task);
     }
 
     /**
@@ -108,8 +112,7 @@ public class Laby {
      */
     private String addEvent(String description, LocalDateTime startTime, LocalDateTime endTime) throws LabyException {
         String task = this.taskList.addEvent(description, startTime, endTime);
-        this.storage.writeFile(this.taskList);
-        return Ui.getAddTask(task) + numberOfTasksMessage();
+        return this.addTask(task);
     }
 
     /**
@@ -131,6 +134,15 @@ public class Laby {
     }
 
     /**
+     * Persists the current task list.
+     *
+     * @throws LabyException If the task list cannot be saved.
+     */
+    private void saveTasks() throws LabyException {
+        this.storage.writeFile(this.taskList);
+    }
+
+    /**
      * Parses and executes one command without directly writing to the console.
      *
      * @param input User-entered command.
@@ -145,8 +157,7 @@ public class Laby {
             return switch (command.getCommandType()) {
                 case BYE -> Ui.getExitMessage();
                 case LIST -> Ui.getTasks(this.taskList);
-                case MARK -> this.markTask(command.getId());
-                case UNMARK -> this.unmarkTask(command.getId());
+                case MARK, UNMARK -> this.modifyTaskStatus(command);
                 case DELETE -> this.deleteTask(command.getId());
                 case TODO -> this.addTodo(command.getDescription());
                 case DEADLINE -> this.addDeadline(command.getDescription(), command.getFirstTime());

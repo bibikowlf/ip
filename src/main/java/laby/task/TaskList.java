@@ -33,33 +33,17 @@ public class TaskList {
     }
 
     /**
-     * Marks the task at {@code index} as done and returns its display text.
+     * Sets the completion status of the task at {@code index} and returns its display text.
      *
-     * @param index Zero-based index of the task to mark.
-     * @return Display text of the marked task.
+     * @param index Zero-based index of the task to modify.
+     * @param isDone Whether the task should be marked as done.
+     * @return Display text of the modified task.
      * @throws LabyException If the index does not identify a task.
      */
-    public String markTask(int index) throws LabyException {
+    public String modifyTaskStatus(int index, boolean isDone) throws LabyException {
         try {
             Task task = this.tasks.get(index);
-            task.setDone(true);
-            return task.toString();
-        } catch (IndexOutOfBoundsException e) {
-            throw new LabyException("please enter a valid task index.");
-        }
-    }
-
-    /**
-     * Marks the task at {@code index} as not done and returns its display text.
-     *
-     * @param index Zero-based index of the task to unmark.
-     * @return Display text of the unmarked task.
-     * @throws LabyException If the index does not identify a task.
-     */
-    public String unmarkTask(int index) throws LabyException {
-        try {
-            Task task = this.tasks.get(index);
-            task.setDone(false);
+            task.setDone(isDone);
             return task.toString();
         } catch (IndexOutOfBoundsException e) {
             throw new LabyException("please enter a valid task index.");

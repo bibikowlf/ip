@@ -40,7 +40,7 @@ class StorageTest {
         taskList.addTodo("read book");
         taskList.addDeadline("return book", DEADLINE);
         taskList.addEvent("project meeting", EVENT_START, EVENT_END);
-        taskList.markTask(0);
+        taskList.modifyTaskStatus(0, true);
 
         Storage storage = new Storage(file.toString());
         storage.writeFile(taskList);

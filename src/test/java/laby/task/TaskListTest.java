@@ -69,7 +69,7 @@ class TaskListTest {
         TaskList taskList = new TaskList(new ArrayList<>());
         taskList.addTodo("read book");
 
-        String markedTask = taskList.markTask(0);
+        String markedTask = taskList.modifyTaskStatus(0, true);
 
         assertEquals("[T][X] read book", markedTask);
     }
@@ -78,9 +78,9 @@ class TaskListTest {
     void markTask_alreadyMarkedTask_remainsMarkedDone() throws LabyException {
         TaskList taskList = new TaskList(new ArrayList<>());
         taskList.addTodo("read book");
-        taskList.markTask(0);
+        taskList.modifyTaskStatus(0, true);
 
-        String markedTask = taskList.markTask(0);
+        String markedTask = taskList.modifyTaskStatus(0, true);
 
         assertEquals("[T][X] read book", markedTask);
     }
@@ -90,7 +90,7 @@ class TaskListTest {
         TaskList taskList = new TaskList(new ArrayList<>());
 
         LabyException exception = assertThrows(LabyException.class,
-                () -> taskList.markTask(-1));
+                () -> taskList.modifyTaskStatus(-1, true));
 
         assertEquals("please enter a valid task index.", exception.getMessage());
     }
@@ -101,7 +101,7 @@ class TaskListTest {
         taskList.addTodo("read book");
 
         LabyException exception = assertThrows(LabyException.class,
-                () -> taskList.markTask(1));
+                () -> taskList.modifyTaskStatus(1, true));
 
         assertEquals("please enter a valid task index.", exception.getMessage());
     }
@@ -110,9 +110,9 @@ class TaskListTest {
     void unmarkTask_markedTask_taskIsMarkedUndone() throws LabyException {
         TaskList taskList = new TaskList(new ArrayList<>());
         taskList.addTodo("read book");
-        taskList.markTask(0);
+        taskList.modifyTaskStatus(0, true);
 
-        String unmarkedTask = taskList.unmarkTask(0);
+        String unmarkedTask = taskList.modifyTaskStatus(0, false);
 
         assertEquals("[T][ ] read book", unmarkedTask);
     }
@@ -122,7 +122,7 @@ class TaskListTest {
         TaskList taskList = new TaskList(new ArrayList<>());
 
         LabyException exception = assertThrows(LabyException.class,
-                () -> taskList.unmarkTask(0));
+                () -> taskList.modifyTaskStatus(0, false));
 
         assertEquals("please enter a valid task index.", exception.getMessage());
     }
@@ -198,7 +198,7 @@ class TaskListTest {
         taskList.addTodo("read book");
         taskList.addDeadline("return book", DEADLINE);
         taskList.addEvent("project meeting", EVENT_START, EVENT_END);
-        taskList.markTask(0);
+        taskList.modifyTaskStatus(0, true);
 
         assertEquals("""
                         T|1|read book
