@@ -2,6 +2,7 @@ package laby.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /** Represents a task that must be completed by a specific time. */
 public class Deadline extends Task {
@@ -37,7 +38,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy HH:mm", Locale.ENGLISH);
         return "[D]" + super.toString() + " (by: " + this.deadline.format(formatter) + ")";
     }
 

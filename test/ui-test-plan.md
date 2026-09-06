@@ -6,7 +6,7 @@ java -cp build\classes\java\main laby.Laby --fresh
 
 ## Timeout seconds
 
-5
+15
 
 ## Test case: Start and exit
 

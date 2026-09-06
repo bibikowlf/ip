@@ -2,6 +2,7 @@ package laby.task;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import laby.LabyException;
 
@@ -123,11 +124,9 @@ public class TaskList {
      * @return Serialized representation of all tasks.
      */
     public String toFileString() {
-        StringBuilder result = new StringBuilder();
-        for (Task task : this.tasks) {
-            result.append(task.toFileString());
-        }
-        return result.toString();
+        return this.tasks.stream()
+                .map(Task::toFileString)
+                .collect(Collectors.joining());
     }
 
     /**
