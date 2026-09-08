@@ -13,6 +13,7 @@ import laby.task.Todo;
 
 /** Converts user-entered command text into structured commands. */
 public class Parser {
+    public static final String FIELD_SEPARATOR = "|";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final String DESCRIPTION_FIELD = "description";
 
@@ -24,6 +25,9 @@ public class Parser {
      * @throws LabyException If the input does not follow a supported command format.
      */
     public static Command parseInput(String input) throws LabyException {
+        if (!isValidInput(input)) {
+            throw new LabyException("invalid input.");
+        }
         String[] parts = input.trim().split("\\s+", 2);
         CommandType commandType = CommandType.from(parts[0]);
 
@@ -249,5 +253,16 @@ public class Parser {
         } catch (IndexOutOfBoundsException | DateTimeParseException e) {
             throw new LabyException("invalid file format");
         }
+    }
+
+    /**
+     * Checks whether a input is valid.
+     *
+     * @param field Field value to validate.
+     * @return Whether the field is non-empty and contains no record delimiters.
+     */
+    public static boolean isValidInput(String field) {
+        return field != null && !field.trim().isEmpty()
+                && !field.contains(FIELD_SEPARATOR);
     }
 }
