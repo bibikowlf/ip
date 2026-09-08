@@ -56,7 +56,7 @@ class StorageTest {
     @Test
     void readTasksFromFile_unknownTaskType_exceptionThrown(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("laby.txt");
-        Files.writeString(file, "X|0|unknown\n");
+        Files.writeString(file, "X" + Parser.FIELD_SEPARATOR + "0" + Parser.FIELD_SEPARATOR + "unknown\n");
 
         LabyException exception = assertThrows(LabyException.class,
                 () -> new Storage(file.toString()).readFile());
@@ -67,7 +67,8 @@ class StorageTest {
     @Test
     void readTasksFromFile_invalidCompletionFlag_exceptionThrown(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("laby.txt");
-        Files.writeString(file, "T|2|read book\n");
+        Files.writeString(file, "T" + Parser.FIELD_SEPARATOR + "2"
+                + Parser.FIELD_SEPARATOR + "read book\n");
 
         LabyException exception = assertThrows(LabyException.class,
                 () -> new Storage(file.toString()).readFile());
@@ -78,7 +79,8 @@ class StorageTest {
     @Test
     void readTasksFromFile_missingTaskFields_exceptionThrown(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("laby.txt");
-        Files.writeString(file, "D|0|return book\n");
+        Files.writeString(file, "D" + Parser.FIELD_SEPARATOR + "0"
+                + Parser.FIELD_SEPARATOR + "return book\n");
 
         LabyException exception = assertThrows(LabyException.class,
                 () -> new Storage(file.toString()).readFile());

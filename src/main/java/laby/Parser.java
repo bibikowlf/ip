@@ -3,6 +3,7 @@ package laby;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 import laby.command.Command;
 import laby.command.CommandType;
@@ -230,7 +231,7 @@ public class Parser {
      */
     public static Task parseTaskFromFile(String input) throws LabyException {
         try {
-            String[] parts = input.trim().split("\\|");
+            String[] parts = input.trim().split(Pattern.quote(FIELD_SEPARATOR));
             if (!parts[1].equals("0") && !parts[1].equals("1")) {
                 throw new LabyException("invalid file format");
             }
