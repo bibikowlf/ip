@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
+import laby.contact.Contact;
 import laby.command.Command;
 import laby.command.CommandType;
 import laby.task.Deadline;
@@ -35,6 +36,8 @@ public class Parser {
         return switch (commandType) {
             case BYE, LIST -> parseByeOrList(parts);
             case MARK, UNMARK, DELETE -> parseModifyTask(parts);
+            case DELETE_CONTACT -> parseDeleteContact(parts);
+            case ADD_CONTACT -> parseAddContact(parts);
             case TODO, DEADLINE, EVENT -> parseTask(parts);
             case FIND -> parseFind(parts);
             default -> throw new LabyException("please input the correct commands.");
@@ -76,6 +79,68 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a command that targets a contact by its one-based user index.
+     *
+     * @param parts Command words containing the contact index.
+     * @return Parsed contact-modification command.
+     * @throws LabyException If the contact index is missing or invalid.
+     */
+    private static Command parseDeleteContact(String[] parts) throws LabyException {
+        if (parts.length != 2) {
+            throw new LabyException("please enter a valid contact index.");
+        }
+
+        try {
+            int id = Integer.parseInt(parts[1]) - 1;
+            return new Command(CommandType.DELETE_CONTACT, id,
+                    null, null, null, null, null);
+        } catch (NumberFormatException e) {
+            throw new LabyException("please enter a valid contact index.");
+        }
+    }
+
+    /**
+     * Parses an add-contact command containing a name, phone number, and email address.
+     *
+     * @param parts Command words containing the contact details.
+     * @return Parsed add-contact command.
+     * @throws LabyException If a marker or contact field is missing.
+     */
+    private static Command parseAddContact(String[] parts) throws LabyException {
+        if (parts.length != 2) {
+            throw new LabyException(getErrorMessage("name"));
+        }
+
+        String input = parts[1];
+        String phoneIndicator = "/p";
+        int phoneIndex = input.indexOf(phoneIndicator);
+        if (phoneIndex < 0) {
+            throw new LabyException(getErrorMessage("phone number"));
+        }
+
+        String emailIndicator = "/e";
+        int emailIndex = input.indexOf(emailIndicator, phoneIndex + phoneIndicator.length());
+        if (emailIndex < 0) {
+            throw new LabyException(getErrorMessage("email"));
+        }
+
+        String name = parseField(input, 0, phoneIndex, "name");
+        String phone = parseField(input, phoneIndex + phoneIndicator.length(), emailIndex,
+                "phone number");
+        String email = parseField(input, emailIndex + emailIndicator.length(), input.length(),
+                "email");
+
+        return new Command(CommandType.ADD_CONTACT, 0, name, phone, email, null, null);
+    }
+
+    /**
+     * Parses a task-creation command and dispatches it to the task-specific parser.
+     *
+     * @param parts Command words containing the task details.
+     * @return Parsed task-creation command.
+     * @throws LabyException If the task details are missing or malformed.
+     */
     private static Command parseTask(String[] parts) throws LabyException {
         if (parts.length != 2) {
             throw new LabyException(getErrorMessage(DESCRIPTION_FIELD));
@@ -252,6 +317,26 @@ public class Parser {
                 default -> throw new LabyException("invalid file format");
             };
         } catch (IndexOutOfBoundsException | DateTimeParseException e) {
+            throw new LabyException("invalid file format");
+        }
+    }
+
+    /**
+     * Parses one serialized contact record from the application's data file.
+     *
+     * @param input Serialized contact record.
+     * @return Contact represented by the record.
+     * @throws LabyException If the record does not follow the contact storage format.
+     */
+    public static Contact parseContactFromFile(String input) throws LabyException {
+        try {
+            String[] parts = input.trim().split(Pattern.quote(FIELD_SEPARATOR), -1);
+            if (parts.length != 4 || !parts[0].equals("C")) {
+                throw new LabyException("invalid file format");
+            }
+
+            return new Contact(parts[1], parts[2], parts[3]);
+        } catch (IndexOutOfBoundsException e) {
             throw new LabyException("invalid file format");
         }
     }

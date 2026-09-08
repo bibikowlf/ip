@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
+import laby.contact.Contact;
 import laby.command.Command;
 import laby.command.CommandType;
 import laby.task.Task;
@@ -30,6 +31,33 @@ class ParserTest {
 
         assertEquals(CommandType.MARK, command.getCommandType());
         assertEquals(2, command.getId());
+    }
+
+    @Test
+    void parseInput_addContact_parsesAllContactFields() throws LabyException {
+        Command command = Parser.parseInput(
+                "addcontact John Doe /p 91234567 /e john@example.com");
+
+        assertEquals(CommandType.ADD_CONTACT, command.getCommandType());
+        assertEquals("John Doe", command.getDescription());
+        assertEquals("91234567", command.getPhone());
+        assertEquals("john@example.com", command.getEmail());
+    }
+
+    @Test
+    void parseInput_deleteContact_convertsOneBasedIndexToZeroBasedId() throws LabyException {
+        Command command = Parser.parseInput("deletecontact 3");
+
+        assertEquals(CommandType.DELETE_CONTACT, command.getCommandType());
+        assertEquals(2, command.getId());
+    }
+
+    @Test
+    void parseInput_addContact_missingPhone_throwsException() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("addcontact John Doe /e john@example.com"));
+
+        assertEquals("phone number cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -177,6 +205,23 @@ class ParserTest {
 
         assertEquals("[E][ ] project meeting (from: Aug 23 2026 11:00 to: Aug 23 2026 12:00)",
                 task.toString());
+    }
+
+    @Test
+    void parseContactFromFile_validRecord_contactParsed() throws LabyException {
+        Contact contact = Parser.parseContactFromFile("C|John Doe|91234567|john@example.com");
+
+        assertEquals("John Doe", contact.getName());
+        assertEquals("91234567", contact.getPhone());
+        assertEquals("john@example.com", contact.getEmail());
+    }
+
+    @Test
+    void parseContactFromFile_malformedRecord_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseContactFromFile("C|John Doe|91234567"));
+
+        assertEquals("invalid file format", exception.getMessage());
     }
 
     @Test
