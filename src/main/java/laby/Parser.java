@@ -53,7 +53,7 @@ public class Parser {
             throw new LabyException("please enter a valid command.");
         }
 
-        return new Command(CommandType.from(parts[0]), 0, null, null, null);
+        return new Command(CommandType.from(parts[0]), 0, null, null, null, null, null);
     }
 
     /**
@@ -70,7 +70,7 @@ public class Parser {
 
         try {
             int id = Integer.parseInt(parts[1]) - 1;
-            return new Command(CommandType.from(parts[0]), id, null, null, null);
+            return new Command(CommandType.from(parts[0]), id, null, null, null, null, null);
         } catch (NumberFormatException e) {
             throw new LabyException("please enter a valid task index.");
         }
@@ -101,7 +101,7 @@ public class Parser {
         String description = parseField(parts[1], 0, parts[1].length(),
                 DESCRIPTION_FIELD);
 
-        return new Command(CommandType.from(parts[0]), 0, description, null, null);
+        return new Command(CommandType.from(parts[0]), 0, description, null, null, null, null);
     }
 
     /**
@@ -122,7 +122,7 @@ public class Parser {
         LocalDateTime deadline = parseDateTimeField(
                 parts[1], deadlineBeginIndex, parts[1].length(), "deadline");
 
-        return new Command(CommandType.from(parts[0]), 0, description, deadline, null);
+        return new Command(CommandType.from(parts[0]), 0, description, null, null, deadline, null);
     }
 
     /**
@@ -149,7 +149,7 @@ public class Parser {
         LocalDateTime endTime = parseDateTimeField(
                 parts[1], endBeginIndex, parts[1].length(), "ending time");
 
-        return new Command(CommandType.from(parts[0]), 0, description, startTime, endTime);
+        return new Command(CommandType.from(parts[0]), 0, description, null, null, startTime, endTime);
     }
 
     private static Command parseFind(String[] parts) throws LabyException {
@@ -158,7 +158,7 @@ public class Parser {
         }
 
         String description = parts[1].trim();
-        return new Command(CommandType.from(parts[0]), 0, description, null, null);
+        return new Command(CommandType.from(parts[0]), 0, description, null, null, null, null);
     }
 
     private static LocalDateTime parseDateTime(String input) throws LabyException {
