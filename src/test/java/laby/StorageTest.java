@@ -72,10 +72,10 @@ class StorageTest {
         List<Contact> contacts = storage.readContacts();
 
         assertEquals(1, tasks.size());
-        assertEquals("[T][ ] read book", tasks.get(0).toString());
+        assertEquals("[T][ ] read book", tasks.getFirst().toString());
         assertEquals(1, contacts.size());
         assertEquals("John Doe | Phone: 91234567 | Email: john@example.com",
-                contacts.get(0).toString());
+                contacts.getFirst().toString());
     }
 
     @Test
