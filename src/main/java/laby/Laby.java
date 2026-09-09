@@ -59,7 +59,7 @@ public class Laby {
     }
 
     /**
-     * Saves a task-list change and formats the corresponding add or delete response.
+     * Saves a task-list change and formats the corresponding response.
      *
      * @param taskText Display text of the changed task.
      * @return Formatted response describing the change and current task count.
@@ -159,7 +159,7 @@ public class Laby {
                     : "parser must return a supported command";
             return switch (command.getCommandType()) {
                 case BYE -> Ui.getExitMessage();
-                case LIST -> Ui.getTasks(this.taskList);
+                case LIST -> Ui.getItems(this.taskList, this.contactList);
                 case MARK, UNMARK -> this.modifyTaskStatus(command);
                 case DELETE -> this.deleteTask(command.getId());
                 case TODO -> this.addTodo(command.getDescription());

@@ -1,5 +1,6 @@
 package laby;
 
+import laby.contact.ContactList;
 import laby.task.TaskList;
 
 /** Handles all console output produced by the application. */
@@ -15,12 +16,14 @@ public class Ui {
     private static final String MSG_OPEN = "Hello Chief. Laby is your personal assistant.\n";
     private static final String MSG_ASK = "What orders do you have today?\n";
     private static final String MSG_EXIT = "Goodbye. Switching to rest mode.\n";
-    private static final String MSG_LIST = "Here are the tasks in your list:\n";
+    private static final String MSG_LIST = "Here are the tasks and contacts in your list:\n";
     private static final String MSG_FILTER = "Here are the matching tasks in your list:\n";
     private static final String MSG_MARK = "Understood. Laby has marked the task as done.\n";
     private static final String MSG_UNMARK = "Understood. Laby has marked the task as not done.\n";
     private static final String MSG_ADD = "Laby has added the task. Make sure to rest, Chief :o\n";
     private static final String MSG_DELETE = "Laby has deleted the task. Glad to see you resting ;)\n";
+    private static final String MSG_ADD_CONTACT = "Laby has added the contact. Did Chief find a better assistant :(\n";
+    private static final String MSG_DELETE_CONTACT = "Laby has deleted the contact. Seems like Laby is enough :D\n";
 
     /**
      * Displays a file-loading error and tells the user that a new file will be used.
@@ -63,8 +66,19 @@ public class Ui {
      *
      * @param taskList Task list to display.
      */
-    public static String getTasks(TaskList taskList) {
-        return MSG_LIST + taskList;
+    public static String getItems(TaskList taskList, ContactList contactList) {
+        return MSG_LIST + taskList + "\n" + contactList + "\n";
+    }
+
+    /**
+     * Displays the current number of contacts.
+     *
+     * @param numberOfContacts Number of contacts to display.
+     * @return Formatted contact-count message.
+     */
+    public static String getNumberOfContacts(int numberOfContacts) {
+        return "There is a total of " + numberOfContacts + " contact"
+                + (numberOfContacts > 1 ? "s" : "") + " in your list.\n";
     }
 
     /**
@@ -101,6 +115,26 @@ public class Ui {
      */
     public static String getAddTask(String task) {
         return MSG_ADD + "  " + task + "\n";
+    }
+
+    /**
+     * Displays confirmation that a contact was added.
+     *
+     * @param contact Display text of the added contact.
+     * @return Formatted add-contact confirmation.
+     */
+    public static String getAddContact(String contact) {
+        return MSG_ADD_CONTACT + "  " + contact + "\n";
+    }
+
+    /**
+     * Displays confirmation that a contact was deleted.
+     *
+     * @param contact Display text of the deleted contact.
+     * @return Formatted delete-contact confirmation.
+     */
+    public static String getDeleteContact(String contact) {
+        return MSG_DELETE_CONTACT + "  " + contact + "\n";
     }
 
     /**
