@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
-import laby.contact.Contact;
 import laby.command.Command;
 import laby.command.CommandType;
+import laby.contact.Contact;
 import laby.task.Deadline;
 import laby.task.Event;
 import laby.task.Task;
@@ -35,8 +35,7 @@ public class Parser {
 
         return switch (commandType) {
             case BYE, LIST -> parseByeOrList(parts);
-            case MARK, UNMARK, DELETE -> parseModifyTask(parts);
-            case DELETE_CONTACT -> parseDeleteContact(parts);
+            case MARK, UNMARK, DELETE, DELETE_CONTACT -> parseModifyItem(parts);
             case ADD_CONTACT -> parseAddContact(parts);
             case TODO, DEADLINE, EVENT -> parseTask(parts);
             case FIND -> parseFind(parts);
@@ -60,43 +59,25 @@ public class Parser {
     }
 
     /**
-     * Parses a command that targets a task by its one-based user index.
+     * Parses a command that targets an item by its one-based user index.
      *
-     * @param parts Command words containing the task index.
-     * @return Parsed task-modification command.
-     * @throws LabyException If the task index is missing or invalid.
+     * @param parts Command words containing the index.
+     * @return Parsed item-modification command.
+     * @throws LabyException If the index is missing or invalid.
      */
-    private static Command parseModifyTask(String[] parts) throws LabyException {
+    private static Command parseModifyItem(String[] parts) throws LabyException {
+        String invalidIndexErrorMsg = "please enter a valid index.";
+
         if (parts.length != 2) {
-            throw new LabyException("please enter a valid task index.");
+            throw new LabyException(invalidIndexErrorMsg);
         }
 
         try {
-            int id = Integer.parseInt(parts[1]) - 1;
+            String input = parts[1].trim();
+            int id = Integer.parseInt(input) - 1;
             return new Command(CommandType.from(parts[0]), id, null, null, null, null, null);
         } catch (NumberFormatException e) {
-            throw new LabyException("please enter a valid task index.");
-        }
-    }
-
-    /**
-     * Parses a command that targets a contact by its one-based user index.
-     *
-     * @param parts Command words containing the contact index.
-     * @return Parsed contact-modification command.
-     * @throws LabyException If the contact index is missing or invalid.
-     */
-    private static Command parseDeleteContact(String[] parts) throws LabyException {
-        if (parts.length != 2) {
-            throw new LabyException("please enter a valid contact index.");
-        }
-
-        try {
-            int id = Integer.parseInt(parts[1]) - 1;
-            return new Command(CommandType.DELETE_CONTACT, id,
-                    null, null, null, null, null);
-        } catch (NumberFormatException e) {
-            throw new LabyException("please enter a valid contact index.");
+            throw new LabyException(invalidIndexErrorMsg);
         }
     }
 
@@ -114,16 +95,11 @@ public class Parser {
 
         String input = parts[1];
         String phoneIndicator = "/p";
-        int phoneIndex = input.indexOf(phoneIndicator);
-        if (phoneIndex < 0) {
-            throw new LabyException(getErrorMessage("phone number"));
-        }
+        int phoneIndex = getIndexOfField(input, phoneIndicator, 0, "phone number");
 
         String emailIndicator = "/e";
-        int emailIndex = input.indexOf(emailIndicator, phoneIndex + phoneIndicator.length());
-        if (emailIndex < 0) {
-            throw new LabyException(getErrorMessage("email"));
-        }
+        int emailIndex = getIndexOfField(input, emailIndicator,
+                phoneIndex + phoneIndicator.length(), "email");
 
         String name = parseField(input, 0, phoneIndex, "name");
         String phone = parseField(input, phoneIndex + phoneIndicator.length(), emailIndex,
@@ -163,10 +139,10 @@ public class Parser {
      * @throws LabyException If the task description is missing.
      */
     private static Command parseTodo(String[] parts) throws LabyException {
-        String description = parseField(parts[1], 0, parts[1].length(),
-                DESCRIPTION_FIELD);
+        String input = parts[1];
+        String description = parseField(input, 0, input.length(), DESCRIPTION_FIELD);
 
-        return new Command(CommandType.from(parts[0]), 0, description, null, null, null, null);
+        return new Command(CommandType.TODO, 0, description, null, null, null, null);
     }
 
     /**
@@ -177,17 +153,16 @@ public class Parser {
      * @throws LabyException If the description, marker, or deadline is invalid.
      */
     private static Command parseDeadline(String[] parts) throws LabyException {
+        String input = parts[1];
         String deadlineIndicator = "/by";
-        int deadlineIndex = parts[1].indexOf(deadlineIndicator);
+        int deadlineIndex = getIndexOfField(input, deadlineIndicator, 0, "deadline");
         int deadlineBeginIndex = deadlineIndex + deadlineIndicator.length();
 
-        String description = parseField(parts[1], 0, deadlineIndex,
-                DESCRIPTION_FIELD);
+        String description = parseField(input, 0, deadlineIndex, DESCRIPTION_FIELD);
 
-        LocalDateTime deadline = parseDateTimeField(
-                parts[1], deadlineBeginIndex, parts[1].length(), "deadline");
+        LocalDateTime deadline = parseDateTimeField(input, deadlineBeginIndex, input.length(), "deadline");
 
-        return new Command(CommandType.from(parts[0]), 0, description, null, null, deadline, null);
+        return new Command(CommandType.DEADLINE, 0, description, null, null, deadline, null);
     }
 
     /**
@@ -198,23 +173,21 @@ public class Parser {
      * @throws LabyException If the description, markers, or event times are invalid.
      */
     private static Command parseEvent(String[] parts) throws LabyException {
+        String input = parts[1];
         String startIndicator = "/from";
-        int startIndex = parts[1].indexOf(startIndicator);
+        int startIndex = getIndexOfField(input, startIndicator, 0, "starting time");
         int startBeginIndex = startIndex + startIndicator.length();
 
         String endIndicator = "/to";
-        int endIndex = parts[1].indexOf(endIndicator, startBeginIndex);
+        int endIndex = getIndexOfField(input, endIndicator, startBeginIndex, "ending time");
         int endBeginIndex = endIndex + endIndicator.length();
 
-        String description = parseField(parts[1], 0, startIndex,
-                DESCRIPTION_FIELD);
+        String description = parseField(input, 0, startIndex, DESCRIPTION_FIELD);
 
-        LocalDateTime startTime = parseDateTimeField(
-                parts[1], startBeginIndex, endIndex, "starting time");
-        LocalDateTime endTime = parseDateTimeField(
-                parts[1], endBeginIndex, parts[1].length(), "ending time");
+        LocalDateTime startTime = parseDateTimeField(input, startBeginIndex, endIndex, "starting time");
+        LocalDateTime endTime = parseDateTimeField(input, endBeginIndex, input.length(), "ending time");
 
-        return new Command(CommandType.from(parts[0]), 0, description, null, null, startTime, endTime);
+        return new Command(CommandType.EVENT, 0, description, null, null, startTime, endTime);
     }
 
     private static Command parseFind(String[] parts) throws LabyException {
@@ -223,7 +196,7 @@ public class Parser {
         }
 
         String description = parts[1].trim();
-        return new Command(CommandType.from(parts[0]), 0, description, null, null, null, null);
+        return new Command(CommandType.FIND, 0, description, null, null, null, null);
     }
 
     private static LocalDateTime parseDateTime(String input) throws LabyException {
@@ -275,6 +248,15 @@ public class Parser {
         } catch (IndexOutOfBoundsException e) {
             throw new LabyException(getErrorMessage(fieldType));
         }
+    }
+
+    private static int getIndexOfField(String input, String target, int startIndex, String field) throws LabyException {
+        int index = input.indexOf(target, startIndex);
+        if (index < 0) {
+            throw new LabyException(getErrorMessage(field));
+        }
+
+        return index;
     }
 
     /**

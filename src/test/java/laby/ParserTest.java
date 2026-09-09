@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
-import laby.contact.Contact;
 import laby.command.Command;
 import laby.command.CommandType;
+import laby.contact.Contact;
 import laby.task.Task;
 
 /** Tests command parsing, including the validation rules used by the application. */
@@ -34,7 +34,7 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_addContact_parsesAllContactFields() throws LabyException {
+    void parseInput_addContactCommand_parsesAllContactFields() throws LabyException {
         Command command = Parser.parseInput(
                 "addcontact John Doe /p 91234567 /e john@example.com");
 
@@ -45,7 +45,7 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_deleteContact_convertsOneBasedIndexToZeroBasedId() throws LabyException {
+    void parseInput_deleteContactCommand_convertsOneBasedIndexToZeroBasedId() throws LabyException {
         Command command = Parser.parseInput("deletecontact 3");
 
         assertEquals(CommandType.DELETE_CONTACT, command.getCommandType());
@@ -53,7 +53,7 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_addContact_missingPhone_throwsException() {
+    void parseInput_missingAddContactPhone_throwsException() {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("addcontact John Doe /e john@example.com"));
 
@@ -124,7 +124,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("delete abc"));
 
-        assertEquals("please enter a valid task index.", exception.getMessage());
+        assertEquals("please enter a valid index.", exception.getMessage());
     }
 
     @Test
@@ -132,7 +132,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("deadline return book"));
 
-        assertEquals("description cannot be empty.", exception.getMessage());
+        assertEquals("deadline cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -180,7 +180,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event project meeting /from 2026-08-23 11:00"));
 
-        assertEquals("starting time cannot be empty.", exception.getMessage());
+        assertEquals("ending time cannot be empty.", exception.getMessage());
     }
 
     @Test
