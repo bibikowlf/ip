@@ -31,7 +31,7 @@ class LabyTest {
 
         String markResponse = laby.executeCommand("mark 1");
         String unmarkResponse = laby.executeCommand("unmark 1");
-        String deleteResponse = laby.executeCommand("delete 1");
+        String deleteResponse = laby.executeCommand("deletetask 1");
 
         assertTrue(markResponse.contains("[T][X] read book"));
         assertTrue(markResponse.contains("Understood. Laby has marked the task as done."));
@@ -48,7 +48,7 @@ class LabyTest {
         Laby laby = new Laby(file.toString());
 
         String addResponse = laby.executeCommand(
-                "addcontact John Doe /p 91234567 /e john@example.com");
+                "contact John Doe /p 91234567 /e john@example.com");
         String listResponse = laby.executeCommand("list");
 
         assertTrue(addResponse.contains("Laby has added the contact."));

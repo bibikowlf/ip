@@ -245,7 +245,7 @@ Verify that laby.Laby reports a validation error when a task description or task
 todo
 mark
 unmark
-delete
+deletetask
 bye
 ```
 
@@ -304,7 +304,7 @@ todo read book
 deadline return book /by 2026-08-24 12:00
 event project meeting /from 2026-08-25 14:00 /to 2026-08-25 16:00
 mark 3
-delete 3
+deletetask 3
 list
 bye
 ```
@@ -516,8 +516,8 @@ blah
 mark abc
 mark 0
 unmark 2
-delete abc
-delete 0
+deletetask abc
+deletetask 0
 bye
 ```
 

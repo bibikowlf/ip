@@ -36,9 +36,9 @@ class ParserTest {
     @Test
     void parseInput_addContactCommand_parsesAllContactFields() throws LabyException {
         Command command = Parser.parseInput(
-                "addcontact John Doe /p 91234567 /e john@example.com");
+                "contact John Doe /p 91234567 /e john@example.com");
 
-        assertEquals(CommandType.ADD_CONTACT, command.getCommandType());
+        assertEquals(CommandType.CONTACT, command.getCommandType());
         assertEquals("John Doe", command.getDescription());
         assertEquals("91234567", command.getPhone());
         assertEquals("john@example.com", command.getEmail());
@@ -55,7 +55,7 @@ class ParserTest {
     @Test
     void parseInput_missingAddContactPhone_throwsException() {
         LabyException exception = assertThrows(LabyException.class,
-                () -> Parser.parseInput("addcontact John Doe /e john@example.com"));
+                () -> Parser.parseInput("contact John Doe /e john@example.com"));
 
         assertEquals("phone number cannot be empty.", exception.getMessage());
     }
@@ -122,7 +122,7 @@ class ParserTest {
     @Test
     void parseInput_invalidTaskIndex_exceptionThrown() {
         LabyException exception = assertThrows(LabyException.class,
-                () -> Parser.parseInput("delete abc"));
+                () -> Parser.parseInput("deletetask abc"));
 
         assertEquals("please enter a valid index.", exception.getMessage());
     }

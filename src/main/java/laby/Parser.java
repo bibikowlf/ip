@@ -35,8 +35,8 @@ public class Parser {
 
         return switch (commandType) {
             case BYE, LIST -> parseByeOrList(parts);
-            case MARK, UNMARK, DELETE, DELETE_CONTACT -> parseModifyItem(parts);
-            case ADD_CONTACT -> parseAddContact(parts);
+            case MARK, UNMARK, DELETE_TASK, DELETE_CONTACT -> parseModifyItem(parts);
+            case CONTACT -> parseContact(parts);
             case TODO, DEADLINE, EVENT -> parseTask(parts);
             case FIND -> parseFind(parts);
             default -> throw new LabyException("please input the correct commands.");
@@ -88,7 +88,7 @@ public class Parser {
      * @return Parsed add-contact command.
      * @throws LabyException If a marker or contact field is missing.
      */
-    private static Command parseAddContact(String[] parts) throws LabyException {
+    private static Command parseContact(String[] parts) throws LabyException {
         if (parts.length != 2) {
             throw new LabyException(getErrorMessage("name"));
         }
@@ -107,7 +107,7 @@ public class Parser {
         String email = parseField(input, emailIndex + emailIndicator.length(), input.length(),
                 "email");
 
-        return new Command(CommandType.ADD_CONTACT, 0, name, phone, email, null, null);
+        return new Command(CommandType.CONTACT, 0, name, phone, email, null, null);
     }
 
     /**

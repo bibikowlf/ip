@@ -201,8 +201,8 @@ public class Laby {
                 case BYE -> Ui.getExitMessage();
                 case LIST -> Ui.getItems(this.taskList, this.contactList);
                 case MARK, UNMARK -> this.modifyTaskStatus(command);
-                case DELETE -> this.deleteTask(command.getId());
-                case ADD_CONTACT -> this.addContact(command);
+                case DELETE_TASK -> this.deleteTask(command.getId());
+                case CONTACT -> this.addContact(command);
                 case DELETE_CONTACT -> this.deleteContact(command.getId());
                 case TODO -> this.addTodo(command.getDescription());
                 case DEADLINE -> this.addDeadline(command.getDescription(), command.getFirstTime());

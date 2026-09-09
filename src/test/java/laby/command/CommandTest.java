@@ -10,17 +10,17 @@ class CommandTest {
 
     @Test
     void from_contactCommandWords_returnsContactTypes() {
-        assertEquals(CommandType.ADD_CONTACT, CommandType.from("addcontact"));
+        assertEquals(CommandType.CONTACT, CommandType.from("contact"));
         assertEquals(CommandType.DELETE_CONTACT, CommandType.from("deletecontact"));
         assertEquals(CommandType.UNKNOWN, CommandType.from("listcontact"));
     }
 
     @Test
     void addContactCommand_storesContactFields() {
-        Command command = new Command(CommandType.ADD_CONTACT, 0, "John Doe", "91234567",
+        Command command = new Command(CommandType.CONTACT, 0, "John Doe", "91234567",
                 "john@example.com", null, null);
 
-        assertEquals(CommandType.ADD_CONTACT, command.getCommandType());
+        assertEquals(CommandType.CONTACT, command.getCommandType());
         assertEquals("John Doe", command.getDescription());
         assertEquals("91234567", command.getPhone());
         assertEquals("john@example.com", command.getEmail());

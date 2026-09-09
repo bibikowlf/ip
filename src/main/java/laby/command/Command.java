@@ -30,7 +30,7 @@ public class Command {
 
         switch (commandType) {
             case BYE, LIST -> assertNoArguments(id, description, phone, email, firstTime, secondTime);
-            case MARK, UNMARK, DELETE, DELETE_CONTACT -> {
+            case MARK, UNMARK, DELETE_TASK, DELETE_CONTACT -> {
                 assert id >= 0 : "command index must be non-negative";
                 assert description == null && phone == null && email == null
                         && firstTime == null && secondTime == null
@@ -54,7 +54,7 @@ public class Command {
                 assert phone == null && email == null && firstTime != null && secondTime != null
                         : "event must have two time arguments";
             }
-            case ADD_CONTACT -> {
+            case CONTACT -> {
                 assert id == 0 : "contact commands must use the default index";
                 assert description != null && !description.isBlank()
                         : "contact name must be present";
