@@ -190,6 +190,13 @@ public class Parser {
         return new Command(CommandType.EVENT, 0, description, null, null, startTime, endTime);
     }
 
+    /**
+     * Parses a find command and validates its search text.
+     *
+     * @param parts Command words containing the search text.
+     * @return Parsed find command.
+     * @throws LabyException If the search text is missing.
+     */
     private static Command parseFind(String[] parts) throws LabyException {
         if (parts.length != 2 || parts[1].trim().isEmpty()) {
             throw new LabyException(getErrorMessage("search input"));
@@ -199,6 +206,13 @@ public class Parser {
         return new Command(CommandType.FIND, 0, description, null, null, null, null);
     }
 
+    /**
+     * Parses a date-time using the application's standard date-time format.
+     *
+     * @param input Date-time text to parse.
+     * @return Parsed date-time value.
+     * @throws LabyException If the input is empty or has an invalid format.
+     */
     private static LocalDateTime parseDateTime(String input) throws LabyException {
         if (input.isEmpty()) {
             throw new LabyException(getErrorMessage("time"));
@@ -250,7 +264,18 @@ public class Parser {
         }
     }
 
-    private static int getIndexOfField(String input, String target, int startIndex, String field) throws LabyException {
+    /**
+     * Finds a required field marker in a command input.
+     *
+     * @param input Input containing the marker.
+     * @param target Marker to find.
+     * @param startIndex Index from which to start searching.
+     * @param field Field name used in the missing-field error message.
+     * @return Index of the marker.
+     * @throws LabyException If the marker cannot be found.
+     */
+    private static int getIndexOfField(String input, String target, int startIndex, String field)
+            throws LabyException {
         int index = input.indexOf(target, startIndex);
         if (index < 0) {
             throw new LabyException(getErrorMessage(field));
