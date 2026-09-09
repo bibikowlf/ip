@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import laby.command.Command;
 import laby.command.CommandType;
+import laby.contact.Contact;
 import laby.task.Task;
 
 /** Tests command parsing, including the validation rules used by the application. */
@@ -30,6 +31,33 @@ class ParserTest {
 
         assertEquals(CommandType.MARK, command.getCommandType());
         assertEquals(2, command.getId());
+    }
+
+    @Test
+    void parseInput_addContactCommand_parsesAllContactFields() throws LabyException {
+        Command command = Parser.parseInput(
+                "contact John Doe /p 91234567 /e john@example.com");
+
+        assertEquals(CommandType.CONTACT, command.getCommandType());
+        assertEquals("John Doe", command.getDescription());
+        assertEquals("91234567", command.getPhone());
+        assertEquals("john@example.com", command.getEmail());
+    }
+
+    @Test
+    void parseInput_deleteContactCommand_convertsOneBasedIndexToZeroBasedId() throws LabyException {
+        Command command = Parser.parseInput("deletecontact 3");
+
+        assertEquals(CommandType.DELETE_CONTACT, command.getCommandType());
+        assertEquals(2, command.getId());
+    }
+
+    @Test
+    void parseInput_missingAddContactPhone_throwsException() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("contact John Doe /e john@example.com"));
+
+        assertEquals("phone number cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -94,9 +122,9 @@ class ParserTest {
     @Test
     void parseInput_invalidTaskIndex_exceptionThrown() {
         LabyException exception = assertThrows(LabyException.class,
-                () -> Parser.parseInput("delete abc"));
+                () -> Parser.parseInput("deletetask abc"));
 
-        assertEquals("please enter a valid task index.", exception.getMessage());
+        assertEquals("please enter a valid index.", exception.getMessage());
     }
 
     @Test
@@ -104,7 +132,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("deadline return book"));
 
-        assertEquals("description cannot be empty.", exception.getMessage());
+        assertEquals("deadline cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -152,7 +180,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event project meeting /from 2026-08-23 11:00"));
 
-        assertEquals("starting time cannot be empty.", exception.getMessage());
+        assertEquals("ending time cannot be empty.", exception.getMessage());
     }
 
     @Test
@@ -177,6 +205,23 @@ class ParserTest {
 
         assertEquals("[E][ ] project meeting (from: Aug 23 2026 11:00 to: Aug 23 2026 12:00)",
                 task.toString());
+    }
+
+    @Test
+    void parseContactFromFile_validRecord_contactParsed() throws LabyException {
+        Contact contact = Parser.parseContactFromFile("C|John Doe|91234567|john@example.com");
+
+        assertEquals("John Doe", contact.getName());
+        assertEquals("91234567", contact.getPhone());
+        assertEquals("john@example.com", contact.getEmail());
+    }
+
+    @Test
+    void parseContactFromFile_malformedRecord_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseContactFromFile("C|John Doe|91234567"));
+
+        assertEquals("invalid file format", exception.getMessage());
     }
 
     @Test

@@ -6,11 +6,13 @@ public enum CommandType {
     LIST,
     MARK,
     UNMARK,
-    DELETE,
+    DELETE_TASK,
     TODO,
     DEADLINE,
     EVENT,
     FIND,
+    CONTACT,
+    DELETE_CONTACT,
     UNKNOWN;
 
     /**
@@ -25,11 +27,13 @@ public enum CommandType {
             case "list" -> LIST;
             case "mark" -> MARK;
             case "unmark" -> UNMARK;
-            case "delete" -> DELETE;
+            case "deletetask" -> DELETE_TASK;
             case "todo" -> TODO;
             case "deadline" -> DEADLINE;
             case "event" -> EVENT;
             case "find" -> FIND;
+            case "contact" -> CONTACT;
+            case "deletecontact" -> DELETE_CONTACT;
             default -> UNKNOWN;
         };
     }

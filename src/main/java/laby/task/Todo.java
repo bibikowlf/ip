@@ -1,5 +1,7 @@
 package laby.task;
 
+import laby.Parser;
+
 /** Represents a task without a deadline or event period. */
 public class Todo extends Task {
     /**
@@ -34,6 +36,6 @@ public class Todo extends Task {
      */
     @Override
     public String toFileString() {
-        return "T|" + super.toFileString() + "\n";
+        return "T" + Parser.FIELD_SEPARATOR + super.toFileString() + "\n";
     }
 }

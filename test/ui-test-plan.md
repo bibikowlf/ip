@@ -97,10 +97,12 @@ ____________________________________________________________
 
 ____________________________________________________________
 
-Here are the tasks in your list:
+Here are the tasks and contacts in your list:
 1.[T][ ] borrow book
 2.[D][ ] return book (by: Aug 24 2026 12:00)
 3.[E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
+
+
 ____________________________________________________________
 
 ____________________________________________________________
@@ -243,7 +245,7 @@ Verify that laby.Laby reports a validation error when a task description or task
 todo
 mark
 unmark
-delete
+deletetask
 bye
 ```
 
@@ -302,7 +304,7 @@ todo read book
 deadline return book /by 2026-08-24 12:00
 event project meeting /from 2026-08-25 14:00 /to 2026-08-25 16:00
 mark 3
-delete 3
+deletetask 3
 list
 bye
 ```
@@ -359,9 +361,11 @@ ____________________________________________________________
 
 ____________________________________________________________
 
-Here are the tasks in your list:
+Here are the tasks and contacts in your list:
 1.[T][ ] read book
 2.[D][ ] return book (by: Aug 24 2026 12:00)
+
+
 ____________________________________________________________
 
 ____________________________________________________________
@@ -512,8 +516,8 @@ blah
 mark abc
 mark 0
 unmark 2
-delete abc
-delete 0
+deletetask abc
+deletetask 0
 bye
 ```
 

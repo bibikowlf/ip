@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import laby.Parser;
+
 /** Represents a task occurring between a start time and an end time. */
 public class Event extends Task {
     private final LocalDateTime startTime;
@@ -54,7 +56,8 @@ public class Event extends Task {
     @Override
     public String toFileString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return "E|" + super.toFileString() + "|" + this.startTime.format(formatter)
-                + "|" + this.endTime.format(formatter) + "\n";
+        return "E" + Parser.FIELD_SEPARATOR + super.toFileString() + Parser.FIELD_SEPARATOR
+                + this.startTime.format(formatter) + Parser.FIELD_SEPARATOR
+                + this.endTime.format(formatter) + "\n";
     }
 }

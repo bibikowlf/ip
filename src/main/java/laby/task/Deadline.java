@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import laby.Parser;
+
 /** Represents a task that must be completed by a specific time. */
 public class Deadline extends Task {
     private final LocalDateTime deadline;
@@ -48,6 +50,7 @@ public class Deadline extends Task {
     @Override
     public String toFileString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return "D|" + super.toFileString() + "|" + this.deadline.format(formatter) + "\n";
+        return "D" + Parser.FIELD_SEPARATOR + super.toFileString() + Parser.FIELD_SEPARATOR
+                + this.deadline.format(formatter) + "\n";
     }
 }

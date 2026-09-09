@@ -1,5 +1,7 @@
 package laby.task;
 
+import laby.Parser;
+
 /** Represents a task description and whether the task is complete. */
 public class Task {
     private final String description;
@@ -12,7 +14,7 @@ public class Task {
      * @param isDone Whether the task is complete.
      */
     public Task(String description, boolean isDone) {
-        assert description != null && !description.trim().isEmpty() : "description cannot be empty";
+        assert Parser.isValidInput(description) : "description cannot be empty or contain separators";
 
         this.description = description;
         this.isDone = isDone;
@@ -41,7 +43,8 @@ public class Task {
      * @return Serialized representation of the task.
      */
     public String toFileString() {
-        return (this.isDone ? "1|" : "0|") + this.description;
+        return (this.isDone ? "1" + Parser.FIELD_SEPARATOR : "0" + Parser.FIELD_SEPARATOR)
+                + this.description;
     }
 
     public String getDescription() {
