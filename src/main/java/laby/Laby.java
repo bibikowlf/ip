@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import laby.command.Command;
 import laby.command.CommandType;
+import laby.contact.ContactList;
 import laby.task.Task;
 import laby.task.TaskList;
 
@@ -17,6 +18,7 @@ import laby.task.TaskList;
 public class Laby {
     private final Storage storage;
     private final TaskList taskList;
+    private final ContactList contactList;
 
     /**
      * Creates an application instance and loads tasks from the given file.
@@ -25,10 +27,11 @@ public class Laby {
      */
     public Laby(String filePath) {
         this.storage = new Storage(filePath);
+        this.contactList = new ContactList(new ArrayList<>());
         List<Task> tempTasks;
 
         try {
-            tempTasks = this.storage.readFile();
+            tempTasks = this.storage.readTasks();
         } catch (LabyException e) {
             System.out.print(Ui.getReadFileError(e));
             tempTasks = new ArrayList<>();
@@ -139,7 +142,7 @@ public class Laby {
      * @throws LabyException If the task list cannot be saved.
      */
     private void saveTasks() throws LabyException {
-        this.storage.writeFile(this.taskList);
+        this.storage.writeFile(this.taskList, this.contactList);
     }
 
     /**

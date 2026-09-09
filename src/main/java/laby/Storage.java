@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import laby.contact.Contact;
+import laby.contact.ContactList;
 import laby.task.Task;
 import laby.task.TaskList;
 
-/** Reads tasks from and writes tasks to the application's data file. */
+/** Reads tasks and contacts from and writes them to the application's data file. */
 public class Storage {
     private final String filePath;
 
@@ -50,18 +52,18 @@ public class Storage {
     }
 
     /**
-     * Persists every task in the supplied task list.
+     * Persists every task and contact in the supplied lists.
      *
      * @param taskList Task list to persist.
+     * @param contactList Contact list to persist.
      * @throws LabyException If the data file cannot be created or written.
      */
-    public void writeFile(TaskList taskList) throws LabyException {
-        try {
-            this.createFile();
+    public void writeFile(TaskList taskList, ContactList contactList) throws LabyException {
+        this.createFile();
 
-            try (FileWriter fileWriter = new FileWriter(filePath)) {
-                fileWriter.write(taskList.toFileString());
-            }
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(taskList.toFileString());
+            fileWriter.write(contactList.toFileString());
         } catch (IOException e) {
             throw new LabyException("cannot write to file");
         }
@@ -73,16 +75,16 @@ public class Storage {
      * @return Tasks loaded from the data file.
      * @throws LabyException If the data file cannot be read or has invalid content.
      */
-    public List<Task> readFile() throws LabyException {
+    public List<Task> readTasks() throws LabyException {
         List<Task> tasks = new ArrayList<>();
 
-        try {
-            this.createFile();
-            File file = new File(filePath);
+        this.createFile();
+        File file = new File(filePath);
 
-            try (Scanner scanner = new Scanner(file)) {
-                while (scanner.hasNextLine()) {
-                    String current = scanner.nextLine();
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String current = scanner.nextLine();
+                if (!isContactRecord(current)) {
                     Task currentTask = Parser.parseTaskFromFile(current);
                     tasks.add(currentTask);
                 }
@@ -92,5 +94,42 @@ public class Storage {
         }
 
         return tasks;
+    }
+
+    /**
+     * Loads all persisted contacts, validating their stored format.
+     *
+     * @return Contacts loaded from the data file.
+     * @throws LabyException If the data file cannot be read or has invalid content.
+     */
+    public List<Contact> readContacts() throws LabyException {
+        List<Contact> contacts = new ArrayList<>();
+
+        this.createFile();
+        File file = new File(filePath);
+
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String current = scanner.nextLine();
+                if (isContactRecord(current)) {
+                    Contact currentContact = Parser.parseContactFromFile(current);
+                    contacts.add(currentContact);
+                }
+            }
+        } catch (IOException e) {
+            throw new LabyException("cannot read from file");
+        }
+
+        return contacts;
+    }
+
+    /**
+     * Checks whether a serialized record represents a contact.
+     *
+     * @param record Serialized record to inspect.
+     * @return Whether the record has the contact type marker.
+     */
+    private static boolean isContactRecord(String record) {
+        return record.startsWith("C" + Parser.FIELD_SEPARATOR);
     }
 }
