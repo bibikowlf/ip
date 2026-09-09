@@ -43,6 +43,30 @@ class LabyTest {
     }
 
     @Test
+    void executeCommand_addListAndDeleteContact_persistsContact(@TempDir Path tempDir) {
+        Path file = tempDir.resolve("laby.txt");
+        Laby laby = new Laby(file.toString());
+
+        String addResponse = laby.executeCommand(
+                "addcontact John Doe /p 91234567 /e john@example.com");
+        String listResponse = laby.executeCommand("list");
+
+        assertTrue(addResponse.contains("Laby has added the contact."));
+        assertTrue(addResponse.contains("There is a total of 1 contact in your list."));
+        assertTrue(listResponse.contains("1.John Doe | Phone: 91234567 | Email: john@example.com"));
+
+        Laby reloadedLaby = new Laby(file.toString());
+        assertTrue(reloadedLaby.executeCommand("list")
+                .contains("John Doe | Phone: 91234567 | Email: john@example.com"));
+
+        String deleteResponse = reloadedLaby.executeCommand("deletecontact 1");
+        assertTrue(deleteResponse.contains("Laby has deleted the contact."));
+        assertTrue(reloadedLaby.executeCommand("list").contains("Here are the tasks and contacts"));
+        assertFalse(reloadedLaby.executeCommand("list")
+                .contains("John Doe | Phone: 91234567 | Email: john@example.com"));
+    }
+
+    @Test
     void executeCommand_invalidCommand_returnsFormattedError(@TempDir Path tempDir) {
         Laby laby = new Laby(tempDir.resolve("laby.txt").toString());
 
