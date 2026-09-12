@@ -16,8 +16,8 @@ public class Ui {
     private static final String MSG_OPEN = "Hello Chief. Laby is your personal assistant.\n";
     private static final String MSG_ASK = "What orders do you have today?\n";
     private static final String MSG_EXIT = "Goodbye. Switching to rest mode.\n";
-    private static final String MSG_LIST = "Here are the tasks and contacts in your list:\n";
-    private static final String MSG_FILTER = "Here are the matching tasks in your list:\n";
+    private static final String MSG_LIST = "Here are the tasks and contacts in your list.\n";
+    private static final String MSG_FILTER = "Here are the matching tasks in your list.\n";
     private static final String MSG_MARK = "Understood. Laby has marked the task as done.\n";
     private static final String MSG_UNMARK = "Understood. Laby has marked the task as not done.\n";
     private static final String MSG_ADD = "Laby has added the task. Make sure to rest, Chief :o\n";
@@ -67,7 +67,7 @@ public class Ui {
      * @param taskList Task list to display.
      */
     public static String getItems(TaskList taskList, ContactList contactList) {
-        return MSG_LIST + taskList + "\n" + contactList + "\n";
+        return MSG_LIST + "\nTasks:\n" + taskList + "\nContacts:\n" + contactList;
     }
 
     /**
