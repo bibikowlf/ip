@@ -18,8 +18,8 @@ class UiTest {
         ContactList contactList = new ContactList(new ArrayList<>());
         contactList.addContact("John Doe", "91234567", "john@example.com");
 
-        assertEquals("Here are the tasks and contacts in your list:\n\n"
-                        + "1.John Doe | Phone: 91234567 | Email: john@example.com\n\n",
+        assertEquals("Here are the tasks and contacts in your list.\n\nTasks:\n\nContacts:\n"
+                        + "1.John Doe | Phone: 91234567 | Email: john@example.com\n",
                 Ui.getItems(taskList, contactList));
     }
 
