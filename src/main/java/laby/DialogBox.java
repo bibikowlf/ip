@@ -2,12 +2,14 @@ package laby;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
-/** Represents one chat message with a blank profile-picture placeholder. */
+/** Represents one chat message with a circular profile picture. */
 public class DialogBox extends HBox {
     private static final double AVATAR_SIZE = 48.0;
 
@@ -28,9 +30,12 @@ public class DialogBox extends HBox {
         text.setMaxWidth(520.0);
         text.getStyleClass().add("chat-label");
 
+        cropToSquare(image);
         displayPicture.setFitWidth(AVATAR_SIZE);
         displayPicture.setFitHeight(AVATAR_SIZE);
         displayPicture.setPreserveRatio(true);
+        displayPicture.setClip(new Circle(AVATAR_SIZE / 2, AVATAR_SIZE / 2,
+                AVATAR_SIZE / 2));
         displayPicture.getStyleClass().add("avatar-image");
 
         setSpacing(10.0);
@@ -71,5 +76,17 @@ public class DialogBox extends HBox {
     private void flip() {
         getChildren().setAll(displayPicture, text);
         setAlignment(Pos.TOP_LEFT);
+    }
+
+    /**
+     * Configures the image view to display the centered square portion of an image.
+     *
+     * @param image Image whose centered square portion should be displayed.
+     */
+    private void cropToSquare(Image image) {
+        double side = Math.min(image.getWidth(), image.getHeight());
+        double x = (image.getWidth() - side) / 2;
+        double y = (image.getHeight() - side) / 2;
+        displayPicture.setViewport(new Rectangle2D(x, y, side, side));
     }
 }
