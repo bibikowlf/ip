@@ -22,6 +22,9 @@ public enum CommandType {
      * @return Matching command type.
      */
     public static CommandType from(String commandWord) {
+        if (commandWord == null) {
+            return UNKNOWN;
+        }
         return switch (commandWord) {
             case "bye" -> BYE;
             case "list" -> LIST;

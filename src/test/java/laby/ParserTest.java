@@ -26,6 +26,17 @@ class ParserTest {
     }
 
     @Test
+    void parseInput_byeOrListWithArguments_throwsException() {
+        LabyException byeException = assertThrows(LabyException.class,
+                () -> Parser.parseInput("bye now"));
+        LabyException listException = assertThrows(LabyException.class,
+                () -> Parser.parseInput("list tasks"));
+
+        assertEquals("please enter a valid command.", byeException.getMessage());
+        assertEquals("please enter a valid command.", listException.getMessage());
+    }
+
+    @Test
     void parseInput_modifyCommand_convertsOneBasedIndexToZeroBasedId() throws LabyException {
         Command command = Parser.parseInput("mark 3");
 
@@ -128,6 +139,17 @@ class ParserTest {
     }
 
     @Test
+    void parseInput_missingOrNonPositiveTaskIndex_throwsException() {
+        LabyException missingException = assertThrows(LabyException.class,
+                () -> Parser.parseInput("mark"));
+        LabyException zeroException = assertThrows(LabyException.class,
+                () -> Parser.parseInput("mark 0"));
+
+        assertEquals("please enter a valid index.", missingException.getMessage());
+        assertEquals("please enter a valid task index.", zeroException.getMessage());
+    }
+
+    @Test
     void parseInput_missingDeadlineMarker_exceptionThrown() {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("deadline return book"));
@@ -192,6 +214,25 @@ class ParserTest {
     }
 
     @Test
+    void parseInput_missingContactNameOrEmail_throwsException() {
+        LabyException nameException = assertThrows(LabyException.class,
+                () -> Parser.parseInput("contact /p 91234567 /e john@example.com"));
+        LabyException emailException = assertThrows(LabyException.class,
+                () -> Parser.parseInput("contact John Doe /p 91234567 /e "));
+
+        assertEquals("name cannot be empty.", nameException.getMessage());
+        assertEquals("email cannot be empty.", emailException.getMessage());
+    }
+
+    @Test
+    void parseInput_invalidEventTime_throwsException() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("event meeting /from 2026-08-23 11:00 /to noon"));
+
+        assertEquals("time format must be yyyy-MM-dd HH:mm.", exception.getMessage());
+    }
+
+    @Test
     void parseTaskFromFile_validDeadlineRecord_taskParsed() throws LabyException {
         Task task = Parser.parseTaskFromFile("D|1|return book|2026-08-23 10:00");
 
@@ -222,6 +263,25 @@ class ParserTest {
                 () -> Parser.parseContactFromFile("C|John Doe|91234567"));
 
         assertEquals("invalid file format", exception.getMessage());
+    }
+
+    @Test
+    void parseTaskFromFile_invalidDateOrExtraFields_exceptionThrown() {
+        LabyException invalidDate = assertThrows(LabyException.class,
+                () -> Parser.parseTaskFromFile("D|0|return book|tomorrow"));
+        LabyException extraFields = assertThrows(LabyException.class,
+                () -> Parser.parseTaskFromFile("T|0|read book|unexpected"));
+
+        assertEquals("invalid file format", invalidDate.getMessage());
+        assertEquals("invalid file format", extraFields.getMessage());
+    }
+
+    @Test
+    void isValidInput_rejectsBlankNullAndSeparatorValues() {
+        assertEquals(true, Parser.isValidInput("read book"));
+        assertEquals(false, Parser.isValidInput(null));
+        assertEquals(false, Parser.isValidInput("   "));
+        assertEquals(false, Parser.isValidInput("read|book"));
     }
 
     @Test

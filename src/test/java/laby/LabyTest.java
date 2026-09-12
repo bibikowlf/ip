@@ -83,4 +83,26 @@ class LabyTest {
 
         assertTrue(response.contains("Goodbye. Switching to rest mode."));
     }
+
+    @Test
+    void executeCommand_addsDeadlineEventAndFindsMatchingTasks(@TempDir Path tempDir) {
+        Laby laby = new Laby(tempDir.resolve("laby.txt").toString());
+
+        assertTrue(laby.executeCommand("deadline return book /by 2026-08-23 10:00")
+                .contains("[D][ ] return book (by: Aug 23 2026 10:00)"));
+        assertTrue(laby.executeCommand("event project meeting /from 2026-08-23 11:00 /to 2026-08-23 12:00")
+                .contains("[E][ ] project meeting"));
+        assertTrue(laby.executeCommand("find BOOK").contains("1.[D][ ] return book"));
+        assertFalse(laby.executeCommand("find holiday").contains("return book"));
+    }
+
+    @Test
+    void executeCommand_invalidIndex_returnsTaskOrContactError(@TempDir Path tempDir) {
+        Laby laby = new Laby(tempDir.resolve("laby.txt").toString());
+
+        assertEquals("System crashing... please enter a valid task index.\n",
+                laby.executeCommand("deletetask 1"));
+        assertEquals("System crashing... please enter a valid contact index.\n",
+                laby.executeCommand("deletecontact 1"));
+    }
 }
