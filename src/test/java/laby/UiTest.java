@@ -34,4 +34,27 @@ class UiTest {
         assertEquals("There is a total of 1 contact in your list.\n",
                 Ui.getNumberOfContacts(1));
     }
+
+    @Test
+    void taskMessages_displayCountsAndResponses() {
+        assertEquals("There is a total of 0 task in your list.\n", Ui.getNumberOfTasks(0));
+        assertEquals("There is a total of 2 tasks in your list.\n", Ui.getNumberOfTasks(2));
+        assertEquals("Understood. Laby has marked the task as done.\n  [T][X] read book\n",
+                Ui.getMarkTask("[T][X] read book"));
+        assertEquals("Understood. Laby has marked the task as not done.\n  [T][ ] read book\n",
+                Ui.getUnmarkTask("[T][ ] read book"));
+        assertEquals("Laby has added the task. Make sure to rest, Chief :o\n  [T][ ] read book\n",
+                Ui.getAddTask("[T][ ] read book"));
+        assertEquals("Laby has deleted the task. Glad to see you resting ;)\n  [T][ ] read book\n",
+                Ui.getDeleteTask("[T][ ] read book"));
+    }
+
+    @Test
+    void commonMessages_includeExpectedDividersAndHeaders() {
+        assertEquals("Goodbye. Switching to rest mode.\n", Ui.getExitMessage());
+        assertEquals("System crashing... bad input\n", Ui.getError(new LabyException("bad input")));
+        assertEquals("____________________________________________________________\n\nreply\n"
+                        + "____________________________________________________________\n\n",
+                Ui.addDivider("reply\n"));
+    }
 }

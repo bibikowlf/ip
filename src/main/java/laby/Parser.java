@@ -75,6 +75,9 @@ public class Parser {
         try {
             String input = parts[1].trim();
             int id = Integer.parseInt(input) - 1;
+            if (id < 0) {
+                throw new LabyException("please enter a valid task index.");
+            }
             return new Command(CommandType.from(parts[0]), id, null, null, null, null, null);
         } catch (NumberFormatException e) {
             throw new LabyException(invalidIndexErrorMsg);
@@ -316,16 +319,34 @@ public class Parser {
             boolean isTaskDone = parts[1].equals(doneSymbol);
 
             return switch (parts[0]) {
-                case todoSymbol -> new Todo(parts[2], isTaskDone);
-                case deadlineSymbol -> new Deadline(parts[2],
-                        LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isTaskDone);
-                case eventSymbol -> new Event(parts[2], LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
-                            LocalDateTime.parse(parts[4], DATE_TIME_FORMATTER), isTaskDone);
+                case todoSymbol -> requireTaskFields(parts, 3, new Todo(parts[2], isTaskDone));
+                case deadlineSymbol -> requireTaskFields(parts, 4, new Deadline(parts[2],
+                        LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER), isTaskDone));
+                case eventSymbol -> requireTaskFields(parts, 5, new Event(parts[2],
+                            LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
+                            LocalDateTime.parse(parts[4], DATE_TIME_FORMATTER), isTaskDone));
                 default -> throw new LabyException("invalid file format");
             };
         } catch (IndexOutOfBoundsException | DateTimeParseException e) {
             throw new LabyException("invalid file format");
         }
+    }
+
+    /**
+     * Validates the exact field count of a serialized task record.
+     *
+     * @param parts Split task record fields.
+     * @param expectedFieldCount Required number of fields.
+     * @param task Parsed task to return when the count is valid.
+     * @return The supplied task.
+     * @throws LabyException If the record contains extra or missing fields.
+     */
+    private static Task requireTaskFields(String[] parts, int expectedFieldCount, Task task)
+            throws LabyException {
+        if (parts.length != expectedFieldCount) {
+            throw new LabyException("invalid file format");
+        }
+        return task;
     }
 
     /**
