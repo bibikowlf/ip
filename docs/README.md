@@ -163,3 +163,7 @@ Laby closes the application.
 - `contact <NAME> /p <PHONE_NUMBER> /e <EMAIL_ADDRESS>`
 - `deletecontact <CONTACT_INDEX>`
 - `bye`
+
+## Credit
+
+This project is assisted by AI. ChatGPT Codex was used by the developer to generate and review code with human oversight. The use includes documentation and testing.

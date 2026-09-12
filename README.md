@@ -55,3 +55,7 @@ Date and time values must use the `yyyy-MM-dd HH:mm` format. Replace angle-brack
 ## Data storage
 
 Laby stores tasks and contacts in `data/laby.txt`. The file is created automatically when the application starts, so your data is available the next time you run Laby from the same project or application folder.
+
+## Credit
+
+This project is assisted by AI. ChatGPT Codex was used by the developer to generate and review code with human oversight. The use includes documentation and testing.
