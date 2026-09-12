@@ -3,14 +3,16 @@
 ## Getting Started
 
 1. Make sure Java 25 is installed.
-2. Open the project in IntelliJ IDEA, or run the application from the project folder:
+2. Download the latest `laby.jar` file from the [Laby GitHub repository](https://github.com/bibikowlf/ip).
+
+3. Open a terminal in the folder containing the downloaded JAR file and start Laby:
 
    ```powershell
-   .\gradlew.bat run
+   java -jar laby.jar
    ```
 
-3. When the Laby window opens, type a command in the input box and press `Enter` or click `Send`.
-4. Laby stores your tasks and contacts in `data/laby.txt`, so your data is available the next time you start the application.
+4. When the Laby window opens, type a command in the input box and press `Enter` or click `Send`.
+5. Laby stores your tasks and contacts in `data/laby.txt`, so your data is available the next time you start the application.
 
 In the command formats below, replace angle-bracketed values such as `<DESCRIPTION>` with your own information. Do not type the angle brackets.
 
