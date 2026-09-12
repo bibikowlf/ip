@@ -62,6 +62,8 @@ Format: `list`
 list
 ```
 
+Laby displays all tasks and contacts, with tasks and contacts numbered separately.
+
 ## Finding Tasks
 
 Use `find` followed by a keyword to display tasks whose descriptions contain that keyword. The search is not case-sensitive.
@@ -72,9 +74,11 @@ Format: `find <KEYWORD>`
 find report
 ```
 
+Laby displays all tasks whose descriptions contain the keyword.
+
 ## Marking Tasks as Done or Not Done
 
-Use the task's number from the task list with `mark` or `unmark`.
+Use the task's index from the task list with `mark` or `unmark`.
 
 Formats:
 
@@ -88,9 +92,11 @@ mark 1
 unmark 1
 ```
 
+Laby marks or unmarks the task with the specified index.
+
 ## Deleting Tasks
 
-Use `deletetask` followed by the task's number.
+Use `deletetask` followed by the task's index.
 
 Format: `deletetask <TASK_INDEX>`
 
@@ -98,7 +104,9 @@ Format: `deletetask <TASK_INDEX>`
 deletetask 2
 ```
 
-Task numbers are updated after a task is deleted.
+Laby deletes the task with the specified index.
+
+Task indices are updated after a task is deleted.
 
 ## Adding Contacts
 
@@ -110,15 +118,19 @@ Format: `contact <NAME> /p <PHONE_NUMBER> /e <EMAIL_ADDRESS>`
 contact Jane Doe /p 91234567 /e jane@example.com
 ```
 
+Laby adds the contact to the contact list.
+
 ## Deleting Contacts
 
-Use `deletecontact` followed by the contact's number from the contact list.
+Use `deletecontact` followed by the contact's index from the contact list.
 
 Format: `deletecontact <CONTACT_INDEX>`
 
 ```text
 deletecontact 1
 ```
+
+Laby deletes the contact with the specified index.
 
 ## Exiting Laby
 
@@ -129,6 +141,8 @@ Format: `bye`
 ```text
 bye
 ```
+
+Laby closes the application.
 
 ## Command Summary
 
