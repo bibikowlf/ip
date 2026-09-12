@@ -17,7 +17,7 @@
 
    ![Laby user interface](Ui.png)
 
-   Profile pictures are taken from in-game screenshots of [Path to Nowhere](http://ptn.aisnogames.com/en-EN/home).
+   *Image credit: Profile pictures are taken from in-game screenshots of [Path to Nowhere](http://ptn.aisnogames.com/en-EN/home).*
 5. Laby stores your tasks and contacts in `data/laby.txt`, so your data is available the next time you start the application.
 
 In the command formats below, replace angle-bracketed values such as `<DESCRIPTION>` with your own information. Do not type the angle brackets.
