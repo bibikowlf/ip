@@ -1,30 +1,23 @@
-# laby.Laby User Guide
+# Laby User Guide
 
-// Update the title above to match the actual product name
+## Getting Started
 
-// Product screenshot goes here
+## Adding To-Dos
 
-// Product intro goes here
+## Adding Deadlines
 
-## Adding deadlines
+## Adding Events
 
-// Describe the action and its outcome.
+## Viewing Tasks and Contacts
 
-// Give examples of usage
+## Finding Tasks
 
-Example: `keyword (optional arguments)`
+## Marking Tasks as Done or Not Done
 
-// A description of the expected outcome goes here
+## Deleting Tasks
 
-```
-expected output
-```
+## Adding Contacts
 
-## Feature ABC
+## Deleting Contacts
 
-// Feature details
-
-
-## Feature XYZ
-
-// Feature details
+## Exiting Laby
