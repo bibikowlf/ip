@@ -1,7 +1,9 @@
 package laby;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 
@@ -278,10 +280,10 @@ class ParserTest {
 
     @Test
     void isValidInput_rejectsBlankNullAndSeparatorValues() {
-        assertEquals(true, Parser.isValidInput("read book"));
-        assertEquals(false, Parser.isValidInput(null));
-        assertEquals(false, Parser.isValidInput("   "));
-        assertEquals(false, Parser.isValidInput("read|book"));
+        assertTrue(Parser.isValidInput("read book"));
+        assertFalse(Parser.isValidInput(null));
+        assertFalse(Parser.isValidInput("   "));
+        assertFalse(Parser.isValidInput("read|book"));
     }
 
     @Test
