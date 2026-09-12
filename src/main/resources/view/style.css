@@ -36,8 +36,14 @@
     -fx-background-color: #08111f;
     -fx-border-color: #66e3ff;
     -fx-border-radius: 10px;
-    -fx-border-width: 1.5px;
+    -fx-border-width: 2px;
     -fx-text-fill: #66e3ff;
+}
+
+.error-dialog .chat-label {
+    -fx-border-color: #ff4d5a;
+    -fx-text-fill: #ff4d5a;
+    -fx-font-weight: bold;
 }
 
 .avatar-image {
