@@ -52,7 +52,7 @@ class UiTest {
     @Test
     void commonMessages_includeExpectedDividersAndHeaders() {
         assertEquals("Goodbye. Switching to rest mode.\n", Ui.getExitMessage());
-        assertEquals("System crashing... bad input\n", Ui.getError(new LabyException("bad input")));
+        assertEquals("Error detected... bad input\n", Ui.getError(new LabyException("bad input")));
         assertEquals("____________________________________________________________\n\nreply\n"
                         + "____________________________________________________________\n\n",
                 Ui.addDivider("reply\n"));

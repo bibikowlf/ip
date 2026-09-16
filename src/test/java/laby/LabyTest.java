@@ -72,7 +72,7 @@ class LabyTest {
 
         String response = laby.executeCommand("archive");
 
-        assertEquals("System crashing... please input the correct commands.\n", response);
+        assertEquals("Error detected... please input the correct commands.\n", response);
     }
 
     @Test
@@ -100,9 +100,9 @@ class LabyTest {
     void executeCommand_invalidIndex_returnsTaskOrContactError(@TempDir Path tempDir) {
         Laby laby = new Laby(tempDir.resolve("laby.txt").toString());
 
-        assertEquals("System crashing... please enter a valid task index.\n",
+        assertEquals("Error detected... please enter a valid task index.\n",
                 laby.executeCommand("deletetask 1"));
-        assertEquals("System crashing... please enter a valid contact index.\n",
+        assertEquals("Error detected... please enter a valid contact index.\n",
                 laby.executeCommand("deletecontact 1"));
     }
 }

@@ -148,7 +148,7 @@ class ParserTest {
                 () -> Parser.parseInput("mark 0"));
 
         assertEquals("please enter a valid index.", missingException.getMessage());
-        assertEquals("please enter a valid task index.", zeroException.getMessage());
+        assertEquals("please enter a valid index.", zeroException.getMessage());
     }
 
     @Test

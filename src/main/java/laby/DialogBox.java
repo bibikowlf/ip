@@ -12,7 +12,6 @@ import javafx.scene.shape.Circle;
 /** Represents one chat message with a circular profile picture. */
 public class DialogBox extends HBox {
     private static final double AVATAR_SIZE = 48.0;
-    private static final String ERROR_MESSAGE_PREFIX = "System crashing...";
 
     private final Label text;
     private final ImageView displayPicture;
@@ -102,7 +101,7 @@ public class DialogBox extends HBox {
      */
     private static boolean isErrorMessage(String message) {
         String trimmedMessage = message.trim();
-        return trimmedMessage.regionMatches(true, 0, ERROR_MESSAGE_PREFIX, 0,
-                ERROR_MESSAGE_PREFIX.length());
+        return trimmedMessage.regionMatches(true, 0, Ui.MSG_ERROR, 0,
+                Ui.MSG_ERROR.length());
     }
 }

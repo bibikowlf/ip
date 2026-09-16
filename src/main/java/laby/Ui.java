@@ -5,6 +5,8 @@ import laby.task.TaskList;
 
 /** Handles all console output produced by the application. */
 public class Ui {
+    public static final String MSG_ERROR = "Error detected... ";
+
     private static final String MSG_BANNER = """
             #       ###   ####   #   #
             #      #   #  #   #   # #
@@ -31,7 +33,7 @@ public class Ui {
      * @param labyException File-loading error to display.
      */
     public static String getReadFileError(LabyException labyException) {
-        return MSG_DIVIDER + "System crashing... " + labyException.getMessage()
+        return MSG_DIVIDER + MSG_ERROR + labyException.getMessage()
                 + "\nUsing new file..." + MSG_DIVIDER;
     }
 
@@ -41,7 +43,7 @@ public class Ui {
      * @param labyException Application error to display.
      */
     public static String getError(LabyException labyException) {
-        return "System crashing... " + labyException.getMessage() + "\n";
+        return MSG_ERROR + labyException.getMessage() + "\n";
     }
 
     /**

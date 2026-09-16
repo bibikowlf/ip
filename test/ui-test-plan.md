@@ -267,22 +267,22 @@ ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... description cannot be empty.
+Error detected... description cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please enter a valid index.
+Error detected... please enter a valid index.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please enter a valid index.
+Error detected... please enter a valid index.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please enter a valid index.
+Error detected... please enter a valid index.
 ____________________________________________________________
 
 ____________________________________________________________
@@ -408,22 +408,22 @@ ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... description cannot be empty.
+Error detected... description cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... deadline cannot be empty.
+Error detected... deadline cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... description cannot be empty.
+Error detected... description cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... deadline cannot be empty.
+Error detected... deadline cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
@@ -468,32 +468,32 @@ ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... description cannot be empty.
+Error detected... description cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... starting time cannot be empty.
+Error detected... starting time cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... ending time cannot be empty.
+Error detected... ending time cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... description cannot be empty.
+Error detected... description cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... starting time cannot be empty.
+Error detected... starting time cannot be empty.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... time format must be yyyy-MM-dd HH:mm.
+Error detected... time format must be yyyy-MM-dd HH:mm.
 ____________________________________________________________
 
 ____________________________________________________________
@@ -539,37 +539,37 @@ ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... invalid input.
+Error detected... invalid input.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please input the correct commands.
+Error detected... please input the correct commands.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please enter a valid index.
+Error detected... please enter a valid index.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please enter a valid task index.
+Error detected... please enter a valid index.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please enter a valid task index.
+Error detected... please enter a valid index.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please enter a valid index.
+Error detected... please enter a valid index.
 ____________________________________________________________
 
 ____________________________________________________________
 
-System crashing... please enter a valid task index.
+Error detected... please enter a valid index.
 ____________________________________________________________
 
 ____________________________________________________________
