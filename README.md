@@ -14,7 +14,7 @@ Laby is a personal assistant that helps you manage tasks and contacts through a 
 
 ### Running the application
 
-1. Download the provided `laby.jar` file from the [GitHub repository](https://github.com/bibikowlf/ip).
+1. Download the provided `laby.jar` file from this Github repository.
 2. Open a terminal in the folder containing the downloaded JAR file.
 3. Start Laby:
 
