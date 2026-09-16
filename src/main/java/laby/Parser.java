@@ -76,7 +76,7 @@ public class Parser {
             String input = parts[1].trim();
             int id = Integer.parseInt(input) - 1;
             if (id < 0) {
-                throw new LabyException("please enter a valid task index.");
+                throw new LabyException("please enter a valid index.");
             }
             return new Command(CommandType.from(parts[0]), id, null, null, null, null, null);
         } catch (NumberFormatException e) {
