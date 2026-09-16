@@ -3,6 +3,7 @@ package laby;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.regex.Pattern;
 
 import laby.command.Command;
@@ -16,8 +17,10 @@ import laby.task.Todo;
 /** Converts user-entered command text into structured commands. */
 public class Parser {
     public static final String FIELD_SEPARATOR = "|";
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
+            .ofPattern("uuuu-MM-dd HH:mm").withResolverStyle(ResolverStyle.STRICT);
     private static final String DESCRIPTION_FIELD = "description";
+    private static final String FILE_FORMAT_ERROR = "invalid file format.";
 
     /**
      * Parses a complete input line or throws an error for invalid syntax.
@@ -190,6 +193,8 @@ public class Parser {
         LocalDateTime startTime = parseDateTimeField(input, startBeginIndex, endIndex, "starting time");
         LocalDateTime endTime = parseDateTimeField(input, endBeginIndex, input.length(), "ending time");
 
+        validateEventTime(startTime, endTime);
+
         return new Command(CommandType.EVENT, 0, description, null, null, startTime, endTime);
     }
 
@@ -308,7 +313,7 @@ public class Parser {
         try {
             String[] parts = input.trim().split(Pattern.quote(FIELD_SEPARATOR));
             if (!parts[1].equals("0") && !parts[1].equals("1")) {
-                throw new LabyException("invalid file format");
+                throw new LabyException(FILE_FORMAT_ERROR);
             }
 
             final String todoSymbol = "T";
@@ -325,10 +330,10 @@ public class Parser {
                 case eventSymbol -> requireTaskFields(parts, 5, new Event(parts[2],
                             LocalDateTime.parse(parts[3], DATE_TIME_FORMATTER),
                             LocalDateTime.parse(parts[4], DATE_TIME_FORMATTER), isTaskDone));
-                default -> throw new LabyException("invalid file format");
+                default -> throw new LabyException(FILE_FORMAT_ERROR);
             };
         } catch (IndexOutOfBoundsException | DateTimeParseException e) {
-            throw new LabyException("invalid file format");
+            throw new LabyException(FILE_FORMAT_ERROR);
         }
     }
 
@@ -344,9 +349,23 @@ public class Parser {
     private static Task requireTaskFields(String[] parts, int expectedFieldCount, Task task)
             throws LabyException {
         if (parts.length != expectedFieldCount) {
-            throw new LabyException("invalid file format");
+            throw new LabyException(FILE_FORMAT_ERROR);
         }
         return task;
+    }
+
+    /**
+     * Validates that an event ends strictly after it starts.
+     *
+     * @param startTime Event starting date and time.
+     * @param endTime Event ending date and time.
+     * @throws LabyException If the ending time is not after the starting time.
+     */
+    private static void validateEventTime(LocalDateTime startTime, LocalDateTime endTime)
+            throws LabyException {
+        if (!startTime.isBefore(endTime)) {
+            throw new LabyException("starting time must be before ending time.");
+        }
     }
 
     /**
@@ -360,12 +379,12 @@ public class Parser {
         try {
             String[] parts = input.trim().split(Pattern.quote(FIELD_SEPARATOR), -1);
             if (parts.length != 4 || !parts[0].equals("C")) {
-                throw new LabyException("invalid file format");
+                throw new LabyException(FILE_FORMAT_ERROR);
             }
 
             return new Contact(parts[1], parts[2], parts[3]);
         } catch (IndexOutOfBoundsException e) {
-            throw new LabyException("invalid file format");
+            throw new LabyException(FILE_FORMAT_ERROR);
         }
     }
 

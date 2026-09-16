@@ -87,7 +87,7 @@ class StorageTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> new Storage(file.toString()).readContacts());
 
-        assertEquals("invalid file format", exception.getMessage());
+        assertEquals("invalid file format.", exception.getMessage());
     }
 
     @Test
@@ -98,7 +98,7 @@ class StorageTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> new Storage(file.toString()).readTasks());
 
-        assertEquals("invalid file format", exception.getMessage());
+        assertEquals("invalid file format.", exception.getMessage());
     }
 
     @Test
@@ -110,7 +110,7 @@ class StorageTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> new Storage(file.toString()).readTasks());
 
-        assertEquals("invalid file format", exception.getMessage());
+        assertEquals("invalid file format.", exception.getMessage());
     }
 
     @Test
@@ -122,6 +122,6 @@ class StorageTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> new Storage(file.toString()).readTasks());
 
-        assertEquals("invalid file format", exception.getMessage());
+        assertEquals("invalid file format.", exception.getMessage());
     }
 }

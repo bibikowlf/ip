@@ -168,6 +168,14 @@ class ParserTest {
     }
 
     @Test
+    void parseInput_invalidCalendarDate_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput("deadline return book /by 2026-06-31 10:00"));
+
+        assertEquals("time format must be yyyy-MM-dd HH:mm.", exception.getMessage());
+    }
+
+    @Test
     void parseInput_eventWithoutDescription_exceptionThrown() {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseInput("event /from 2026-08-23 11:00 /to 2026-08-23 12:00"));
@@ -235,6 +243,24 @@ class ParserTest {
     }
 
     @Test
+    void parseInput_invalidEventCalendarDate_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput(
+                        "event meeting /from 2026-06-31 11:00 /to 2026-07-01 12:00"));
+
+        assertEquals("time format must be yyyy-MM-dd HH:mm.", exception.getMessage());
+    }
+
+    @Test
+    void parseInput_eventEndingBeforeStartingTime_exceptionThrown() {
+        LabyException exception = assertThrows(LabyException.class,
+                () -> Parser.parseInput(
+                        "event meeting /from 2026-08-23 11:00 /to 2026-08-23 10:00"));
+
+        assertEquals("starting time must be before ending time.", exception.getMessage());
+    }
+
+    @Test
     void parseTaskFromFile_validDeadlineRecord_taskParsed() throws LabyException {
         Task task = Parser.parseTaskFromFile("D|1|return book|2026-08-23 10:00");
 
@@ -264,7 +290,7 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseContactFromFile("C|John Doe|91234567"));
 
-        assertEquals("invalid file format", exception.getMessage());
+        assertEquals("invalid file format.", exception.getMessage());
     }
 
     @Test
@@ -274,8 +300,8 @@ class ParserTest {
         LabyException extraFields = assertThrows(LabyException.class,
                 () -> Parser.parseTaskFromFile("T|0|read book|unexpected"));
 
-        assertEquals("invalid file format", invalidDate.getMessage());
-        assertEquals("invalid file format", extraFields.getMessage());
+        assertEquals("invalid file format.", invalidDate.getMessage());
+        assertEquals("invalid file format.", extraFields.getMessage());
     }
 
     @Test
@@ -291,6 +317,6 @@ class ParserTest {
         LabyException exception = assertThrows(LabyException.class,
                 () -> Parser.parseTaskFromFile("D|0|return book"));
 
-        assertEquals("invalid file format", exception.getMessage());
+        assertEquals("invalid file format.", exception.getMessage());
     }
 }
